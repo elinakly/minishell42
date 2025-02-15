@@ -1,0 +1,10 @@
+# ignore diff types of binaries
+*.out
+*.o
+*.a
+minishell
+# ignore any files in our separate testing folders
+# this way you can do whatever the heck you want in your testing folder
+# without it showing up on git
+/exec/testing/*
+/parse/testing/*
