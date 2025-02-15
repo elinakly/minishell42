@@ -26,4 +26,9 @@ These seem to be characters that make stuff do other stuff. Think pipes, escapes
 - `${}` - Alternative to just `$VAR` for expanding environment variables. Quite likely to be required in minishell despite no mention of it.
 
 ## Storing Parsed Data
-Yep that's WIP
+Linked list struct with each action? Something like\
+```grep "world" < input | cat -n > output```\
+Would give the following actions linkedlist:\
+Action[type=REDIR_INPUT] -> Action[type=EXEC_COMMAND] -> Action[type=PIPE] -> Action[type=EXEC_COMMAND] -> Action[type=REDIR_OUTPUT]
+
+No idea if that makes any logical sense and unsure how to pass results of each action around, but it's something
