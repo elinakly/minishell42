@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:55:07 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/17 16:22:44 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/17 17:36:03 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,16 @@
 /**
  * Skips any spaces until finding another character or end of string
  * Does this by increasing the char pointer you point to
- * @param str The pointer to the char pointer you want to skip spaces on
+ * @param str The string you want to skip spaces on
  * @returns The number of spaces it skipped
  */
-int	skip_spaces(char **str)
+int	skip_spaces(char *str)
 {
 	int	spaces;
 
 	spaces = 0;
-	while (str && *str && (*str)[spaces] == ' ')
+	while (str && str[spaces] == ' ')
 		spaces++;
-	(*str) += spaces;
 	return (spaces);
 }
 
@@ -50,26 +49,42 @@ bool	is_esc_dquote(char *str, int index)
 		backslashes++;
 		index--;
 	}
-	return (backslashes % 2);
+	return (backslashes % 2) != 0;
 }
 
-int	skip_quoted(char **str)
+/**
+ * Skips from the current quote character all the way until after the closing
+ * quote character
+ * 
+ * Assumes all quotes are properly closed
+ * @param str The string on which you want to skip quoted
+ * content
+ * @returns The amount of characters that were skipped
+ */
+int	skip_quoted(char *str)
 {
 	int		count;
 	char	quote_type;
 
 	count = 0;
-	if (str && *str && ((*str)[count] == '"' || (*str)[count] == '\''))
-		quote_type = *(*str);
+	if (str && (str[count] == '"' || str[count] == '\''))
+		quote_type = str[count];
 	else
 		return (0);
 	count++;
-	while ((*str)[count] &&
-		((*str)[count] != quote_type || is_esc_dquote((*str), count)))
+	while (str[count])
+	{
+		if (str[count] == quote_type)
+		{
+			if (quote_type == '\'')
+				break;
+			if (quote_type == '"' && !is_esc_dquote(str, count))
+				break;
+		}
 		count++;
-	if ((*str)[count] == quote_type)
+	}
+	if (str[count] == quote_type)
 		count++;
-	(*str) += count;
 	return (count);
 }
 
@@ -104,4 +119,25 @@ bool	has_unclosed_quote(char *str, e_quote_type *type)
 	else if (type)
 		*type = QUOTE_NONE;
 	return (in_dquotes || in_squotes);
+}
+
+/**
+ * Checks whether a character is a quote (single or double) or not
+ * Can also set a value at an enum pointer to indicate which quote
+ * @param c The character to check
+ * @param type A pointer to a quote type enum which will be set (can be NULL)
+ * @returns `true` if the character is a quote, `false` if not
+ */
+bool	is_quote_char(char c, e_quote_type *type)
+{
+	if (type)
+	{
+		if (c == '\'')
+			*type = QUOTE_SINGLE;
+		else if (c == '"')
+			*type = QUOTE_DOUBLE;
+		else
+			*type = QUOTE_NONE;
+	}
+	return (c == '\'' || c == '"');
 }
