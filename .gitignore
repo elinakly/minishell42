@@ -8,3 +8,9 @@ minishell
 # without it showing up on git
 /exec/testing/*
 /parse/testing/*
+/exec/builtins/echo/echo
+/exec/builtins/cd/cd
+/exec/builtins/pwd/pwd
+/exec/builtins/export/export
+/exec/builtins/unset/unset
+/exec/builtins/exit/exit
