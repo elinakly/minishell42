@@ -31,4 +31,5 @@ Linked list struct with each action? Something like\
 Would give the following actions linkedlist:\
 Action[type=REDIR_INPUT] -> Action[type=EXEC_COMMAND] -> Action[type=PIPE] -> Action[type=EXEC_COMMAND] -> Action[type=REDIR_OUTPUT]
 
-No idea if that makes any logical sense and unsure how to pass results of each action around, but it's something
+~~No idea if that makes any logical sense and unsure how to pass results of each action around, but it's something.~~ After having talked to other people this way of action types doesn't really make sense, a pipe doesn't need its own
+action, but rather an EXEC_COMMAND action needs to have pipe/redir flags etc probably!
