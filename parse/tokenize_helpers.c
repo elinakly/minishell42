@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:55:07 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/17 16:00:53 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/17 16:22:44 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	skip_spaces(char **str)
 	int	spaces;
 
 	spaces = 0;
-	while (*str && (*str)[spaces] == ' ')
+	while (str && *str && (*str)[spaces] == ' ')
 		spaces++;
 	(*str) += spaces;
 	return (spaces);
@@ -41,7 +41,7 @@ bool	is_esc_dquote(char *str, int index)
 {
 	int	backslashes;
 
-	if (str[index] != '"')
+	if (!str || str[index] != '"')
 		return (false);
 	backslashes = 0;
 	index--;
@@ -51,6 +51,26 @@ bool	is_esc_dquote(char *str, int index)
 		index--;
 	}
 	return (backslashes % 2);
+}
+
+int	skip_quoted(char **str)
+{
+	int		count;
+	char	quote_type;
+
+	count = 0;
+	if (str && *str && ((*str)[count] == '"' || (*str)[count] == '\''))
+		quote_type = *(*str);
+	else
+		return (0);
+	count++;
+	while ((*str)[count] &&
+		((*str)[count] != quote_type || is_esc_dquote((*str), count)))
+		count++;
+	if ((*str)[count] == quote_type)
+		count++;
+	(*str) += count;
+	return (count);
 }
 
 /**
@@ -85,5 +105,3 @@ bool	has_unclosed_quote(char *str, e_quote_type *type)
 		*type = QUOTE_NONE;
 	return (in_dquotes || in_squotes);
 }
-
-
