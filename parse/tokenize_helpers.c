@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:55:07 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/17 17:36:03 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/17 20:14:07 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,17 @@ int	skip_spaces(char *str)
 }
 
 /**
- * Checks whether a double quote is being escaped
+ * Checks whether a character is being escaped based on
+ * the amount of backslashes that come before it
  * @param str The string to look inside
- * @param index The index at which the double quote character is positioned
- * @returns `true` if double quote is escaped, `false` if not
+ * @param index The index at which the character is positioned
+ * @returns `true` if character is escaped, `false` if not
  */
-bool	is_esc_dquote(char *str, int index)
+bool	is_escaped_char(char *str, size_t index)
 {
-	int	backslashes;
+	size_t	backslashes;
 
-	if (!str || str[index] != '"')
+	if (!str)
 		return (false);
 	backslashes = 0;
 	index--;
@@ -78,7 +79,7 @@ int	skip_quoted(char *str)
 		{
 			if (quote_type == '\'')
 				break;
-			if (quote_type == '"' && !is_esc_dquote(str, count))
+			if (quote_type == '"' && !is_escaped_char(str, count))
 				break;
 		}
 		count++;
@@ -106,7 +107,7 @@ bool	has_unclosed_quote(char *str, e_quote_type *type)
 	in_squotes = false;
 	while (str && str[index])
 	{
-		if (str[index] == '"' && !in_squotes && !is_esc_dquote(str, index))
+		if (str[index] == '"' && !in_squotes && !is_escaped_char(str, index))
 			in_dquotes = !in_dquotes;
 		if (str[index] == '\'' && !in_dquotes)
 			in_squotes = !in_squotes;
