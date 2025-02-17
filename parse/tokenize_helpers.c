@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:55:07 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/17 20:14:07 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/17 21:37:09 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
  * @param str The string you want to skip spaces on
  * @returns The number of spaces it skipped
  */
-int	skip_spaces(char *str)
+size_t	skip_spaces(char *str)
 {
-	int	spaces;
+	size_t	spaces;
 
 	spaces = 0;
 	while (str && str[spaces] == ' ')
@@ -62,9 +62,9 @@ bool	is_escaped_char(char *str, size_t index)
  * content
  * @returns The amount of characters that were skipped
  */
-int	skip_quoted(char *str)
+size_t	skip_quoted(char *str)
 {
-	int		count;
+	size_t	count;
 	char	quote_type;
 
 	count = 0;
