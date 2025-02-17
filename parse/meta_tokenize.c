@@ -6,15 +6,17 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/17 23:13:41 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/17 23:42:45 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "tokenize.h"
 
 int	skip_quoted(char *str);
+bool	is_escaped_char(char *str, size_t index);
 
 /**
  * Checks whether the character at a given index in a string is

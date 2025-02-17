@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:55:07 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/17 21:37:09 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/18 00:15:34 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ size_t	skip_spaces(char *str)
  * @param index The index at which the character is positioned
  * @returns `true` if character is escaped, `false` if not
  */
-bool	is_escaped_char(char *str, size_t index)
+bool	is_escaped_char(char *str, int index)
 {
 	size_t	backslashes;
 
@@ -77,7 +77,6 @@ size_t	skip_quoted(char *str)
 	{
 		if (str[count] == quote_type)
 		{
-			if (quote_type == '\'')
 				break;
 			if (quote_type == '"' && !is_escaped_char(str, count))
 				break;

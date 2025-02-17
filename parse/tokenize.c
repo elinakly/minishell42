@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/17 18:48:13 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/17 23:32:30 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 int		skip_spaces(char *str);
 int		skip_quoted(char *str);
 bool	is_quote_char(char c, e_quote_type *type);
+size_t	skip_metachar(char *str);
+bool	is_metachar(char *str, size_t index);
 
 /**
  * Counts how big a single token at a given position in a string is
@@ -37,16 +39,19 @@ size_t	token_size(char *str, bool include_spaces)
 	index = 0;
 	size = 0;
 	index += skip_spaces(str);
-	if (is_quote_char(str[index], NULL))
-	{
-		temp = skip_quoted(&str[index]);
-		index += temp;
-		size += temp;
-	}
 	while (str[index] && str[index] != ' ')
 	{
-		index++;
-		size++;
+		if (is_metachar(&str[index], index))
+		{
+			temp = skip_metachar(&str[index]);
+			index += temp;
+			size += temp;
+		}
+		else
+		{
+			index++;
+			size++;
+		}
 	}
 	if (include_spaces)
 		return (index);
