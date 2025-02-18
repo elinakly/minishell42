@@ -52,7 +52,7 @@ void	exo(char **args)
 	int	flag;
 
 	if (!args[1])
-		ft_putchar_fd('\n', 1);
+		return (ft_putchar_fd('\n', 1));
 	flag = check_flag(args);
 	if (flag == 1)
 		i = 2;

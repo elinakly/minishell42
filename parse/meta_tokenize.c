@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   meta_tokenize.c                                    :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/18 01:37:22 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   meta_tokenize.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/02/18 16:58:31 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,5 @@ size_t	skip_metachar(char *str)
 		return (skip_env_var(str));
 	if (*str == MC_REDIR_IN)
 		return (skip_redir_in(str));
+	return (0);
 }
