@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/17 23:42:45 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/18 01:37:22 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,30 @@ bool	is_escaped_char(char *str, size_t index);
  * @param index The index at which the char is positioned
  * @returns `true` if the character is meta, `false` if not
  */
-bool	is_metachar(char *str, size_t index)
+bool	is_metachar(char *str, size_t index, e_metachar *meta)
 {
 	char	c;
+	bool	result;
 
 	c = *str;
-	return ((c == MC_DQUOTE
+	result = (c == MC_DQUOTE
 		|| c == MC_ESCAPE
 		|| c == MC_PIPE
 		|| c == MC_REDIR_IN
 		|| c == MC_REDIR_OUT
 		|| c == MC_SQUOTE
 		|| c == MC_VARIABLE)
-		&& !is_escaped_char(str, index));
+		&& !is_escaped_char(str, index);
+	if (meta && result)
+		*meta = (e_metachar)c;
+	else if (meta)
+		*meta = MC_NONE;
+	return (result);
+}
+
+bool	disrupts_token(e_metachar meta)
+{
+	return (meta == MC_PIPE || meta == MC_REDIR_IN || meta == MC_REDIR_OUT);
 }
 
 /**
@@ -114,8 +125,10 @@ size_t	skip_metachar(char *str)
 {
 	if (!str)
 		return (0);
-	if (*str == MC_PIPE || *str == MC_ESCAPE)
+	if (*str == MC_PIPE)
 		return (1);
+	if (*str == MC_ESCAPE)
+		return (2);
 	if (*str == MC_DQUOTE || *str == MC_SQUOTE)
 		return (skip_quoted(str));
 	if (*str == MC_REDIR_OUT)

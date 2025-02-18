@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/17 23:32:30 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/18 01:49:19 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "tokenize.h"
 
 int		skip_spaces(char *str);
 int		skip_quoted(char *str);
 bool	is_quote_char(char c, e_quote_type *type);
 size_t	skip_metachar(char *str);
-bool	is_metachar(char *str, size_t index);
+bool	is_metachar(char *str, size_t index, e_metachar *meta);
+bool	disrupts_token(e_metachar meta);
 
 /**
  * Counts how big a single token at a given position in a string is
@@ -32,27 +34,13 @@ bool	is_metachar(char *str, size_t index);
  */
 size_t	token_size(char *str, bool include_spaces)
 {
-	size_t	index;
-	size_t	size;
-	size_t	temp;
+	size_t		index;
+	size_t		size;
+	size_t		temp;
+	e_metachar	meta;
 
-	index = 0;
 	size = 0;
-	index += skip_spaces(str);
-	while (str[index] && str[index] != ' ')
-	{
-		if (is_metachar(&str[index], index))
-		{
-			temp = skip_metachar(&str[index]);
-			index += temp;
-			size += temp;
-		}
-		else
-		{
-			index++;
-			size++;
-		}
-	}
+	index = skip_spaces(str);
 	if (include_spaces)
 		return (index);
 	return (size);

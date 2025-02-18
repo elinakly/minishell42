@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/17 19:50:50 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/18 01:12:29 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef enum e_quote_type
 
 typedef enum e_metachar
 {
+	MC_NONE			= 0,
 	MC_DQUOTE		= '"',
 	MC_SQUOTE		= '\'',
 	MC_PIPE			= '|',
