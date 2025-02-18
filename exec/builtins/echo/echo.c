@@ -1,20 +1,27 @@
 #include <unistd.h>
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_putchar_fd(char c, int fd)
 {
-	write(fd, &c, 1);
+	int	status;
+
+	status = write(fd, &c, 1);
+	return (status == -1);
 }
 
-void	ft_putstr_fd(char *s, int fd)
+int	ft_putstr_fd(char *s, int fd)
 {
 	int	i;
+	int	status;
 
 	i = 0;
 	while (s[i] != '\0')
 	{
-		write(fd, &s[i], 1);
+		status = write(fd, &s[i], 1);
+		if (status  == -1)
+			return 1;
 		i++;
 	}
+	return (0);
 }
 
 int	check_flag(char **args)
@@ -46,11 +53,13 @@ int	check_flag(char **args)
 
 }
 
-void	exo(char **args)
+int	exo(char **args)
 {
 	int	i;
 	int	flag;
+	int	status;
 
+	status = 0;
 	if (!args[1])
 		return (ft_putchar_fd('\n', 1));
 	flag = check_flag(args);
@@ -60,17 +69,19 @@ void	exo(char **args)
 		i = 1;
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], 1);
+		status = ft_putstr_fd(args[i], 1);
 		if (args[i + 1])
-			ft_putchar_fd(' ', 1);
+			status = ft_putchar_fd(' ', 1);
+		if (status != 0)
+			return (status);
 		i++;
 	}
 	if (flag == 0)
-		ft_putchar_fd('\n', 1);
+		return (ft_putchar_fd('\n', 1));
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	exo(argv);
-	return(0);
+	return(exo(argv));
 }
