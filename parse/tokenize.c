@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/18 14:54:57 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/19 01:25:27 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ size_t	token_size(char *str, bool include_spaces)
 	meta = MC_NONE;
 	while (str[index] && str[index] != ' ')
 	{
-		//printf("LOOP:%s\n", &str[index]);
-		if (!disrupts_token(meta) && is_metachar(&str[index], index, &meta))
+		if (!disrupts_token(meta) && is_metachar(str, index, &meta))
 		{
 			temp = skip_metachar(&str[index]);
 			size += temp;
@@ -53,7 +52,7 @@ size_t	token_size(char *str, bool include_spaces)
 		}
 		if (disrupts_token(meta) || !str[index] || str[index] == ' ')
 			break;
-		while (str[index] && str[index] != ' ' && !is_metachar(&str[index], index, &meta))
+		while (str[index] && str[index] != ' ' && !is_metachar(str, index, &meta))
 		{
 			size++;
 			index++;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   meta_tokenize.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/02/18 16:58:31 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   meta_tokenize.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/02/19 01:25:00 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	is_metachar(char *str, size_t index, e_metachar *meta)
 	char	c;
 	bool	result;
 
-	c = *str;
+	c = str[index];
 	result = (c == MC_DQUOTE
 		|| c == MC_ESCAPE
 		|| c == MC_PIPE
