@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   meta_tokenize.c                                    :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/19 01:25:00 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   meta_tokenize.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/02/19 15:23:37 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	is_escaped_char(char *str, size_t index);
  * @param index The index at which the char is positioned
  * @returns `true` if the character is meta, `false` if not
  */
-bool	is_metachar(char *str, size_t index, e_metachar *meta)
+bool	is_meta(char *str, size_t index, e_metachar *meta)
 {
 	char	c;
 	bool	result;
@@ -121,7 +121,7 @@ size_t	skip_redir_in(char *str)
  * @param str The string in which to look (can be offset)
  * @returns The amount of characters to move forward in order to skip the token
  */
-size_t	skip_metachar(char *str)
+size_t	skip_meta(char *str)
 {
 	if (!str)
 		return (0);
