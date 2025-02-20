@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/20 01:28:48 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/20 01:38:09 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ char	**tokenize(char *entry)
 	{
 		result[index] = get_token(&entry[str_index]);
 		if (!result[index])
-			return (NULL); /* TODO: Free array retroactively on fail */
+			return (free_array((void **)result), NULL);
 		str_index += token_size(&entry[str_index], true);
 		index++;
 	}

@@ -6,11 +6,12 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/20 01:25:17 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/20 01:44:41 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * Frees every element in an array that ends with a NULL pointer and then
@@ -19,9 +20,15 @@
  */
 void	free_array(void **arr)
 {
-	if (!arr)
+	int	i;
+
+	i = 0;
+	if (arr == NULL)
 		return ;
-	while (*arr)
-		free(*arr++);
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
 	free(arr);
 }
