@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/19 01:25:27 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/20 01:24:43 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "memory/memory.h"
 #include "tokenize.h"
 
 int		skip_spaces(char *str);
