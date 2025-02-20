@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/20 01:24:43 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/20 01:28:48 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 int		skip_spaces(char *str);
 int		skip_quoted(char *str);
 bool	is_quote_char(char c, e_quote_type *type);
-size_t	skip_metachar(char *str);
-bool	is_metachar(char *str, size_t index, e_metachar *meta);
+size_t	skip_meta(char *str);
+bool	is_meta(char *str, size_t index, e_metachar *meta);
 bool	disrupts_token(e_metachar meta);
 
 /**
@@ -36,32 +36,24 @@ bool	disrupts_token(e_metachar meta);
 size_t	token_size(char *str, bool include_spaces)
 {
 	size_t		index;
-	size_t		size;
-	size_t		temp;
+	size_t		skip_count;
 	e_metachar	meta;
 
-	size = 0;
-	index = skip_spaces(str);
+	skip_count = skip_spaces(str);
+	index = skip_count;
 	meta = MC_NONE;
 	while (str[index] && str[index] != ' ')
 	{
-		if (!disrupts_token(meta) && is_metachar(str, index, &meta))
-		{
-			temp = skip_metachar(&str[index]);
-			size += temp;
-			index += temp;
-		}
+		if (!disrupts_token(meta) && is_meta(str, index, &meta))
+			index += skip_meta(&str[index]);
 		if (disrupts_token(meta) || !str[index] || str[index] == ' ')
 			break;
-		while (str[index] && str[index] != ' ' && !is_metachar(str, index, &meta))
-		{
-			size++;
+		while (str[index] && str[index] != ' ' && !is_meta(str, index, &meta))
 			index++;
-		}
 	}
 	if (include_spaces)
 		return (index);
-	return (size);
+	return (index - skip_count);
 }
 
 /**
