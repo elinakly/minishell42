@@ -33,3 +33,25 @@ Action[type=REDIR_INPUT] -> Action[type=EXEC_COMMAND] -> Action[type=PIPE] -> Ac
 
 ~~No idea if that makes any logical sense and unsure how to pass results of each action around, but it's something.~~ After having talked to other people this way of action types doesn't really make sense, a pipe doesn't need its own
 action, but rather an EXEC_COMMAND action needs to have pipe/redir flags etc probably!
+
+This is currently super outdated and will not see updates until I am further into parsing
+
+## Interpreting each token
+I've done some research on how bash interprets tokens and it's a lot to remember so I will store some examples here:
+
+`echo a > test.txt b` here `test.txt` is interpreted as the outfile, and `b` becomes the second argument for echo. Bash first opens the outfile, then echoes `a` and `b` into it.
+
+`cat < test.txt a` here `test.txt` is interpreted as the outfile, and `a` becomes the second argument for echo. Because cat uses arguments as filenames as well, it will take `a` as a second file to display. 
+
+`cat < test.txt > text.txt` opens `test.txt` for cat to read, but then the output redirection also opens and truncates `test.txt` before `cat` can read from it, resulting in an empty text file and no output from `cat`.
+
+`> a < a` is shitty but should work, since there is no command, bash will do `no-op` (fancy word for nothing), and redirect the output of said nothing to the file `a`, but first it will also want to read file `a` and redirect it as input into nothing yet again. Ideally this kind of nonsense gets simplified to just opening `a` for output, truncating it and doing nothing else. Send help. Please.
+
+Now just need to make sure that arguments after infile/outfile are linked back to the right command, but should be doable. 
+
+Worth noting: input and output files can never come before a redirect operator, they only ever come after.
+
+TODO: Find more info about how arguments behave for a `no-op`
+
+### Heredocs stuff for this section
+If a heredoc (`<<`) is present in the command anywhere, that takes priority even over input and output redirections. The heredoc must be completed before anything else. It first stores all the text in memory, and upon heredoc completion, writes it all to a temporary file (usually stored in `/tmp/`). That file will then be used as infile like a regular `<` operator. Similarly to those operators, any arguments that come after a heredoc delimiter are then linked back to the command that came before the heredoc / operator.

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   meta_tokenize.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/02/19 15:23:37 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   meta_tokenize.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/02/21 00:07:16 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
 	char	c;
 	bool	result;
 
+	if (!str)
+	{
+		if (meta)
+			*meta = MC_ERROR;
+		return (false);
+	}
 	c = str[index];
 	result = (c == MC_DQUOTE
 		|| c == MC_ESCAPE
@@ -46,6 +52,19 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
 	else if (meta)
 		*meta = MC_NONE;
 	return (result);
+}
+
+bool	is_disrupt_meta(char *str, size_t index, e_metachar *meta)
+{
+	bool		is_any_meta;
+	e_metachar	type;
+
+	type = MC_NONE;
+	is_any_meta = is_meta(str, index, &type);
+	if (meta)
+		*meta = type;
+	return (is_meta && type == MC_REDIR_IN
+		|| type == MC_REDIR_OUT || type == MC_PIPE);
 }
 
 bool	disrupts_token(e_metachar meta)

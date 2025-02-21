@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/20 01:38:09 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/21 01:41:51 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ size_t	ms_strlcpy(char *dst, const char *src, size_t size)
  * @param str The string from which you want a token (can be offset)
  * @returns A malloc'd string with the token that was found or NULL on fail
  */
-char	*get_token(char *str)
+char	*get_raw_token(char *str)
 {
 	size_t	size;
 	char	*result;
@@ -124,12 +124,57 @@ char	*get_token(char *str)
 	return (result);
 }
 
+e_token_type	get_token_type(char *raw_token, e_token_type last)
+{
+	size_t	len;
+
+	len = 0;
+	while (raw_token[len]) //TODO: Probably just replace with ft_strlen xd
+		len++;
+	if (raw_token[0] == '|')
+		return (TT_PIPE);
+	if (raw_token[0] == '>')
+	{
+		if (len < 2 || raw_token[1] != '>')
+			return (TT_RE_OUT);
+		else if (len > 1 && raw_token[1] == '>')
+			return (TT_RE_OUT_APPEND);
+	}
+	if (raw_token[0] == '<')
+	{
+		if (len < 2 || raw_token[1] != '<')
+			return (TT_RE_IN);
+		else if (len > 1 && raw_token[1] == '<')
+			return (TT_HEREDOC);
+	}
+	if (last == TT_ARGUMENT || last == TT_COMMAND || last == TT_INFILE || last == TT_OUTFILE || last == TT_HEREDOC)
+		return (TT_ARGUMENT);
+	if (last == TT_RE_OUT || last == TT_RE_OUT_APPEND)
+		return (TT_OUTFILE);
+	if (last == TT_RE_IN)
+		return (TT_INFILE);
+	return (TT_COMMAND);
+}
+
+t_token	*make_token(char *raw_token, e_token_type last)
+{
+	t_token	*token;
+
+	if (!raw_token)
+		return (NULL);
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->value = raw_token;
+
+}
+
 /**
  * Takes a full minishell command and tokenizes it (splitting it up)
  * @param entry The string to tokenize
  * @returns An array of tokens (strings) or NULL if fail
  */
-char	**tokenize(char *entry)
+char	**tokenize(char *entry, size_t *tokencount)
 {
 	size_t	count;
 	size_t	index;
@@ -145,11 +190,15 @@ char	**tokenize(char *entry)
 	str_index = 0;
 	while (index < count)
 	{
-		result[index] = get_token(&entry[str_index]);
+		result[index] = get_raw_token(&entry[str_index]);
 		if (!result[index])
 			return (free_array((void **)result), NULL);
 		str_index += token_size(&entry[str_index], true);
 		index++;
 	}
+	if (tokencount)
+		*tokencount = count;
 	return (result);
 }
+
+
