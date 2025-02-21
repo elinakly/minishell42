@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/21 00:38:18 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/21 23:04:48 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,5 @@ typedef struct t_token
 	e_token_type	type;
 	char			*value;
 	bool			has_vars;
-	size_t			**var_indices;
 	char			**var_names;
 }	t_token;

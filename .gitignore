@@ -8,9 +8,12 @@ minishell
 # without it showing up on git
 /exec/testing/*
 /parse/testing/*
+# ignore builtin binaries, Makefile will build these
 /exec/builtins/echo/echo
 /exec/builtins/cd/cd
 /exec/builtins/pwd/pwd
 /exec/builtins/export/export
 /exec/builtins/unset/unset
 /exec/builtins/exit/exit
+# ignore all of libft, whether cloned or just dropped into the project
+/libft/*
