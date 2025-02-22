@@ -45,4 +45,5 @@ What we need to do, how, when, why, where, etc? Split up in two parts: parsing a
 ## Optional, up for discussion
 - Doing the bonus (lol)
 - Functions to easily send colored output (for errors, for readline, etc.)
-- 
+- Making a cool ASCII art logo for on startup
+- Give it a name other than Minishell (something more creative)
