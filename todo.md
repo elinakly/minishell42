@@ -14,6 +14,7 @@ What we need to do, how, when, why, where, etc? Split up in two parts: parsing a
 ## Executing
 - Make builtins
 - Make interactive input work (readline)
+- Make an execution loop (the thing that keeps minishell running)
 - Separate the pipex functionality into different functions
 	- Something like:
 	- Create pipe
