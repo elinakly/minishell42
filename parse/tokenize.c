@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/21 01:41:51 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/02/25 16:20:38 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ char	*get_raw_token(char *str)
 	return (result);
 }
 
-e_token_type	get_token_type(char *raw_token, e_token_type last)
+e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound)
 {
 	size_t	len;
 
@@ -132,7 +132,7 @@ e_token_type	get_token_type(char *raw_token, e_token_type last)
 	while (raw_token[len]) //TODO: Probably just replace with ft_strlen xd
 		len++;
 	if (raw_token[0] == '|')
-		return (TT_PIPE);
+		return (*cmdfound = false, TT_PIPE);
 	if (raw_token[0] == '>')
 	{
 		if (len < 2 || raw_token[1] != '>')
@@ -147,12 +147,14 @@ e_token_type	get_token_type(char *raw_token, e_token_type last)
 		else if (len > 1 && raw_token[1] == '<')
 			return (TT_HEREDOC);
 	}
-	if (last == TT_ARGUMENT || last == TT_COMMAND || last == TT_INFILE || last == TT_OUTFILE || last == TT_HEREDOC)
-		return (TT_ARGUMENT);
 	if (last == TT_RE_OUT || last == TT_RE_OUT_APPEND)
 		return (TT_OUTFILE);
 	if (last == TT_RE_IN)
 		return (TT_INFILE);
+	if (!*cmdfound)
+		return (*cmdfound = true, TT_COMMAND);
+	if (last == TT_ARGUMENT || last == TT_COMMAND || last == TT_INFILE || last == TT_OUTFILE || last == TT_HEREDOC)
+		return (TT_ARGUMENT);
 	return (TT_COMMAND);
 }
 
