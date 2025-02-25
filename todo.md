@@ -23,6 +23,8 @@ What we need to do, how, when, why, where, etc? Split up in two parts: parsing a
 	- Execute command with arguments and custom input/output file descriptors?
 	- Restore file descriptors (defaulting back to stdin/stdout I guess)
 - Get and store existing environment variables
+- Make command history (probably in some .history file)
+	- Find last line and compare to current command to avoid double entries in history
 - Handle newly created environment variables from `export`
 - Make a function that returns the value of an environment variable with a given name
 - Find out how non-interactive bash works and make that work (ex.: `bash -c "echo a"`)
