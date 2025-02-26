@@ -27,30 +27,28 @@ int	ft_putstr_fd(char *s, int fd)
 int	check_flag(char **args)
 {
 	int	flag;
-	int	i;
 	int	j;
 
-	i = 1;
+	*i = 1;
 	flag = 0;
-	while (args[i])
+	while (args[*i])
 	{
 		j = 0;
-		if (args[i][j] == '-' && args[i][j + 1] == 'n')
+		if (args[*i][j] == '-' && args[*i][j + 1] == 'n')
 		{
 			j++;
-			while (args[i][j] == 'n')
+			while (args[*i][j] == 'n')
 				j++;
-			if (!args[i][j])
+			if (!args[*i][j])
 				flag = 1;
 			else
 				break ;
 		}
 		else
 			break ;
-		i++;
+		(*i)++;
 	}
 	return (flag);
-
 }
 
 int	exo(char **args)
@@ -62,11 +60,7 @@ int	exo(char **args)
 	status = 0;
 	if (!args[1])
 		return (ft_putchar_fd('\n', 1));
-	flag = check_flag(args);
-	if (flag == 1)
-		i = 2;
-	else
-		i = 1;
+	flag = check_flag(args, &i);
 	while (args[i])
 	{
 		status = ft_putstr_fd(args[i], 1);
