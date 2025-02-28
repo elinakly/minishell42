@@ -17,14 +17,14 @@ int	ft_putstr_fd(char *s, int fd)
 	while (s[i] != '\0')
 	{
 		status = write(fd, &s[i], 1);
-		if (status  == -1)
-			return 1;
+		if (status == -1)
+			return (1);
 		i++;
 	}
 	return (0);
 }
 
-int	check_flag(char **args)
+int	check_flag(char **args, int *i)
 {
 	int	flag;
 	int	j;
@@ -73,9 +73,4 @@ int	exo(char **args)
 	if (flag == 0)
 		return (ft_putchar_fd('\n', 1));
 	return (0);
-}
-
-int	main(int argc, char **argv)
-{
-	return(exo(argv));
 }
