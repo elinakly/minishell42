@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus.c                                            :+:      :+:    :+:   */
+/*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/02/20 20:25:46 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:34:03 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	create_pipes(int num_cmds, int **pipes)
 		i++;
 	}
 }
-
 
 void	child_process(int i, int **pipes, char *envp[], t_command commands)
 {
