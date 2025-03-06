@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tokenize.h                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/21 23:04:48 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tokenize.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 14:15:14 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/02/26 17:03:07 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,16 @@ typedef enum e_token_type
 	TT_RE_OUT,
 	TT_RE_OUT_APPEND,
 	TT_INFILE,
-	TT_OUTFILE,
+	TT_OUTFILE
 }	e_token_type;
+
+typedef enum e_redir_type
+{
+	RE_OUTPUT_TRUNC,
+	RE_OUTPUT_APPEND,
+	RE_INPUT,
+	RE_HEREDOC
+}	e_redir_type;
 
 typedef struct t_token
 {

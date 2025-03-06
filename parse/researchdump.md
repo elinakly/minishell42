@@ -55,3 +55,11 @@ TODO: Find more info about how arguments behave for a `no-op`
 
 ### Heredocs stuff for this section
 If a heredoc (`<<`) is present in the command anywhere, that takes priority even over input and output redirections. The heredoc must be completed before anything else. It first stores all the text in memory, and upon heredoc completion, writes it all to a temporary file (usually stored in `/tmp/`). That file will then be used as infile like a regular `<` operator. Similarly to those operators, any arguments that come after a heredoc delimiter are then linked back to the command that came before the heredoc / operator.
+
+## Random supposedly useful stuff
+- ENV has 'PWD' and 'OLD_PWD' variables that keep track of your working directory, MAY be able to use those?
+
+## Questions to find answers to
+- What happens if env var has quote characters in it?
+- What characters are *actually* allowed in env vars?
+- What's up with the single-digit var names and why does `echo $123` output `23`?
