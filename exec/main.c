@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/06 15:07:23 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:28:48 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	comp_name_len(char **envp)
 	return (len);
 }
 
-void	ft_readline(char **envp)
+char	*ft_readline(char **envp)
 {
 	int		i;
 	char	*line;
@@ -129,11 +129,12 @@ void	ft_readline(char **envp)
 		i++;
 	}
 	line = readline(prompt);
+	return (line);
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	while (1)
-		ft_readline(envp);
-	return (0);
-}
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	while (1)
+// 		ft_readline(envp);
+// 	return (0);
+// }
