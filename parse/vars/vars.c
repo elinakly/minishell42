@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/03/06 18:17:54 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:37:57 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,28 @@ size_t	get_var_count(char *cmd)
 			index += 1;
 	}
 	return (res);
+}
+
+size_t	var_len(char *cmd, size_t i)
+{
+	size_t		res;
+	e_metachar	type;
+
+	res = 1;
+	type = MC_NONE;
+	if (!cmd || !cmd[i] || cmd[i] != '$' || !is_meta(cmd, i, &type)
+		|| type != MC_VARIABLE);
+		return (0);
+	return (res + skip_var_chars(cmd, ++i));
+}
+
+char	**get_var_names(char *cmd)
+{
+	size_t	varcount;
+	char	**names;
+
+	varcount = get_var_count(cmd);
+	names = malloc(sizeof(char *) * (varcount + 1));
+	if (!names)
+		return (NULL);
 }
