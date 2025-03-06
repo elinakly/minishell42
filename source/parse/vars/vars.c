@@ -6,11 +6,11 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/03/06 18:37:57 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:57:36 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../tokenize.h"
+#include "../include/tokenize.h"
 
 bool	is_meta(char *str, size_t index, e_metachar *meta);
 

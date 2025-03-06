@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tokenize.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mika <mika@student.42.fr>                    +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/25 16:20:38 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
+/*   Updated: 2025/03/06 18:50:14 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "memory/memory.h"
-#include "tokenize.h"
+#include "../include/memory.h"
+#include "../include/tokenize.h"
 
 int		skip_spaces(char *str);
 int		skip_quoted(char *str);
