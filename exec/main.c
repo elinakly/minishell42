@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/05 16:19:45 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:07:23 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,36 +78,54 @@ int	ft_strlcpy(char *dst, char *src, int size)
 	return (ft_strlen(src));
 }
 
-char *get_value(char **envp, char *key)
+char	*get_value(char **envp, char *key)
 {
-	int		i = 0;
+	int	i;
 
+	i = 0;
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], key, ft_strlen(key)) == 0)
 			return (envp[i] + ft_strlen(key));
 		i++;
 	}
-	return (NULL);
+	return ("");
 }
 
-void ft_readline(char **envp)
+int	comp_name_len(char **envp)
 {
-	int		i = 0;
+	char	*sesmgr;
+	int		len;
+
+	sesmgr = get_value(envp, "SESSION_MANAGER=local/");
+	len = 0;
+	if (!sesmgr)
+		return (0);
+	while (sesmgr[len] != '.' && sesmgr[len])
+		len++;
+	return (len);
+}
+
+void	ft_readline(char **envp)
+{
+	int		i;
 	char	*line;
 	char	prompt[PATH_MAX];
-	char	cwd[PATH_MAX];
+	char	*home;
+	int		home_len;
 
-	char *home = get_value(envp, "HOME=");
-	int home_len = ft_strlen(home);
-	while(envp[i])
+	i = 0;
+	home = get_value(envp, "HOME=");
+	home_len = ft_strlen(home);
+	while (envp[i])
 	{
 		ft_strlcpy(prompt, get_value(envp, "LOGNAME="), PATH_MAX);
 		ft_strlcat(prompt, "@", PATH_MAX);
-		ft_strlcat(prompt, get_value(envp, "NAME="), PATH_MAX);
+		ft_strlcat(prompt, get_value(envp, "SESSION_MANAGER=local/"),
+			ft_strlen(prompt) + comp_name_len(envp) + 1);
 		ft_strlcat(prompt, ":~", PATH_MAX);
 		ft_strlcat(prompt, get_value(envp, "PWD=") + home_len, PATH_MAX);
-		ft_strlcat(prompt, "$", PATH_MAX);
+		ft_strlcat(prompt, "$ ", PATH_MAX);
 		i++;
 	}
 	line = readline(prompt);
@@ -115,6 +133,7 @@ void ft_readline(char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	ft_readline(envp);
+	while (1)
+		ft_readline(envp);
 	return (0);
 }
