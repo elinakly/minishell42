@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   meta_tokenize.c                                    :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/02/21 00:07:16 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   meta_tokenize.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/06 19:12:42 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	is_disrupt_meta(char *str, size_t index, e_metachar *meta)
 	is_any_meta = is_meta(str, index, &type);
 	if (meta)
 		*meta = type;
-	return (is_meta && type == MC_REDIR_IN
+	return (is_any_meta && type == MC_REDIR_IN
 		|| type == MC_REDIR_OUT || type == MC_PIPE);
 }
 

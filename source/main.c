@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/06 15:39:09 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:37:05 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "parse/tokenize.h"
-#include "parse/memory/memory.h"
+#include "../include/tokenize.h"
+#include "../include/memory.h"
 #include <stdbool.h>
 #include <stdio.h>
 

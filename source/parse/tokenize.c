@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
-/*   Updated: 2025/03/06 18:50:14 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:13:46 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,8 @@ t_token	*make_token(char *raw_token, e_token_type last)
 	if (!token)
 		return (NULL);
 	token->value = raw_token;
-
+	//TODO: FINISH, the return is temp
+	return (NULL); //TODO: REMOVE! tihs is to suppress warning only
 }
 
 /**

@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_builtIn.c                                       :+:      :+:    :+:   */
+/*   is_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/04 15:36:31 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:28:07 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../../lib/libft/libft.h"
 
 /**
  * @brief Check if the command is a built-in command
@@ -20,7 +21,7 @@
 
 int		is_builtin(char *command)
 {
-	if (ft_strcmp(command, "echo") == 0)
+	if (ft_strncmp(command, "echo", 5) == 0) //TODO: Hi Elina I changed this to strncmp cus libft doesnt have strcmp
 		return (1);
 	// if (ft_strcmp(command, "cd") == 0)
 	// 	return (1);
