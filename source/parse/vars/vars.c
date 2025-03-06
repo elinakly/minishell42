@@ -6,11 +6,13 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/03/06 19:14:07 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:35:56 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/tokenize.h"
+#include "../include/memory.h"
+#include "../lib/libft/libft.h"
 
 bool	is_meta(char *str, size_t index, e_metachar *meta);
 
@@ -78,24 +80,49 @@ size_t	get_var_count(char *cmd)
 
 size_t	var_len(char *cmd, size_t i)
 {
-	size_t		res;
+	size_t		quotfind;
 	e_metachar	type;
+	e_metachar	quottype;
 
-	res = 1;
 	type = MC_NONE;
-	if (!cmd || !cmd[i] || cmd[i] != '$' || !is_meta(cmd, i, &type)
+	quottype = MC_NONE;
+	quotfind = 0;
+	if (!cmd || cmd[i] != '$' || !is_meta(cmd, i, &type)
 		|| type != MC_VARIABLE)
 		return (0);
-	return (res + skip_var_chars(cmd, ++i));
+	while (cmd[quotfind] && quotfind < i)
+		set_quote_state(cmd, quotfind++, &quottype);
+	if (quottype == MC_SQUOTE)
+		return (0);
+	return (skip_var_chars(cmd, ++i) + 1);
 }
 
 char	**get_var_names(char *cmd)
 {
-	size_t	varcount;
 	char	**names;
+	size_t	varcount;
+	size_t	index;
+	size_t	strindex;
 
+	index = 0;
+	strindex = 0;
 	varcount = get_var_count(cmd);
 	names = malloc(sizeof(char *) * (varcount + 1));
 	if (!names)
 		return (NULL);
+	names[varcount] = NULL;
+	printf("Getvarnames var count: %ld\n", varcount);
+	while (cmd[strindex] && index < varcount)
+	{
+		if (cmd[strindex] == '$' && var_len(cmd, strindex))
+		{
+			printf("Getvarnames var found at index %ld with len %ld\n", strindex, var_len(cmd, strindex));
+			names[index] = malloc(sizeof(char) * var_len(cmd, strindex));
+			if (!names[index])
+				return (free_array((void **)names), NULL);
+			ft_strlcpy(names[index++], cmd + strindex + 1, var_len(cmd, strindex));
+		}
+		strindex++;
+	}
+	return (names);
 }

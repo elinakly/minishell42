@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/06 19:37:05 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:37:13 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ size_t			count_tokens(char *entry);
 char			**tokenize(char *entry, size_t *tokencount);
 e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound);
 size_t			get_var_count(char *cmd);
+char			**get_var_names(char *cmd);
 
 const char *token_type_to_string(e_token_type type)
 {
@@ -55,7 +56,11 @@ int	main(int argc, char **argv, char **envp)
 		char *test = ft_readline(envp);
 		char **tokens = tokenize(test, &amount);
 		tokenindex = 0;
-		printf("%s\n[has %ld vars]\n", test, get_var_count(test));
+		// printf("%s\n[has %ld vars: ", test, get_var_count(test));
+		// char **varnames = get_var_names(test);
+		// while (*varnames)
+		// 	printf("%s, ", *varnames++);
+		// printf("]\n");
 		while (tokens[tokenindex])
 		{
 			e_token_type tokentype = get_token_type(tokens[tokenindex], lasttype, &cmdfound);
