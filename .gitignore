@@ -8,6 +8,9 @@ minishell
 # without it showing up on git
 /exec/testing/*
 /parse/testing/*
+source/exec/testing/*
+source/exec/testing/*
+objects/*
 # ignore builtin binaries, Makefile will build these
 /exec/builtins/echo/echo
 /exec/builtins/cd/cd
