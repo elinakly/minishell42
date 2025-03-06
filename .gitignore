@@ -19,5 +19,5 @@ objects/*
 /exec/builtins/unset/unset
 /exec/builtins/exit/exit
 # ignore all of libft, whether cloned or just dropped into the project
-/libft/*
+/lib/*
 /.vscode/*
