@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/06 15:28:48 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:16:59 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*get_value(char **envp, char *key)
 			return (envp[i] + ft_strlen(key));
 		i++;
 	}
-	return ("");
+	return (NULL);
 }
 
 int	comp_name_len(char **envp)
