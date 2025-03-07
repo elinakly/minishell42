@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/06 18:16:59 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   ft_readline.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/04 20:11:57 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/07 01:50:02 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <linux/limits.h>
-#include <../libft/libft.h>
+#include "../../lib/libft/libft.h"
 
 void errors(char *msg);
 
@@ -42,7 +42,7 @@ int	comp_name_len(char **envp)
 	len = 0;
 	if (!sesmgr)
 		return (0);
-	while ((sesmgr[len] != '.' || sesmgr[len] != ':') && sesmgr[len])
+	while ((sesmgr[len] != '.' && sesmgr[len] != ':') && sesmgr[len])
 		len++;
 	return (len);
 }
