@@ -15,68 +15,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <linux/limits.h>
+#include <../libft/libft.h>
 
-int	ft_strlen(const char *s)
-{
-	int	lenth;
-
-	lenth = 0;
-	while (s[lenth] != '\0')
-	{
-		lenth++;
-	}
-	return (lenth);
-}
-
-int	ft_strncmp(char *s1, char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (0);
-}
-
-int	ft_strlcat(char *dst, char *src, int size)
-{
-	int	dstlen;
-	int	srclen;
-	int	i;
-
-	srclen = ft_strlen(src);
-	dstlen = ft_strlen(dst);
-	if (size <= dstlen)
-		return (size + srclen);
-	i = 0;
-	while (src[i] != '\0' && (dstlen + i) < size - 1)
-	{
-		dst[dstlen + i] = src[i];
-		i++;
-	}
-	dst[dstlen + i] = '\0';
-	return (dstlen + srclen);
-}
-
-int	ft_strlcpy(char *dst, char *src, int size)
-{
-	int	i;
-
-	i = 0;
-	if (size == 0)
-		return (ft_strlen(src));
-	while (i < size - 1 && src[i] != '\0')
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (ft_strlen(src));
-}
+void errors(char *msg);
 
 char	*get_value(char **envp, char *key)
 {
@@ -115,26 +56,28 @@ char	*ft_readline(char **envp)
 	int		home_len;
 
 	i = 0;
-	home = get_value(envp, "HOME=");
+	if (!(home = get_value(envp, "HOME=")))
+		return (NULL);
 	home_len = ft_strlen(home);
 	while (envp[i])
 	{
-		ft_strlcpy(prompt, get_value(envp, "LOGNAME="), PATH_MAX);
-		ft_strlcat(prompt, "@", PATH_MAX);
-		ft_strlcat(prompt, get_value(envp, "SESSION_MANAGER=local/"),
-			ft_strlen(prompt) + comp_name_len(envp) + 1);
-		ft_strlcat(prompt, ":~", PATH_MAX);
-		ft_strlcat(prompt, get_value(envp, "PWD=") + home_len, PATH_MAX);
-		ft_strlcat(prompt, "$ ", PATH_MAX);
+		if (!(ft_strlcpy(prompt, get_value(envp, "LOGNAME="), PATH_MAX)))
+			return (errors("Error: ft_strlcpy in readline failed\n"), NULL);
+		if (!(ft_strlcat(prompt, "@", PATH_MAX)))
+			return (errors("Error : strlcat in readline failed"), NULL);
+		if (get_value(envp, "SESSION_MANAGER=local/"))
+			ft_strlcat(prompt, get_value(envp, "SESSION_MANAGER=local/"),
+				ft_strlen(prompt) + comp_name_len(envp) + 1); ///SCHOOL
+		else
+			ft_strlcat(prompt, get_value(envp, "NAME="), PATH_MAX); //HOME REMOVE
+		if (!(ft_strlcat(prompt, ":~", PATH_MAX)))
+			return (errors("Error : strlcat in readline failed"), NULL);
+		if (!ft_strlcat(prompt, get_value(envp, "PWD=") + home_len, PATH_MAX))
+			return (errors("Error : strlcat in readline failed"), NULL);
+		if (!ft_strlcat(prompt, "$ ", PATH_MAX))
+			return (errors("Error : strlcat in readline failed"), NULL);
 		i++;
 	}
 	line = readline(prompt);
 	return (line);
 }
-
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	while (1)
-// 		ft_readline(envp);
-// 	return (0);
-// }
