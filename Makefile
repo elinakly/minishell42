@@ -9,7 +9,9 @@ HEADERS	:= -I ./include -I $(LIB_DIR)/libft
 CFLAGS = -g
 LDFLAGS = -lreadline
 
-SRCS = $(shell find $(SRC_DIR) -type f -name "*.c" ! -path "$(SRC_DIR)/exec/builtins/*")
+## SRCS = $(shell find $(SRC_DIR) -type f -name "*.c" ! -path "$(SRC_DIR)/exec/builtins/*")
+SRCS = $(shell find $(SRC_DIR) -type f -name "*.c")
+
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 all: $(LIB_DIR)/libft/libft.a $(NAME)

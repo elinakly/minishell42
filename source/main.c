@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/07 01:46:21 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/07 18:22:36 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "../include/memory.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "../include/builtins.h"
 
 char			*ft_readline(char **envp);
 int				skip_spaces(char **str);
@@ -25,6 +26,7 @@ char			**tokenize(char *entry, size_t *tokencount);
 e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound);
 size_t			get_var_count(char *cmd);
 char			**get_var_names(char *cmd);
+int				is_builtin(char *command);
 
 const char *token_type_to_string(e_token_type type)
 {
@@ -55,6 +57,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (!(test = ft_readline(envp)))
 			return (1);
+		// int builtin = is_builtin(test);
 		char **tokens = tokenize(test, &amount);
 		tokenindex = 0;
 		printf("%s\n[has %ld vars: ", test, get_var_count(test));
