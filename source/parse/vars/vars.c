@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vars.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/03/06 20:35:56 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   vars.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
+/*   Updated: 2025/03/07 01:30:25 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ size_t	get_var_count(char *cmd)
 	if (!cmd)
 		return (0);
 	index = 0;
-	temp_skip = 0;
 	res = 0;
 	in_quot = MC_NONE;
 	while (cmd[index])
 	{
+		temp_skip = 0;
 		set_quote_state(cmd, index, &in_quot);
 		if (cmd[index] == '$' && is_meta(cmd, index, NULL))
 		{
@@ -111,12 +111,10 @@ char	**get_var_names(char *cmd)
 	if (!names)
 		return (NULL);
 	names[varcount] = NULL;
-	printf("Getvarnames var count: %ld\n", varcount);
 	while (cmd[strindex] && index < varcount)
 	{
 		if (cmd[strindex] == '$' && var_len(cmd, strindex))
 		{
-			printf("Getvarnames var found at index %ld with len %ld\n", strindex, var_len(cmd, strindex));
 			names[index] = malloc(sizeof(char) * var_len(cmd, strindex));
 			if (!names[index])
 				return (free_array((void **)names), NULL);
