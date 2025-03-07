@@ -50,10 +50,11 @@ int	main(int argc, char **argv, char **envp)
 	size_t amount = 0;
 	e_token_type lasttype = TT_UNKNOWN;
 	bool cmdfound = false;
-	
+	char *test;
 	while (1)
 	{
-		char *test = ft_readline(envp);
+		if (!(test = ft_readline(envp)))
+			return (1);
 		char **tokens = tokenize(test, &amount);
 		tokenindex = 0;
 		// printf("%s\n[has %ld vars: ", test, get_var_count(test));
