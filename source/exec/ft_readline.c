@@ -42,7 +42,7 @@ int	comp_name_len(char **envp)
 	len = 0;
 	if (!sesmgr)
 		return (0);
-	while (sesmgr[len] != '.' && sesmgr[len])
+	while ((sesmgr[len] != '.' || sesmgr[len] != ':') && sesmgr[len])
 		len++;
 	return (len);
 }
