@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/06 20:37:13 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/07 01:46:21 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		char **tokens = tokenize(test, &amount);
 		tokenindex = 0;
-		// printf("%s\n[has %ld vars: ", test, get_var_count(test));
-		// char **varnames = get_var_names(test);
-		// while (*varnames)
-		// 	printf("%s, ", *varnames++);
-		// printf("]\n");
+		printf("%s\n[has %ld vars: ", test, get_var_count(test));
+		char **varnames = get_var_names(test);
+		while (*varnames)
+			printf("%s, ", *varnames++);
+		printf("]\n");
 		while (tokens[tokenindex])
 		{
 			e_token_type tokentype = get_token_type(tokens[tokenindex], lasttype, &cmdfound);
