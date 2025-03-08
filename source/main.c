@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/07 18:22:36 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/08 13:19:54 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,35 +46,43 @@ const char *token_type_to_string(e_token_type type)
     }
 }
 
-int	main(int argc, char **argv, char **envp)
+void test_parse_output(char *test)
 {
 	int tokenindex = 0;
 	size_t amount = 0;
+	size_t varnameindex = 0;
 	e_token_type lasttype = TT_UNKNOWN;
 	bool cmdfound = false;
+
+	char **tokens = tokenize(test, &amount);
+	tokenindex = 0;
+	printf("%s\n[has %ld vars: ", test, get_var_count(test));
+	char **varnames = get_var_names(test);
+	while (varnames[varnameindex])
+		printf("%s, ", varnames[varnameindex++]);
+	printf("]\n");
+	while (tokens[tokenindex])
+	{
+		e_token_type tokentype = get_token_type(tokens[tokenindex], lasttype, &cmdfound);
+		lasttype = tokentype;
+		printf("%-16s [%s]\n", token_type_to_string(tokentype), tokens[tokenindex]);
+		tokenindex++;
+	}
+	lasttype = TT_UNKNOWN;
+	free_array((void **)tokens);
+	free_array((void **)varnames);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
 	char *test;
 	while (1)
 	{
 		if (!(test = ft_readline(envp)))
 			return (1);
 		// int builtin = is_builtin(test);
-		char **tokens = tokenize(test, &amount);
-		tokenindex = 0;
-		printf("%s\n[has %ld vars: ", test, get_var_count(test));
-		char **varnames = get_var_names(test);
-		while (*varnames)
-			printf("%s, ", *varnames++);
-		printf("]\n");
-		while (tokens[tokenindex])
-		{
-			e_token_type tokentype = get_token_type(tokens[tokenindex], lasttype, &cmdfound);
-			lasttype = tokentype;
-			printf("%-16s [%s]\n", token_type_to_string(tokentype), tokens[tokenindex]);
-			tokenindex++;
-		}
-		lasttype = TT_UNKNOWN;
-		free_array((void **)tokens);
-		cmdfound = false;
+		test_parse_output(test); // Just made this function to keep main() a bit readable
+		free(test);
 	}
 	return (0);
 }
