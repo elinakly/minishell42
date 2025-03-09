@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/09 17:17:25 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 17:22:23 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,11 @@ size_t	skip_meta(char *str)
 	return (0);
 }
 
+/**
+ * Counts the amount of meta characters in a string
+ * @param str The string to check
+ * @returns The amount of meta characters in str
+ */
 size_t	count_metas(char *str)
 {
 	size_t	count;
