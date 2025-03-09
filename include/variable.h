@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   memory.h                                           :+:    :+:            */
+/*   variable.h                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/02/20 01:24:49 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/09 13:57:46 by Mika Schipp   ########   odam.nl         */
+/*   Created: 2025/03/09 13:49:41 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/09 13:51:38 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MEMORY_H
-# define MEMORY_H
-void	free_array(void **arr);
-size_t	ft_arrlen(void **arr);
-#endif
+typedef struct t_env_var
+{
+	char	*name;
+	char	*value;
+}			t_env_var;

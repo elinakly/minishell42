@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
-/*   Updated: 2025/03/06 19:13:46 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tokenize.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
+/*   Updated: 2025/03/09 15:10:37 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include "../include/memory.h"
 #include "../include/tokenize.h"
+#include "../lib/libft/libft.h"
 
 int		skip_spaces(char *str);
 int		skip_quoted(char *str);
@@ -82,30 +83,6 @@ size_t	count_tokens(char *entry)
 }
 
 /**
- * TODO: Use libft version instead (I copied it from there since I cba to dump libft in here yet)
- */
-size_t	ms_strlcpy(char *dst, const char *src, size_t size)
-{
-	size_t	srcsize;
-	size_t	ctr;
-
-	srcsize = 0;
-	ctr = 0;
-	while (src[srcsize])
-		srcsize++;
-	if (size > 0)
-	{
-		while (*src && ctr < size - 1)
-		{
-			*(dst++) = *(src++);
-			ctr++;
-		}
-		*dst = '\0';
-	}
-	return (srcsize);
-}
-
-/**
  * Creates a string for a single token at a given position in a string
  * @param str The string from which you want a token (can be offset)
  * @returns A malloc'd string with the token that was found or NULL on fail
@@ -120,17 +97,25 @@ char	*get_raw_token(char *str)
 	result = malloc(sizeof(char) * (size + 1));
 	if (!result)
 		return (NULL);
-	ms_strlcpy(result, str, size + 1);
+	ft_strlcpy(result, str, size + 1);
 	return (result);
 }
 
+/**
+ * Decides what token type a token is based on contents of the token
+ * as well as contexts such as whether a command is already found in
+ * the full string, and what the previous token type was
+ * TODO: Break it up for 25 line norm
+ * @param raw_token The token string
+ * @param last The previous token type, used for context
+ * @param cmdfound Whether a command token was found in the string already
+ * @returns A token type enum
+ */
 e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound)
 {
 	size_t	len;
 
-	len = 0;
-	while (raw_token[len]) //TODO: Probably just replace with ft_strlen xd
-		len++;
+	len = ft_strlen(raw_token);
 	if (raw_token[0] == '|')
 		return (*cmdfound = false, TT_PIPE);
 	if (raw_token[0] == '>')

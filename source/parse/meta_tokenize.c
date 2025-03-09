@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   meta_tokenize.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/06 19:12:42 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   meta_tokenize.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/09 15:14:02 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "tokenize.h"
+#include "../include/tokenize.h"
+#include "../lib/libft/libft.h"
 
-int	skip_quoted(char *str);
+int		skip_quoted(char *str);
 bool	is_escaped_char(char *str, size_t index);
 
 /**
@@ -73,29 +74,13 @@ bool	disrupts_token(e_metachar meta)
 }
 
 /**
- * TODO: Replace with libft function
- */
-bool	is_alpha(char c)
-{
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
-}
-
-/**
- * TODO: Replace with libft function use
- */
-bool	is_num(char c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-/**
  * Checks whether a character would be allowed in an env variable name
  * @param char c The character to check
  * @returns `true` if the character can be used in env vars, `false` if not
  */
 bool	is_env_var_char(char c)
 {
-	return (c == '_' || is_alpha(c) || is_num(c));
+	return (c == '_' || ft_isalpha(c) || ft_isdigit(c));
 }
 
 /**

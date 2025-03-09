@@ -6,16 +6,26 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/08 13:20:37 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 15:00:19 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/tokenize.h"
 #include "../include/memory.h"
+#include "../include/variable.h"
 #include "../lib/libft/libft.h"
 
 bool	is_meta(char *str, size_t index, e_metachar *meta);
+char	*get_value(char **envp, char *key); // From exec
 
+/**
+ * Updates a pointer to a metachar enum based on its previous state
+ * This is used to easily keep track of whether we are currently
+ * inside quotes!
+ * @param cmd A string holding presumably a minishell command
+ * @param index The index of the character to check
+ * @param current Pointer to current quote state to be updated
+ */
 void	set_quote_state(char *cmd, size_t index, e_metachar *current)
 {
 	e_metachar	meta;
@@ -32,6 +42,13 @@ void	set_quote_state(char *cmd, size_t index, e_metachar *current)
 	}
 }
 
+/**
+ * Returns whether a character is a valid character for an
+ * environment variable name
+ * @param c The character to check
+ * @param is_first Whether the character is the first in a variable name
+ * @returns `true` if character is valid, `false` if not
+ */
 bool	is_var_char(char c, bool is_first)
 {
 	return ((c >= '0' && c <= '9' && !is_first)
@@ -40,6 +57,12 @@ bool	is_var_char(char c, bool is_first)
 		|| c == '_');
 }
 
+/**
+ * Returns the size of an environment variable name (after the '$')
+ * @param cmd The string in which to check (usually a command)
+ * @param index The index at which to start checking
+ * @returns Length of an environment variable name
+ */
 size_t	skip_var_chars(char *cmd, size_t index)
 {
 	size_t	use_index;
@@ -50,6 +73,12 @@ size_t	skip_var_chars(char *cmd, size_t index)
 	return (use_index - index);
 }
 
+/**
+ * Calculates how many environment variables are in a command string
+ * Considers quotes, escapes, etc. in its calculation
+ * @param cmd The command string to count variables in
+ * @returns The amount of environment variables in the string
+ */
 size_t	get_var_count(char *cmd)
 {
 	size_t		index;
@@ -78,6 +107,15 @@ size_t	get_var_count(char *cmd)
 	return (res);
 }
 
+/**
+ * Returns the size of an environment variable inside a string
+ * similar to `skip_var_chars` except this includes all the
+ * necessary validation to ensure we are actually dealing with
+ * a variable
+ * @param cmd The command string to count variable length in
+ * @param i The index at which to start counting
+ * @returns Length of an environment variable name
+ */
 size_t	var_len(char *cmd, size_t i)
 {
 	size_t		quotfind;
@@ -97,6 +135,12 @@ size_t	var_len(char *cmd, size_t i)
 	return (skip_var_chars(cmd, ++i) + 1);
 }
 
+/**
+ * Gets all the environment variable names in a command string
+ * Allocates memory for each one and puts them in an array
+ * @param cmd The command string to find variable names in
+ * @returns a NULL-terminated array of strings containing variable names
+ */
 char	**get_var_names(char *cmd)
 {
 	char	**names;
@@ -123,4 +167,65 @@ char	**get_var_names(char *cmd)
 		strindex++;
 	}
 	return (names);
+}
+
+/**
+ * Uses environment variables and a variable name to get its value
+ * And then turn that into a malloced environment variable struct
+ * TODO: Get envp from some global big struct instead of passing it around
+ * @param envp Array containing all environment variables
+ * @param name The environment variable name
+ * @returns Malloced environment variable struct holding name and value strings
+ */
+t_env_var *make_var(char **envp, char *name)
+{
+	t_env_var	*var;
+	char		*value;
+
+	if (!name)
+		return (NULL);
+	var = malloc(sizeof(t_env_var *));
+	if (!var)
+		return (NULL);
+	var->name = name;
+	value = get_value(envp, name);
+	if (!value)
+		var->value = ft_strdup("");
+	else
+		var->value = ft_strdup(value);
+	if (!var->value)
+		return (free(var), NULL); // TODO: Make sure we really don't want to free name here (but probably not)
+	return (var);
+}
+
+/**
+ * Creates an array of environment variable structs based on the
+ * given environment variables and variable names
+ * TODO: See the commented line inside the function for info on TODO
+ * @param envp Array containing all environment variables
+ * @param names Array containing variable names that we want to create
+ * @returns An array of environment variable structs
+ */
+t_env_var	**get_command_vars(char **envp, char **names)
+{
+	t_env_var	**vars;
+	size_t		amount;
+	size_t		index;
+
+	amount = ft_arrlen((void **)names);
+	index = 0;
+	if (!names || !amount)
+		return (NULL);
+	vars = malloc(sizeof(t_env_var *) * (amount + 1));
+	if (!vars)
+		return (NULL);
+	vars[amount] = NULL;
+	while (index < amount)
+	{
+		vars[index] = make_var(envp, names[index]);
+		if (!vars[index])
+			return (NULL); // TODO: Update free_arr function to take a del function pointer and call it here to free! CURRENTLY LEAKS!
+		index++;
+	}
+	return (vars);
 }
