@@ -10,6 +10,7 @@ CFLAGS = -g
 LDFLAGS = -lreadline
 
 ## SRCS = $(shell find $(SRC_DIR) -type f -name "*.c" ! -path "$(SRC_DIR)/exec/builtins/*")
+#TODO: Probably hardcode all filenames once we're nearly done with project
 SRCS = $(shell find $(SRC_DIR) -type f -name "*.c")
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJS_DIR)/%.o)

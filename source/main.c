@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/09 14:30:44 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 16:48:32 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ size_t			get_var_count(char *cmd);
 char			**get_var_names(char *cmd);
 int				is_builtin(char *command);
 t_env_var		**get_command_vars(char **envp, char **names);
+size_t			calc_expanded_len(char *cmd, t_env_var **vars);
 
 const char *token_type_to_string(e_token_type type)
 {
@@ -65,6 +66,7 @@ void test_parse_output(char *test, char** envp)
 				variables[varindex]->value);
 		varindex++;
 	}
+	printf("Expanded length would be: %ld\n", calc_expanded_len(test, variables));
 	while (tokens[tokenindex])
 	{
 		e_token_type tokentype = get_token_type(tokens[tokenindex], lasttype, &cmdfound);

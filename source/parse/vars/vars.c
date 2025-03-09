@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/09 15:00:19 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 17:03:06 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ t_env_var	**get_command_vars(char **envp, char **names)
 
 	amount = ft_arrlen((void **)names);
 	index = 0;
-	if (!names || !amount)
+	if (!names)
 		return (NULL);
 	vars = malloc(sizeof(t_env_var *) * (amount + 1));
 	if (!vars)
@@ -228,4 +228,33 @@ t_env_var	**get_command_vars(char **envp, char **names)
 		index++;
 	}
 	return (vars);
+}
+
+/**
+ * Calculates what the new command string size would be after
+ * expanding all the variables inside of it
+ * @param cmd The command string
+ * @param vars The array of environment variables to expand
+ * @returns The expanded string's length
+ */
+size_t calc_expanded_len(char *cmd, t_env_var **vars)
+{
+	size_t	orig;
+	size_t	names_len;
+	size_t	values_len;
+	size_t	index;
+
+	orig = ft_strlen(cmd);
+	names_len = 0;
+	values_len = 0;
+	index = 0;
+	if (!cmd || !vars)
+		return (0);
+	while (vars[index])
+	{
+		names_len += ft_strlen(vars[index]->name) + 1;
+		values_len += ft_strlen(vars[index]->value);
+		index++;
+	}
+	return (orig - names_len + values_len);
 }
