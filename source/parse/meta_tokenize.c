@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/09 15:14:02 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 17:17:25 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,4 +142,18 @@ size_t	skip_meta(char *str)
 	if (*str == MC_REDIR_IN)
 		return (skip_redir_in(str));
 	return (0);
+}
+
+size_t	count_metas(char *str)
+{
+	size_t	count;
+	size_t	index;
+
+	count = 0;
+	index = 0;
+	if (!str)
+		return (0);
+	while (str[index])
+		count += is_meta(str, index++, NULL);
+	return (count);
 }

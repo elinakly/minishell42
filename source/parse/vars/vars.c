@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/09 17:03:06 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 17:19:34 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 bool	is_meta(char *str, size_t index, e_metachar *meta);
 char	*get_value(char **envp, char *key); // From exec
+size_t	count_metas(char *str);
 
 /**
  * Updates a pointer to a metachar enum based on its previous state
@@ -233,6 +234,9 @@ t_env_var	**get_command_vars(char **envp, char **names)
 /**
  * Calculates what the new command string size would be after
  * expanding all the variables inside of it
+ * 
+ * Considers the need for backslashes in front of meta-
+ * characters inside of variable values
  * @param cmd The command string
  * @param vars The array of environment variables to expand
  * @returns The expanded string's length
@@ -253,7 +257,8 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
 	while (vars[index])
 	{
 		names_len += ft_strlen(vars[index]->name) + 1;
-		values_len += ft_strlen(vars[index]->value);
+		values_len += ft_strlen(vars[index]->value)
+			+ count_metas(vars[index]->value);
 		index++;
 	}
 	return (orig - names_len + values_len);
