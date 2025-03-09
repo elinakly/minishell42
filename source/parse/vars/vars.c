@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/09 17:25:57 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 19:53:07 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,8 @@ char	**get_var_names(char *cmd)
 			names[index] = malloc(sizeof(char) * var_len(cmd, strindex));
 			if (!names[index])
 				return (free_array((void **)names), NULL);
-			ft_strlcpy(names[index++], cmd + strindex + 1, var_len(cmd, strindex));
+			ft_strlcpy(names[index++], cmd + strindex + 1,
+				var_len(cmd, strindex));
 		}
 		strindex++;
 	}
@@ -266,7 +267,11 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
 
 char	*get_expanded_cmd(char *cmd, t_env_var **vars)
 {
+	char	res;
+	size_t	index;
 
 	if (!cmd || !vars)
 		return (NULL);
+	res = malloc(sizeof(char) * (calc_expanded_len(cmd, vars) + 1));
+	
 }
