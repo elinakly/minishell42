@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/09 15:10:37 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 23:34:41 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ t_token	*make_token(char *raw_token, e_token_type last)
 
 /**
  * Takes a full minishell command and tokenizes it (splitting it up)
+ * //TODO: Space at the end turns into an empty token, must prevent
  * @param entry The string to tokenize
  * @returns An array of tokens (strings) or NULL if fail
  */
@@ -180,7 +181,7 @@ char	**tokenize(char *entry, size_t *tokencount)
 	{
 		result[index] = get_raw_token(&entry[str_index]);
 		if (!result[index])
-			return (free_array((void **)result), NULL);
+			return (free_array((void **)result, NULL), NULL);
 		str_index += token_size(&entry[str_index], true);
 		index++;
 	}

@@ -6,12 +6,13 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/09 15:02:12 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 23:56:27 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <../../include/variable.h>
 
 /**
  * TODO: Rename the folder since this probably won't be exclusively memory stuff
@@ -20,9 +21,12 @@
 /**
  * Frees every element in an array that ends with a NULL pointer and then
  * frees the actual aray pointer itself. Does NOT set it to NULL.
+ * Also takes an optional function pointer that it will call to delete
+ * whatever is inside of the array elements
  * @param arr The array to free (cast any array to void**)
+ * @param del The function to call to delete what's inside elements (nullable)
  */
-void	free_array(void **arr)
+void	free_array(void **arr, void (*del)(void *))
 {
 	int	i;
 
@@ -31,10 +35,26 @@ void	free_array(void **arr)
 		return ;
 	while (arr[i] != NULL)
 	{
+		if (del)
+			del(arr[i]);
 		free(arr[i]);
 		i++;
 	}
 	free(arr);
+}
+
+/**
+ * Deletes the name and value strings inside of an environment variable struct
+ * @param var The variable struct (cast to a void pointer) to target
+ */
+void	clear_env_var(void *var)
+{
+	t_env_var *realvar = (t_env_var *)var;
+	if (var)
+	{
+		free(realvar->name);
+		free(realvar->value);
+	}
 }
 
 /**

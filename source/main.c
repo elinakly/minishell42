@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/09 16:48:32 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 23:42:28 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound);
 size_t			get_var_count(char *cmd);
 char			**get_var_names(char *cmd);
 int				is_builtin(char *command);
-t_env_var		**get_command_vars(char **envp, char **names);
+t_env_var		**get_command_vars(char **names);
 size_t			calc_expanded_len(char *cmd, t_env_var **vars);
+char			*get_expanded_cmd(char *cmd, t_env_var **vars);
 
 const char *token_type_to_string(e_token_type type)
 {
@@ -56,17 +57,11 @@ void test_parse_output(char *test, char** envp)
 	e_token_type lasttype = TT_UNKNOWN;
 	bool cmdfound = false;
 
-	char **tokens = tokenize(test, &amount);
-	tokenindex = 0;
 	char **varnames = get_var_names(test);
-	t_env_var **variables = get_command_vars(envp, varnames);
-	while (variables[varindex])
-	{
-		printf("[VAR: %s -> \"%s\"]\n", variables[varindex]->name,
-				variables[varindex]->value);
-		varindex++;
-	}
-	printf("Expanded length would be: %ld\n", calc_expanded_len(test, variables));
+	t_env_var **variables = get_command_vars(varnames);
+	char *expanded = get_expanded_cmd(test, variables);
+	char **tokens = tokenize(expanded, &amount);
+	tokenindex = 0;
 	while (tokens[tokenindex])
 	{
 		e_token_type tokentype = get_token_type(tokens[tokenindex], lasttype, &cmdfound);
@@ -74,8 +69,10 @@ void test_parse_output(char *test, char** envp)
 		printf("%-16s [%s]\n", token_type_to_string(tokentype), tokens[tokenindex]);
 		tokenindex++;
 	}
-	free_array((void **)tokens);
-	free_array((void **)varnames);
+	free(expanded);
+	free_array((void **)tokens, NULL);
+	free_array((void **)varnames, NULL);
+	free_array((void **)variables, &clear_env_var);
 }
 
 int	main(int argc, char **argv, char **envp)

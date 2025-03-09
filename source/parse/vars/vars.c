@@ -6,17 +6,17 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/09 19:53:07 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 23:53:35 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "../include/tokenize.h"
 #include "../include/memory.h"
 #include "../include/variable.h"
 #include "../lib/libft/libft.h"
 
 bool	is_meta(char *str, size_t index, e_metachar *meta);
-char	*get_value(char **envp, char *key); // From exec
 size_t	count_metas(char *str);
 
 /**
@@ -162,7 +162,7 @@ char	**get_var_names(char *cmd)
 		{
 			names[index] = malloc(sizeof(char) * var_len(cmd, strindex));
 			if (!names[index])
-				return (free_array((void **)names), NULL);
+				return (free_array((void **)names, NULL), NULL);
 			ft_strlcpy(names[index++], cmd + strindex + 1,
 				var_len(cmd, strindex));
 		}
@@ -179,22 +179,22 @@ char	**get_var_names(char *cmd)
  * @param name The environment variable name
  * @returns Malloced environment variable struct holding name and value strings
  */
-t_env_var *make_var(char **envp, char *name)
+t_env_var *make_var(char *name)
 {
 	t_env_var	*var;
 	char		*value;
 
 	if (!name)
 		return (NULL);
-	var = malloc(sizeof(t_env_var *));
+	var = malloc(sizeof(t_env_var));
 	if (!var)
 		return (NULL);
-	var->name = name;
-	value = get_value(envp, name);
+	var->name = ft_strdup(name);
+	value = getenv(name);
 	if (!value)
 		var->value = ft_strdup("");
 	else
-		var->value = ft_strdup(value + 1); // TODO: Remove +1 when get_value doesnt include = anymore
+		var->value = ft_strdup(value);
 	if (!var->value)
 		return (free(var), NULL); // TODO: Make sure we really don't want to free name here (but probably not)
 	return (var);
@@ -203,12 +203,14 @@ t_env_var *make_var(char **envp, char *name)
 /**
  * Creates an array of environment variable structs based on the
  * given environment variables and variable names
+ * 
+ * NOTE: It makes copies of variable names and values, so those must be freed!
  * TODO: See the commented line inside the function for info on TODO
  * @param envp Array containing all environment variables
  * @param names Array containing variable names that we want to create
  * @returns An array of environment variable structs
  */
-t_env_var	**get_command_vars(char **envp, char **names)
+t_env_var	**get_command_vars(char **names)
 {
 	t_env_var	**vars;
 	size_t		amount;
@@ -224,7 +226,7 @@ t_env_var	**get_command_vars(char **envp, char **names)
 	vars[amount] = NULL;
 	while (index < amount)
 	{
-		vars[index] = make_var(envp, names[index]);
+		vars[index] = make_var(names[index]);
 		if (!vars[index])
 			return (NULL); // TODO: Update free_arr function to take a del function pointer and call it here to free! CURRENTLY LEAKS!
 		index++;
@@ -265,13 +267,96 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
 	return (orig - names_len + values_len);
 }
 
+/**
+ * Turns an environment variable value into its escaped version
+ * It will allocate enough memory to add an escape character
+ * in front of every meta character
+ * @param value The environment variable value
+ * @returns An escaped version of `value`
+ */
+char *get_escaped_value(char *value)
+{
+	size_t	size;
+	size_t	resindex;
+	size_t	valueindex;
+	char	*res;
+
+	if (!value)
+		return (NULL);
+	resindex = 0;
+	valueindex = 0;
+	size = ft_strlen(value) + count_metas(value);
+	res = malloc(sizeof(char) * (size + 1));
+	if (!res)
+		return (NULL);
+	while (value[valueindex])
+	{
+		if (is_meta(value, resindex, NULL))
+			res[resindex++] = '\\';
+		res[resindex++] = value[valueindex++];
+	}
+	res[resindex] = '\0';
+	return (res);
+}
+/**
+ * Inserts a variable value into a command string
+ * @param res The string to which the value should be written
+ * @param var The environment variable struct to use
+ * @param index The index at which the variable should be inserted
+ */
+bool	insert_var(char *res, t_env_var *var, size_t *index)
+{
+	char	*temp;
+	size_t	templen;
+
+	if (!res || !var || !var->name || !var->value || !index)
+		return (false);
+	temp = get_escaped_value(var->value);
+	if (!temp)
+		return (false);
+	templen = ft_strlen(temp);
+	ft_strlcat(res, temp, ft_strlen(res) + templen + 1);
+	*index += templen;
+	free(temp);
+	return (true);
+}
+
+/**
+ * Turns a raw command string into one which has all its
+ * environment variables expanded
+ * TODO: Break up and norminette fix
+ * @param cmd The raw command string to create an expanded version of
+ * @param vars The variables to find and expand
+ */
 char	*get_expanded_cmd(char *cmd, t_env_var **vars)
 {
-	char	res;
-	size_t	index;
+	char		*res;
+	struct		indices;
+	size_t		resindex;
+	size_t		cmdindex;
+	size_t		varindex;
+	e_metachar	quot;
+	e_metachar	meta;
 
-	if (!cmd || !vars)
+	quot = MC_NONE;
+	resindex = 0;
+	cmdindex = 0;
+	varindex = 0;
+	res = ft_calloc(calc_expanded_len(cmd, vars) + 1, sizeof(char));
+	if (!res)
 		return (NULL);
-	res = malloc(sizeof(char) * (calc_expanded_len(cmd, vars) + 1));
-	
+	while (cmd[cmdindex])
+	{
+		set_quote_state(cmd, cmdindex, &quot);
+		if (is_meta(cmd, cmdindex, &meta) && meta == MC_VARIABLE && quot != MC_SQUOTE)
+		{
+			if (!insert_var(res, vars[varindex], &resindex))
+				return (free(res), NULL);
+			cmdindex += ft_strlen(vars[varindex++]->name) + 1;
+		}
+		else
+			res[resindex++] = cmd[cmdindex++];
+	}
+	res[resindex] = '\0';
+	return (res);
 }
