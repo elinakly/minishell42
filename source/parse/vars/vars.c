@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/09 17:19:34 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/09 17:25:57 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ t_env_var *make_var(char **envp, char *name)
 	if (!value)
 		var->value = ft_strdup("");
 	else
-		var->value = ft_strdup(value);
+		var->value = ft_strdup(value + 1); // TODO: Remove +1 when get_value doesnt include = anymore
 	if (!var->value)
 		return (free(var), NULL); // TODO: Make sure we really don't want to free name here (but probably not)
 	return (var);
@@ -262,4 +262,11 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
 		index++;
 	}
 	return (orig - names_len + values_len);
+}
+
+char	*get_expanded_cmd(char *cmd, t_env_var **vars)
+{
+
+	if (!cmd || !vars)
+		return (NULL);
 }
