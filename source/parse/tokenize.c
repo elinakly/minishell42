@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/11 23:31:08 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 00:03:29 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ size_t	token_size(char *str, bool include_spaces)
 			index += skip_meta(&str[index]);
 		if (disrupts_token(meta) || !str[index] || str[index] == ' ')
 			break;
-		while (str[index] && str[index] != ' ' && !is_meta(str, index, &meta))
+		while (str[index] && !is_meta(str, index, &meta))
 			index++;
 		if (!str[index + skip_spaces(str + index)])
 		{

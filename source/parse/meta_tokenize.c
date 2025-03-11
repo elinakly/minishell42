@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/09 17:22:23 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 00:10:11 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
 		|| c == MC_REDIR_IN
 		|| c == MC_REDIR_OUT
 		|| c == MC_SQUOTE
-		|| c == MC_VARIABLE)
+		|| c == MC_VARIABLE
+		|| c == MC_ARG_SEPARATE)
 		&& !is_escaped_char(str, index);
 	if (meta && result)
 		*meta = (e_metachar)c;
@@ -129,7 +130,7 @@ size_t	skip_meta(char *str)
 {
 	if (!str)
 		return (0);
-	if (*str == MC_PIPE)
+	if (*str == MC_PIPE || *str == MC_ARG_SEPARATE)
 		return (1);
 	if (*str == MC_ESCAPE)
 		return (2);

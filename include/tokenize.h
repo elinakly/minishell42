@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenize.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 14:15:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/02/26 17:03:07 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tokenize.h                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/12 00:01:20 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ typedef enum e_metachar
 	MC_REDIR_OUT	= '>',
 	MC_REDIR_IN		= '<',
 	MC_ESCAPE		= '\\',
-	MC_VARIABLE		= '$'
+	MC_VARIABLE		= '$',
+	MC_ARG_SEPARATE	= ' '
 }	e_metachar;
 
 typedef enum e_token_type
