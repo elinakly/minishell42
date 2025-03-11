@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/11 23:29:18 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/11 23:31:08 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ bool	disrupts_token(e_metachar meta);
 
 /**
  * Counts how big a single token at a given position in a string is
+ * TODO: Calling skip_spaces 3 times to prevent trailing empty token is not efficient, look into improving
  * @param str The string in which the token must be found (can be offset)
  * @param include_spaces Whether to include skipped spaces in the size
  * @returns The size of the found token
