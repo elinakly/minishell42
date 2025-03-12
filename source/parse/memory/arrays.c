@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/09 23:56:27 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 04:23:12 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ void	free_array(void **arr, void (*del)(void *))
 		i++;
 	}
 	free(arr);
+}
+
+void	clear_part_var(void *var)
+{
+	t_part_var *realvar = (t_part_var *)var;
+	if (var)
+		free(realvar->name);
 }
 
 /**

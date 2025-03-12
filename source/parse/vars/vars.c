@@ -6,18 +6,19 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/12 02:11:29 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 04:32:29 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "../include/variable.h"
 #include "../include/tokenize.h"
 #include "../include/memory.h"
-#include "../include/variable.h"
 #include "../lib/libft/libft.h"
 
 bool	is_meta(char *str, size_t index, e_metachar *meta);
-size_t	count_metas(char *str);
+size_t	count_esc_metas(char *str);
+bool	can_escape(char c, e_metachar quot);
 
 /**
  * Updates a pointer to a metachar enum based on its previous state
@@ -144,36 +145,38 @@ size_t	var_len(char *cmd, size_t i)
 }
 
 /**
- * Gets all the environment variable names in a command string
- * Allocates memory for each one and puts them in an array
+ * Gets all the environment variable names and quote types in a command
+ * Requires you to have an array allocated already that you 
+ * pass into this function (names arg)
  * @param cmd The command string to find variable names in
- * @returns a NULL-terminated array of strings containing variable names
+ * @param varcount The amount of variables the array will have
+ * @param names The array in which to put all the variable data
+ * @returns a NULL-terminated array of partial env vars (name + quote type)
  */
-char	**get_var_names(char *cmd)
+t_part_var	**get_var_names(char *cmd, size_t varcount, t_part_var **names)
 {
-	char	**names;
-	size_t	varcount;
-	size_t	index;
-	size_t	strindex;
+	size_t		i;
+	size_t		str_i;
+	e_metachar	quot;
 
-	index = 0;
-	strindex = 0;
-	varcount = get_var_count(cmd);
-	names = malloc(sizeof(char *) * (varcount + 1));
-	if (!names)
-		return (NULL);
-	names[varcount] = NULL;
-	while (cmd[strindex] && index < varcount)
+	i = 0;
+	str_i = 0;
+	quot = MC_NONE;
+	while (cmd[str_i] && i < varcount)
 	{
-		if (cmd[strindex] == '$' && var_len(cmd, strindex))
+		set_quote_state(cmd, str_i, &quot);
+		if (cmd[str_i] == '$' && var_len(cmd, str_i))
 		{
-			names[index] = malloc(sizeof(char) * var_len(cmd, strindex));
-			if (!names[index])
-				return (free_array((void **)names, NULL), NULL);
-			ft_strlcpy(names[index++], cmd + strindex + 1,
-				var_len(cmd, strindex));
+			names[i] = malloc(sizeof(t_part_var));
+			if (!names[i])
+				return (free_array((void **)names, &clear_part_var), NULL);
+			names[i]->name = malloc(sizeof(char) * var_len(cmd, str_i));
+			if (!names[i]->name)
+				return (free_array((void **)names, &clear_part_var), NULL);
+			ft_strlcpy(names[i]->name, cmd + str_i + 1, var_len(cmd, str_i));
+			names[i++]->in_quote_type = quot;
 		}
-		strindex++;
+		str_i++;
 	}
 	return (names);
 }
@@ -181,30 +184,30 @@ char	**get_var_names(char *cmd)
 /**
  * Uses environment variables and a variable name to get its value
  * And then turn that into a malloced environment variable struct
- * TODO: Get envp from some global big struct instead of passing it around
  * @param envp Array containing all environment variables
- * @param name The environment variable name
+ * @param part Partial environment variable (name + quote type)
  * @returns Malloced environment variable struct holding name and value strings
  */
-t_env_var *make_var(char *name)
+t_env_var *make_var(t_part_var *part)
 {
 	t_env_var	*var;
 	char		*value;
 
-	if (!name)
+	if (!part)
 		return (NULL);
 	var = malloc(sizeof(t_env_var));
 	if (!var)
 		return (NULL);
-	var->name = ft_strdup(name);
-	value = getenv(name);
+	var->name = ft_strdup(part->name);
+	var->quote_type = part->in_quote_type;
+	value = getenv(part->name);
 	if (!value)
 		var->value = ft_strdup("");
 	else
 		var->value = ft_strdup(value);
 	if (!var->value)
 		return (free(var), NULL); // TODO: Make sure we really don't want to free name here (but probably not)
-	return (var);
+		return (var);
 }
 
 /**
@@ -212,12 +215,12 @@ t_env_var *make_var(char *name)
  * given environment variables and variable names
  * 
  * NOTE: It makes copies of variable names and values, so those must be freed!
- * TODO: See the commented line inside the function for info on TODO
+ * TODO: Make sure that freeing **names here makes sense
  * @param envp Array containing all environment variables
- * @param names Array containing variable names that we want to create
+ * @param names Array containing partial env vars (name + quote type)
  * @returns An array of environment variable structs
  */
-t_env_var	**get_command_vars(char **names)
+t_env_var	**get_command_vars(t_part_var **names)
 {
 	t_env_var	**vars;
 	size_t		amount;
@@ -229,13 +232,14 @@ t_env_var	**get_command_vars(char **names)
 		return (NULL);
 	vars = malloc(sizeof(t_env_var *) * (amount + 1));
 	if (!vars)
-		return (NULL);
+		return (free_array((void **)names, &clear_part_var), NULL);
 	vars[amount] = NULL;
 	while (index < amount)
 	{
 		vars[index] = make_var(names[index]);
 		if (!vars[index])
-			return (NULL); // TODO: Update free_arr function to take a del function pointer and call it here to free! CURRENTLY LEAKS!
+			return (free_array((void **)vars, &clear_env_var),
+					free_array((void **)names, &clear_part_var), NULL);
 		index++;
 	}
 	return (vars);
@@ -268,7 +272,7 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
 	{
 		names_len += ft_strlen(vars[index]->name) + 1;
 		values_len += ft_strlen(vars[index]->value)
-			+ count_metas(vars[index]->value);
+			+ count_esc_metas(vars[index]->value);
 		index++;
 	}
 	return (orig - names_len + values_len);
@@ -278,30 +282,30 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
  * Turns an environment variable value into its escaped version
  * It will allocate enough memory to add an escape character
  * in front of every meta character
- * //TODO: IMPORTANT! Only add escapes in front of actually escapable characters (must track quote state)
  * @param value The environment variable value
+ * @param quot The type of quote this variable was inside of
  * @returns An escaped version of `value`
  */
-char *get_escaped_value(char *value)
+char *get_escaped_value(char *value, e_metachar quot)
 {
 	size_t	size;
 	size_t	resindex;
-	size_t	valueindex;
+	size_t	v_index;
 	char	*res;
 
 	if (!value)
 		return (NULL);
 	resindex = 0;
-	valueindex = 0;
-	size = ft_strlen(value) + count_metas(value);
+	v_index = 0;
+	size = ft_strlen(value) + count_esc_metas(value);
 	res = malloc(sizeof(char) * (size + 1));
 	if (!res)
 		return (NULL);
-	while (value[valueindex])
+	while (value[v_index])
 	{
-		if (is_meta(value, resindex, NULL))
+		if (is_meta(value, v_index, NULL) && can_escape(value[v_index], quot))
 			res[resindex++] = '\\';
-		res[resindex++] = value[valueindex++];
+		res[resindex++] = value[v_index++];
 	}
 	res[resindex] = '\0';
 	return (res);
@@ -319,7 +323,7 @@ bool	insert_var(char *res, t_env_var *var, size_t *index)
 
 	if (!res || !var || !var->name || !var->value || !index)
 		return (false);
-	temp = get_escaped_value(var->value);
+	temp = get_escaped_value(var->value, var->quote_type);
 	if (!temp)
 		return (false);
 	templen = ft_strlen(temp);
@@ -332,39 +336,34 @@ bool	insert_var(char *res, t_env_var *var, size_t *index)
 /**
  * Turns a raw command string into one which has all its
  * environment variables expanded
- * TODO: Break up and norminette fix
  * @param cmd The raw command string to create an expanded version of
  * @param vars The variables to find and expand
  */
 char	*get_expanded_cmd(char *cmd, t_env_var **vars)
 {
 	char		*res;
-	struct		indices;
-	size_t		resindex;
-	size_t		cmdindex;
-	size_t		varindex;
+	t_triple_index i;
 	e_metachar	quot;
 	e_metachar	meta;
 
 	quot = MC_NONE;
-	resindex = 0;
-	cmdindex = 0;
-	varindex = 0;
+	i = (t_triple_index){0, 0, 0};
 	res = ft_calloc(calc_expanded_len(cmd, vars) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
-	while (cmd[cmdindex])
+	while (cmd[i.cmd])
 	{
-		set_quote_state(cmd, cmdindex, &quot);
-		if (is_meta(cmd, cmdindex, &meta) && meta == MC_VARIABLE && quot != MC_SQUOTE)
+		set_quote_state(cmd, i.cmd, &quot);
+		if (is_meta(cmd, i.cmd, &meta) && meta == MC_VARIABLE
+			&& quot != MC_SQUOTE)
 		{
-			if (!insert_var(res, vars[varindex], &resindex))
+			if (!insert_var(res, vars[i.var], &i.res))
 				return (free(res), NULL);
-			cmdindex += ft_strlen(vars[varindex++]->name) + 1;
+			i.cmd += ft_strlen(vars[i.var++]->name) + 1;
 		}
 		else
-			res[resindex++] = cmd[cmdindex++];
+			res[i.res++] = cmd[i.cmd++];
 	}
-	res[resindex] = '\0';
+	res[i.res] = '\0';
 	return (res);
 }

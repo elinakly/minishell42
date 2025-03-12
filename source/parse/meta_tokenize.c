@@ -6,18 +6,21 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/12 00:10:11 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 04:16:13 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "../include/variable.h"
 #include "../include/tokenize.h"
 #include "../lib/libft/libft.h"
 
 int		skip_quoted(char *str);
 bool	is_escaped_char(char *str, size_t index);
+bool	can_escape(char c, e_metachar quot);
+bool	set_quote_state(char *cmd, size_t index, e_metachar *current);
 
 /**
  * Checks whether the character at a given index in a string is
@@ -146,20 +149,27 @@ size_t	skip_meta(char *str)
 }
 
 /**
- * Counts the amount of meta characters in a string
+ * Counts the amount of escapable meta characters in a string
+ * This differs based on whether the character is in quotes or not
  * @param str The string to check
  * @returns The amount of meta characters in str
  */
-size_t	count_metas(char *str)
+size_t	count_esc_metas(char *str)
 {
-	size_t	count;
-	size_t	index;
+	size_t		count;
+	size_t		index;
+	e_metachar	quot;
 
 	count = 0;
 	index = 0;
+	quot = MC_NONE;
 	if (!str)
 		return (0);
 	while (str[index])
-		count += is_meta(str, index++, NULL);
+	{
+		set_quote_state(str, index, &quot);
+		count += is_meta(str, index, NULL) && can_escape(str[index], quot);
+		index++;
+	}
 	return (count);
 }

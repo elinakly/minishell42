@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/12 02:27:16 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 04:33:35 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "variable.h"
 #include "../include/memory.h"
 #include "../include/tokenize.h"
 #include "../lib/libft/libft.h"
@@ -167,7 +168,6 @@ t_token	*make_token(char *raw_token, e_token_type last)
 
 /**
  * Takes a full minishell command and tokenizes it (splitting it up)
- * //TODO: Space at the end turns into an empty token, must prevent
  * @param entry The string to tokenize
  * @returns An array of tokens (strings) or NULL if fail
  */

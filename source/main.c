@@ -6,16 +6,16 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/12 01:07:59 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 04:34:04 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "../include/variable.h"
 #include "../include/tokenize.h"
 #include "../include/memory.h"
 #include "../include/builtins.h"
-#include "../include/variable.h"
 
 char			*ft_readline(char **envp);
 int				skip_spaces(char **str);
@@ -25,11 +25,12 @@ size_t			count_tokens(char *entry);
 char			**tokenize(char *entry, size_t *tokencount);
 e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound);
 size_t			get_var_count(char *cmd);
-char			**get_var_names(char *cmd);
+t_part_var		**get_var_names(char *cmd, size_t varcount, t_part_var **names);
 int				is_builtin(char *command);
-t_env_var		**get_command_vars(char **names);
+t_env_var		**get_command_vars(t_part_var **names);
 size_t			calc_expanded_len(char *cmd, t_env_var **vars);
-char			*get_expanded_cmd(char *cmd, t_env_var **vars);
+char			*get_expanded_cmd(char *cmd, t_env_var **vars,
+									size_t resindex, size_t cmdindex);
 char			*sanitize_token(char *token);
 
 const char *token_type_to_string(e_token_type type)
@@ -58,9 +59,16 @@ void test_parse_output(char *test, char** envp)
 	e_token_type lasttype = TT_UNKNOWN;
 	bool cmdfound = false;
 
-	char **varnames = get_var_names(test);
+	size_t varcount = get_var_count(test);
+	t_part_var **varnames = malloc(sizeof(t_part_var *) * (varcount + 1));
+	if (!varnames)
+		return; // ehh handle better later
+	get_var_names(test, varcount, varnames);
+	varnames[varcount] = NULL;
 	t_env_var **variables = get_command_vars(varnames);
-	char *expanded = get_expanded_cmd(test, variables);
+	if (!variables)
+		return;
+	char *expanded = get_expanded_cmd(test, variables, 0, 0);
 	char **tokens = tokenize(expanded, &amount);
 	tokenindex = 0;
 	while (tokens[tokenindex])
@@ -73,7 +81,7 @@ void test_parse_output(char *test, char** envp)
 	}
 	free(expanded);
 	free_array((void **)tokens, NULL);
-	free_array((void **)varnames, NULL);
+	free_array((void **)varnames, &clear_part_var);
 	free_array((void **)variables, &clear_env_var);
 }
 

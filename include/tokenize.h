@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/12 00:01:20 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 03:25:48 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
  * quotes etc, but that is for another day
  * TODO: IFNDEF!!!!!!!!!!!
  */
-
-#include <stdlib.h>
-#include <stdbool.h>
+#ifndef TOKENIZE_H
+# define TOKENIZE_H
+# include <stdlib.h>
+# include <stdbool.h>
+# include "variable.h"
 
 typedef enum e_quote_type
 {
@@ -62,10 +64,17 @@ typedef enum e_redir_type
 	RE_HEREDOC
 }	e_redir_type;
 
+typedef struct t_part_var
+{
+	char		*name;
+	e_metachar	in_quote_type;
+}				t_part_var;
+
 typedef struct t_token
 {
 	e_token_type	type;
 	char			*value;
 	bool			has_vars;
-	char			**var_names;
+	t_part_var			**var_names;
 }	t_token;
+#endif
