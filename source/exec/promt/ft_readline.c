@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/11 18:57:04 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:11:50 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,10 @@ char	*ft_readline(char **envp)
 		i++;
 	}
 	line = readline(prompt);
+	if (line == 0)
+	{
+		printf("exit\n");
+		exit(0);
+	}
 	return (line);
 }

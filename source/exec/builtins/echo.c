@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 17:03:23 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/07 17:04:19 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:33:24 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,18 @@ int	echo(char **args)
 
 	status = 0;
 	if (!args[1])
-		return (ft_putchar_fd('\n', 1));
+		return (ft_putchar_fd_echo('\n', 1));
 	flag = check_flag(args, &i);
 	while (args[i])
 	{
-		status = ft_putstr_fd(args[i], 1);
+		status = ft_putstr_fd_echo(args[i], 1);
 		if (args[i + 1])
-			status = ft_putchar_fd(' ', 1);
+			status = ft_putchar_fd_echo(' ', 1);
 		if (status != 0)
 			return (status);
 		i++;
 	}
 	if (flag == 0)
-		return (ft_putchar_fd('\n', 1));
+		return (ft_putchar_fd_echo('\n', 1));
 	return (0);
 }

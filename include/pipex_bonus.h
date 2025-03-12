@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:50:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/06 19:10:36 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/12 18:45:06 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ void		execute(char *com, char **envp);
 int			error(int status);
 void		create_pipes(int num_cmds, int **pipes);
 void		free_arr(char **arr);
+void		close_fd(t_command commands, int **pipes);
 
 #endif

@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/07 16:35:59 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 19:41:14 by eklymova         ###   ########.fr       */
+/*   Created: 2025/03/12 16:51:58 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/12 19:25:03 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "execute.h"
+#include <stdlib.h>
 
-# include <unistd.h>
-# include "../lib/libft/libft.h"
+void signal_handler(int sig)
+{
+	(void)sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
-int		echo(char **args);
-int		env(char **envp);
-int		is_builtin(char *cmd, char **args);
 
-#endif
+void set_signal()
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+}

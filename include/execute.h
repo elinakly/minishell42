@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/07 16:35:59 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 19:41:14 by eklymova         ###   ########.fr       */
+/*   Created: 2025/03/12 18:16:34 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/12 18:39:41 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef EXECUTE_H
+# define EXECUTE_H
 
+# define _GNU_SOURCE
+# include <signal.h>
 # include <unistd.h>
-# include "../lib/libft/libft.h"
+#include <readline/readline.h>
 
-int		echo(char **args);
-int		env(char **envp);
-int		is_builtin(char *cmd, char **args);
+void set_signal();
 
 #endif
+

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/12 04:34:04 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/12 19:47:16 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "../include/tokenize.h"
 #include "../include/memory.h"
 #include "../include/builtins.h"
+#include "../include/execute.h"
+#include <readline/history.h>
 
 char			*ft_readline(char **envp);
 int				skip_spaces(char **str);
@@ -26,7 +28,6 @@ char			**tokenize(char *entry, size_t *tokencount);
 e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound);
 size_t			get_var_count(char *cmd);
 t_part_var		**get_var_names(char *cmd, size_t varcount, t_part_var **names);
-int				is_builtin(char *command);
 t_env_var		**get_command_vars(t_part_var **names);
 size_t			calc_expanded_len(char *cmd, t_env_var **vars);
 char			*get_expanded_cmd(char *cmd, t_env_var **vars,
@@ -70,12 +71,17 @@ void test_parse_output(char *test, char** envp)
 		return;
 	char *expanded = get_expanded_cmd(test, variables, 0, 0);
 	char **tokens = tokenize(expanded, &amount);
-	tokenindex = 0;
+	// tokenindex = 0;
 	while (tokens[tokenindex])
 	{
 		e_token_type tokentype = get_token_type(tokens[tokenindex], lasttype, &cmdfound);
 		lasttype = tokentype;
 		tokens[tokenindex] = sanitize_token(tokens[tokenindex]);
+		// char *args[2] = {"-n", "hey"};
+		// if (tokentype == TT_COMMAND)
+		// {
+		// 	is_builtin(tokens[tokenindex], (char **)args);
+		// }
 		printf("%-16s [%s]\n", token_type_to_string(tokentype), tokens[tokenindex]);
 		tokenindex++;
 	}
@@ -84,17 +90,24 @@ void test_parse_output(char *test, char** envp)
 	free_array((void **)varnames, &clear_part_var);
 	free_array((void **)variables, &clear_env_var);
 }
+void test_execute(char *test, char **envp)
+{
+	int builtin = is_builtin(test, (char **){NULL});
+}
 
 int	main(int argc, char **argv, char **envp)
 {
 	char *test;
+	set_signal();	
 	while (1)
 	{
+
 		if (!(test = ft_readline(envp)))
 			return (1);
-		// int builtin = is_builtin(test);
+		//test_execute(test, envp);		
 		// Just made this function to keep main() a bit readable
 		test_parse_output(test, envp);
+		add_history(test);
 		free(test);
 	}
 	return (0);
