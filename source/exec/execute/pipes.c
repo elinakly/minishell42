@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/06 19:34:54 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:11:02 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,19 @@ void	create_pipes(int num_cmds, int **pipes)
 	}
 }
 
+void	redirection(int i, int **pipes, t_command commands)
+{
+	if (i == 0)
+		dup2(commands.input_fd, STDIN_FILENO);
+	else
+		dup2(pipes[i - 1][0], STDIN_FILENO);
+	if (i == commands.num_cmds - 1)
+		dup2(commands.output_fd, STDOUT_FILENO);
+	else
+		dup2(pipes[i][1], STDOUT_FILENO);
+}
+
+
 void	child_process(int i, int **pipes, char *envp[], t_command commands)
 {
 	commands.input_fd = open(commands.args[1], O_RDONLY);
@@ -44,14 +57,7 @@ void	child_process(int i, int **pipes, char *envp[], t_command commands)
 	//		O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (commands.output_fd == -1)
 		return ;
-	if (i == 0)
-		dup2(commands.input_fd, STDIN_FILENO);
-	else
-		dup2(pipes[i - 1][0], STDIN_FILENO);
-	if (i == commands.num_cmds - 1)
-		dup2(commands.output_fd, STDOUT_FILENO);
-	else
-		dup2(pipes[i][1], STDOUT_FILENO);
+	redirection(i, pipes, commands);
 	close_fd(commands, pipes);
 	execute(commands.args[i + 2], envp);
 }
