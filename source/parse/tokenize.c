@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/12 00:03:29 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 02:27:16 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ bool	is_quote_char(char c, e_quote_type *type);
 size_t	skip_meta(char *str);
 bool	is_meta(char *str, size_t index, e_metachar *meta);
 bool	disrupts_token(e_metachar meta);
+bool	set_quote_state(char *cmd, size_t index, e_metachar *current);
+bool	is_escaped_char(char *str, int index);
 
 /**
  * Counts how big a single token at a given position in a string is
@@ -196,4 +198,123 @@ char	**tokenize(char *entry, size_t *tokencount)
 	return (result);
 }
 
+/**
+ * Checks whether a character is escapable in its current context
+ * It differs between double quotes / single quotes / no quotes
+ * @param c The character to check
+ * @param quot The current quote state of the string of which the character is a part
+ * @returns `true` if character is escapable, `false` if not
+ */
+bool	can_escape(char c, e_metachar quot)
+{
+	if (quot == MC_NONE)
+		return (c == MC_ARG_SEPARATE
+			|| c == MC_DQUOTE
+			|| c == MC_SQUOTE
+			|| c == MC_PIPE
+			|| c == MC_ESCAPE
+			|| c == MC_REDIR_IN
+			|| c == MC_REDIR_OUT
+			|| c == MC_VARIABLE);
+	if (quot == MC_DQUOTE)
+		return (c == MC_DQUOTE
+			|| c == MC_ESCAPE
+			|| c == MC_VARIABLE);
+	else
+		return (false);
+}
 
+/**
+ * Calculates how many characters shorter a token will be after
+ * removing quotes and escapes
+ * @param token The token string for which the calculation should be done
+ * @returns The number of characters the string length will decrease by
+ */
+size_t	calc_decrease(char *token)
+{
+	size_t		decrease;
+	size_t		index;
+	e_metachar	quot;
+
+	decrease = 0;
+	index = 0;
+	quot = MC_NONE;
+	while (token[index])
+	{
+		if (set_quote_state(token, index, &quot) && quot != MC_NONE)
+			decrease += 2;
+		else if (is_escaped_char(token, index)
+				&& can_escape(token[index], quot) && quot == MC_DQUOTE)
+			decrease++;
+		else if (is_escaped_char(token, index) && quot == MC_NONE)
+			decrease++;
+		index++;
+	}
+	return (decrease);
+}
+
+/**
+ * Decides whether a character should sanitized or not based on 
+ * quote states and various escape checks
+ * TODO: Currently leaves in the extra escapes that we add into environment variables, fix by just not inserting those escapes maybe?
+ * TODO: The above todo may actually be a HUGE problem with how I'm expanding vars, may need to rewrite that somehow
+ * TODO: Just research the above todo's to get a clear answer on how to proceed
+ * @param token The string of which the character is a part
+ * @param index The index at which the character is inside `token`
+ * @param quot The quote state metachar, used to track whether we are currently inside quotes
+ * @returns `false` if character should be sanitized, `true` if not
+ */
+bool	incl_in_token(char *token, size_t index, e_metachar *quot)
+{
+	bool	quote_changed;
+	bool	char_is_escaped;
+	bool	can_esc;
+	bool	next_can_esc;
+
+	quote_changed = set_quote_state(token, index, quot);
+	char_is_escaped = is_escaped_char(token, index);
+	can_esc = can_escape(token[index], *quot);
+	next_can_esc = token[index] != '\0' && can_escape(token[index + 1], *quot);
+	if (quote_changed)
+		return (false);
+	if (*quot == MC_DQUOTE)
+		return ((char_is_escaped)
+			|| (!char_is_escaped && (token[index] != '\\' || !next_can_esc)));
+	else if (*quot == MC_NONE)
+		return ((token[index] != '\\') || char_is_escaped);
+	return (true);
+}
+
+/**
+ * Removes surrounding quotes and backslashes for valid escapes
+ * Allocates memory for the new (smaller) token if necessary
+ * Frees the previous, unsanitized token if any changes are made
+ * TODO: Make sure not checking for token NULL is ok, but should be
+ * TODO: Check that "&& ++index" does not break compile flags
+ */
+char	*sanitize_token(char *token)
+{
+	size_t		index;
+	size_t		resindex;
+	e_metachar	quot;
+	e_metachar	meta;
+	char		*res;
+
+	index = 0;
+	resindex = 0;
+	quot = MC_NONE;
+	meta = MC_NONE;
+	if (calc_decrease(token) == 0)
+		return (token);
+	res = malloc(sizeof(char) * (ft_strlen(token) - calc_decrease(token) + 1));
+	if (!res)
+		return (NULL);
+	while (token[index])
+	{
+		if (incl_in_token(token, index, &quot))
+			res[resindex++] = token[index];
+		index++;
+	}
+	res[resindex] = '\0';
+	return (free(token), res);
+}

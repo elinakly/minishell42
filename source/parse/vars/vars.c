@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/09 23:53:35 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/12 02:11:29 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,27 @@ size_t	count_metas(char *str);
  * @param index The index of the character to check
  * @param current Pointer to current quote state to be updated
  */
-void	set_quote_state(char *cmd, size_t index, e_metachar *current)
+bool	set_quote_state(char *cmd, size_t index, e_metachar *current)
 {
 	e_metachar	meta;
-
 	if (!cmd)
-		return ;
+		return (false);
 	if (is_meta(cmd, index, &meta)
 		&& (meta == MC_SQUOTE || meta == MC_DQUOTE))
 	{
 		if (*current == MC_NONE)
+		{
 			*current = meta;
+			return (true);
+		}
 		else if (*current == meta)
+		{
 			*current = MC_NONE;
+			return (true);
+		}
+		return (false);
 	}
+	return (false);
 }
 
 /**
@@ -271,6 +278,7 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
  * Turns an environment variable value into its escaped version
  * It will allocate enough memory to add an escape character
  * in front of every meta character
+ * //TODO: IMPORTANT! Only add escapes in front of actually escapable characters (must track quote state)
  * @param value The environment variable value
  * @returns An escaped version of `value`
  */
