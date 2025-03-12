@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 15:11:02 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:01:56 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,29 +106,29 @@ void	fork_plz(t_command commands, int **pipes, char **envp)
 	}
 }
 
-// int	main(int argc, char *argv[], char *envp[])
-// {
-// 	int			**pipes;
-// 	int			i;
-// 	t_command	commands;
+int	pipes(int argc, char *argv[], char *envp[])
+{
+	int			**pipes;
+	int			i;
+	t_command	commands;
 
-// 	if (argc < 5)
-// 		return (ft_putstr_fd("Error\n", 2), 1);
-// 	commands.argc = argc;
-// 	commands.num_cmds = argc - 3;
-// 	commands.args = argv;
-// 	pipes = malloc_pipes(commands);
-// 	if (!pipes)
-// 		return (1);
-// 	create_pipes(commands.num_cmds, pipes);
-// 	fork_plz(commands, pipes, envp);
-// 	close_fd(commands, pipes);
-// 	i = 0;
-// 	while (i < commands.num_cmds)
-// 	{
-// 		wait(NULL);
-// 		i++;
-// 	}
-// 	free(pipes);
-// 	return (0);
-// } //TODO: Hi Elina I comment main because it was using this main for minishell :-)
+	if (argc < 5)
+		return (ft_putstr_fd("Error\n", 2), 1);
+	commands.argc = argc;
+	commands.num_cmds = argc - 3;
+	commands.args = argv;
+	pipes = malloc_pipes(commands);
+	if (!pipes)
+		return (1);
+	create_pipes(commands.num_cmds, pipes);
+	fork_plz(commands, pipes, envp);
+	close_fd(commands, pipes);
+	i = 0;
+	while (i < commands.num_cmds)
+	{
+		wait(NULL);
+		i++;
+	}
+	free(pipes);
+	return (0);
+}

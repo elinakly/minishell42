@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tokenize.h                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/12 03:25:48 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tokenize.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 14:15:14 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/12 15:56:10 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,20 @@ typedef struct t_part_var
 	char		*name;
 	e_metachar	in_quote_type;
 }				t_part_var;
+
+typedef struct t_env_var
+{
+	char	*name;
+	char	*value;
+	e_metachar	quote_type;
+}			t_env_var;
+
+typedef struct t_triple_index
+{
+	size_t	var;
+	size_t	cmd;
+	size_t	res;
+}			t_triple_index;
 
 typedef struct t_token
 {

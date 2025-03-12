@@ -3,28 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   variable.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 13:49:41 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/12 15:13:31 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:56:06 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VARIABLE_H
 # define VARIABLE_H
-# include "tokenize.h"
-
-typedef struct t_env_var
-{
-	char	*name;
-	char	*value;
-	e_metachar	quote_type;
-}			t_env_var;
-
-typedef struct t_triple_index
-{
-	size_t	var;
-	size_t	cmd;
-	size_t	res;
-}			t_triple_index;
 #endif

@@ -20,4 +20,4 @@ objects/*
 /exec/builtins/exit/exit
 # ignore all of libft, whether cloned or just dropped into the project
 /lib/*
-/.vscode/*
+.vscode

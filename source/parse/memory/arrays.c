@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   arrays.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/12 04:23:12 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   arrays.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/12 15:56:01 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <../../include/variable.h>
+#include "../../include/tokenize.h"
 
 /**
  * TODO: Rename the folder since this probably won't be exclusively memory stuff
