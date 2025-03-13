@@ -17,6 +17,7 @@ objects/*
 /exec/builtins/pwd/pwd
 /exec/builtins/export/export
 /exec/builtins/unset/unset
+#hello
 /exec/builtins/exit/exit
 # ignore all of libft, whether cloned or just dropped into the project
 /lib/*
