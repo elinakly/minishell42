@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:35:59 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/13 18:57:20 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:56:29 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ int		echo(char **args);
 int		env(char **envp);
 int		is_builtin(char *cmd, char **args, char **envp);
 int		pwd();
+int 	ft_exit();
 
 #endif

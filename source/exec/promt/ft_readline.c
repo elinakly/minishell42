@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/13 18:28:51 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/13 20:10:05 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <readline/history.h>
 #include <linux/limits.h>
 #include "../../../lib/libft/libft.h"
+#include "../../../include/builtins.h"
 
 
 void	errors(char *msg);
@@ -81,9 +82,6 @@ char	*ft_readline(char **envp)
 	}
 	line = readline(prompt);
 	if (line == 0)
-	{
-		printf("exit\n");
-		exit(0);
-	}
+		ft_exit();
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/13 18:53:45 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:57:09 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ int		is_builtin(char *cmd, char **args, char **envp)
 		return (pwd());
 	if (ft_strncmp(cmd, "env", 4) == 0)
 		return (env(envp));
+	if (ft_strncmp(cmd, "exit", 5) == 0)
+		return (ft_exit());
+	//TODO: Make export and unset here
 	// if (ft_strncmp(command, "export") == 0)
 	// 	return (1);
 	// if (ft_strncmp(command, "unset") == 0)

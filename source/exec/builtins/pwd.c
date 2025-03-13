@@ -6,16 +6,22 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:46:43 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/13 19:01:29 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/13 20:03:26 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int pwd()
+int	pwd()
 {
-	char	*buff = NULL;
-	
-	printf("%s\n", getcwd(buff, PATH_MAX));
-	return(0);
+	char *buff;
+
+	buff = getcwd(NULL, PATH_MAX);
+	if (buff)
+	{
+		printf("%s\n", buff);
+		free(buff);
+		return (0);
+	}
+	return (1);
 }
