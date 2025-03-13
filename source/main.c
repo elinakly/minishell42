@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/13 03:12:57 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/13 18:32:10 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void test_parse_output(char *test, bool isdebug)
 }
 void test_execute(char *test, char **envp)
 {
-	int builtin = is_builtin(test, (char **){NULL});
+	int builtin = is_builtin(test, (char **){NULL}, envp);
+	
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -68,7 +69,7 @@ int	main(int argc, char **argv, char **envp)
 
 		if (!(test = ft_readline(envp)))
 			return (1);
-		//test_execute(test, envp);		
+		test_execute(test, envp);
 		// Just made this function to keep main() a bit readable
 		test_parse_output(test, argc == 2 && !ft_strncmp(argv[1], "--debug", 255));
 		add_history(test);

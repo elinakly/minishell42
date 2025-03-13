@@ -3,7 +3,7 @@
 
 int	env(char **envp)
 {
-	int i;
+	int	i;
 
 	while(*envp)
 	{
