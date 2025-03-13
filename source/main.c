@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/13 01:59:33 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/13 03:12:57 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,19 @@ const char *token_type_to_string(e_token_type type)
     }
 }
 
-void test_parse_output(char *test)
+void test_parse_output(char *test, bool isdebug)
 {
 	t_env_var **variables = get_vars_from_cmd(test);
 	if (!variables)
 		return;
 	t_token **tokens = get_tokens_from_cmd(test, variables);
-	if (tokens)
-	{
-		size_t tokenindex = 0;
-		while (tokens[tokenindex])
-			printf("%-16s\t[%s]\n", token_type_to_string(tokens[tokenindex]->type), tokens[tokenindex++]->value);
-	}
-	free_array((void **)tokens, &clear_token_var);
 	free_array((void **)variables, &clear_env_var);
+	if (!tokens)
+		return;
+	size_t tokenindex = 0;
+	while (isdebug && tokens[tokenindex])
+		printf("%-16s [%s]\n", token_type_to_string(tokens[tokenindex]->type), tokens[tokenindex++]->value);
+	free_array((void **)tokens, &clear_token_var);
 }
 void test_execute(char *test, char **envp)
 {
@@ -71,7 +70,7 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		//test_execute(test, envp);		
 		// Just made this function to keep main() a bit readable
-		test_parse_output(test);
+		test_parse_output(test, argc == 2 && !ft_strncmp(argv[1], "--debug", 255));
 		add_history(test);
 		free(test);
 	}
