@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/12 04:32:29 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/13 03:03:42 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include "../lib/libft/libft.h"
 
 bool	is_meta(char *str, size_t index, e_metachar *meta);
-size_t	count_esc_metas(char *str);
 bool	can_escape(char c, e_metachar quot);
 
 /**
@@ -188,7 +187,7 @@ t_part_var	**get_var_names(char *cmd, size_t varcount, t_part_var **names)
  * @param part Partial environment variable (name + quote type)
  * @returns Malloced environment variable struct holding name and value strings
  */
-t_env_var *make_var(t_part_var *part)
+t_env_var	*make_var(t_part_var *part)
 {
 	t_env_var	*var;
 	char		*value;
@@ -255,7 +254,7 @@ t_env_var	**get_command_vars(t_part_var **names)
  * @param vars The array of environment variables to expand
  * @returns The expanded string's length
  */
-size_t calc_expanded_len(char *cmd, t_env_var **vars)
+size_t	calc_expanded_len(char *cmd, t_env_var **vars)
 {
 	size_t	orig;
 	size_t	names_len;
@@ -272,7 +271,7 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
 	{
 		names_len += ft_strlen(vars[index]->name) + 1;
 		values_len += ft_strlen(vars[index]->value)
-			+ count_esc_metas(vars[index]->value);
+			+ count_esc_metas(vars[index]);
 		index++;
 	}
 	return (orig - names_len + values_len);
@@ -286,26 +285,27 @@ size_t calc_expanded_len(char *cmd, t_env_var **vars)
  * @param quot The type of quote this variable was inside of
  * @returns An escaped version of `value`
  */
-char *get_escaped_value(char *value, e_metachar quot)
+char	*get_escaped_value(t_env_var *var)
 {
 	size_t	size;
 	size_t	resindex;
 	size_t	v_index;
 	char	*res;
 
-	if (!value)
+	if (!var || !var->value)
 		return (NULL);
 	resindex = 0;
 	v_index = 0;
-	size = ft_strlen(value) + count_esc_metas(value);
+	size = ft_strlen(var->value) + count_esc_metas(var);
 	res = malloc(sizeof(char) * (size + 1));
 	if (!res)
 		return (NULL);
-	while (value[v_index])
+	while (var->value[v_index])
 	{
-		if (is_meta(value, v_index, NULL) && can_escape(value[v_index], quot))
+		if (is_meta(var->value, v_index, NULL)
+			&& can_escape(var->value[v_index], var->quote_type))
 			res[resindex++] = '\\';
-		res[resindex++] = value[v_index++];
+		res[resindex++] = var->value[v_index++];
 	}
 	res[resindex] = '\0';
 	return (res);
@@ -323,7 +323,7 @@ bool	insert_var(char *res, t_env_var *var, size_t *index)
 
 	if (!res || !var || !var->name || !var->value || !index)
 		return (false);
-	temp = get_escaped_value(var->value, var->quote_type);
+	temp = get_escaped_value(var);
 	if (!temp)
 		return (false);
 	templen = ft_strlen(temp);

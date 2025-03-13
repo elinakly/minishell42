@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenize.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 14:15:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/12 15:56:10 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tokenize.h                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/13 02:56:06 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 # define TOKENIZE_H
 # include <stdlib.h>
 # include <stdbool.h>
-# include "variable.h"
+#include "tokenandvar.h"
+#include "variable.h"
+
 
 typedef enum e_quote_type
 {
@@ -27,34 +29,6 @@ typedef enum e_quote_type
 	QUOTE_SINGLE,
 	QUOTE_DOUBLE
 }	e_quote_type;
-
-typedef enum e_metachar
-{
-	MC_ERROR		= -1,
-	MC_NONE			= 0,
-	MC_DQUOTE		= '"',
-	MC_SQUOTE		= '\'',
-	MC_PIPE			= '|',
-	MC_REDIR_OUT	= '>',
-	MC_REDIR_IN		= '<',
-	MC_ESCAPE		= '\\',
-	MC_VARIABLE		= '$',
-	MC_ARG_SEPARATE	= ' '
-}	e_metachar;
-
-typedef enum e_token_type
-{
-	TT_UNKNOWN,
-	TT_COMMAND,
-	TT_ARGUMENT,
-	TT_HEREDOC,
-	TT_PIPE,
-	TT_RE_IN,
-	TT_RE_OUT,
-	TT_RE_OUT_APPEND,
-	TT_INFILE,
-	TT_OUTFILE
-}	e_token_type;
 
 typedef enum e_redir_type
 {
@@ -64,31 +38,9 @@ typedef enum e_redir_type
 	RE_HEREDOC
 }	e_redir_type;
 
-typedef struct t_part_var
-{
-	char		*name;
-	e_metachar	in_quote_type;
-}				t_part_var;
-
-typedef struct t_env_var
-{
-	char	*name;
-	char	*value;
-	e_metachar	quote_type;
-}			t_env_var;
-
-typedef struct t_triple_index
-{
-	size_t	var;
-	size_t	cmd;
-	size_t	res;
-}			t_triple_index;
-
-typedef struct t_token
-{
-	e_token_type	type;
-	char			*value;
-	bool			has_vars;
-	t_part_var			**var_names;
-}	t_token;
+char	**tokenize(char *entry, t_env_var **vars, size_t *amount);
+char	*sanitize_token(char *token);
+e_token_type	get_token_type(char *raw_token, e_token_type last,
+								bool *cmdfound);
+size_t	count_esc_metas(t_env_var *var);
 #endif

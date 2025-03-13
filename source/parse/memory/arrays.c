@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   arrays.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/12 15:56:01 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   arrays.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/13 01:37:33 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "../../include/tokenize.h"
+#include "../../include/structbuild.h"
 
 /**
  * TODO: Rename the folder since this probably won't be exclusively memory stuff
@@ -62,6 +63,13 @@ void	clear_env_var(void *var)
 		free(realvar->name);
 		free(realvar->value);
 	}
+}
+
+void	clear_token_var(void *var)
+{
+	t_token *token = (t_token *)var;
+	if (var)
+		free(token->value);
 }
 
 /**

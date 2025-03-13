@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 19:47:16 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/13 01:59:33 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "../include/variable.h"
 #include "../include/tokenize.h"
+#include "../include/variable.h"
 #include "../include/memory.h"
 #include "../include/builtins.h"
 #include "../include/execute.h"
+#include "../include/structbuild.h"
 #include <readline/history.h>
 
 char			*ft_readline(char **envp);
-int				skip_spaces(char **str);
-int				skip_quoted(char **str);
-bool			has_unclosed_quote(char *str, e_quote_type *type);
-size_t			count_tokens(char *entry);
-char			**tokenize(char *entry, size_t *tokencount);
-e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound);
-size_t			get_var_count(char *cmd);
-t_part_var		**get_var_names(char *cmd, size_t varcount, t_part_var **names);
-t_env_var		**get_command_vars(t_part_var **names);
-size_t			calc_expanded_len(char *cmd, t_env_var **vars);
-char			*get_expanded_cmd(char *cmd, t_env_var **vars,
-									size_t resindex, size_t cmdindex);
-char			*sanitize_token(char *token);
 
 const char *token_type_to_string(e_token_type type)
 {
@@ -52,42 +40,19 @@ const char *token_type_to_string(e_token_type type)
     }
 }
 
-void test_parse_output(char *test, char** envp)
+void test_parse_output(char *test)
 {
-	int tokenindex = 0;
-	size_t amount = 0;
-	size_t varindex = 0;
-	e_token_type lasttype = TT_UNKNOWN;
-	bool cmdfound = false;
-
-	size_t varcount = get_var_count(test);
-	t_part_var **varnames = malloc(sizeof(t_part_var *) * (varcount + 1));
-	if (!varnames)
-		return; // ehh handle better later
-	get_var_names(test, varcount, varnames);
-	varnames[varcount] = NULL;
-	t_env_var **variables = get_command_vars(varnames);
+	t_env_var **variables = get_vars_from_cmd(test);
 	if (!variables)
 		return;
-	char *expanded = get_expanded_cmd(test, variables, 0, 0);
-	char **tokens = tokenize(expanded, &amount);
-	// tokenindex = 0;
-	while (tokens[tokenindex])
+	t_token **tokens = get_tokens_from_cmd(test, variables);
+	if (tokens)
 	{
-		e_token_type tokentype = get_token_type(tokens[tokenindex], lasttype, &cmdfound);
-		lasttype = tokentype;
-		tokens[tokenindex] = sanitize_token(tokens[tokenindex]);
-		// char *args[2] = {"-n", "hey"};
-		// if (tokentype == TT_COMMAND)
-		// {
-		// 	is_builtin(tokens[tokenindex], (char **)args);
-		// }
-		printf("%-16s [%s]\n", token_type_to_string(tokentype), tokens[tokenindex]);
-		tokenindex++;
+		size_t tokenindex = 0;
+		while (tokens[tokenindex])
+			printf("%-16s\t[%s]\n", token_type_to_string(tokens[tokenindex]->type), tokens[tokenindex++]->value);
 	}
-	free(expanded);
-	free_array((void **)tokens, NULL);
-	free_array((void **)varnames, &clear_part_var);
+	free_array((void **)tokens, &clear_token_var);
 	free_array((void **)variables, &clear_env_var);
 }
 void test_execute(char *test, char **envp)
@@ -106,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		//test_execute(test, envp);		
 		// Just made this function to keep main() a bit readable
-		test_parse_output(test, envp);
+		test_parse_output(test);
 		add_history(test);
 		free(test);
 	}

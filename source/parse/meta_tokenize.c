@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/12 04:16:13 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/13 03:03:26 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,21 +154,19 @@ size_t	skip_meta(char *str)
  * @param str The string to check
  * @returns The amount of meta characters in str
  */
-size_t	count_esc_metas(char *str)
+size_t	count_esc_metas(t_env_var *var)
 {
 	size_t		count;
 	size_t		index;
-	e_metachar	quot;
 
 	count = 0;
 	index = 0;
-	quot = MC_NONE;
-	if (!str)
+	if (!var->value)
 		return (0);
-	while (str[index])
+	while (var->value[index])
 	{
-		set_quote_state(str, index, &quot);
-		count += is_meta(str, index, NULL) && can_escape(str[index], quot);
+		count += is_meta(var->value, index, NULL)
+			&& can_escape(var->value[index], var->quote_type);
 		index++;
 	}
 	return (count);

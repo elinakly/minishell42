@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/12 04:33:35 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/13 01:51:53 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "variable.h"
-#include "../include/memory.h"
-#include "../include/tokenize.h"
-#include "../lib/libft/libft.h"
+#include "../../include/variable.h"
+#include "../../include/memory.h"
+#include "../../include/tokenize.h"
+#include "../../lib/libft/libft.h"
 
 int		skip_spaces(char *str);
 int		skip_quoted(char *str);
@@ -152,36 +152,25 @@ e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound)
 	return (TT_COMMAND);
 }
 
-t_token	*make_token(char *raw_token, e_token_type last)
-{
-	t_token	*token;
-
-	if (!raw_token)
-		return (NULL);
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = raw_token;
-	//TODO: FINISH, the return is temp
-	return (NULL); //TODO: REMOVE! tihs is to suppress warning only
-}
-
 /**
  * Takes a full minishell command and tokenizes it (splitting it up)
  * @param entry The string to tokenize
  * @returns An array of tokens (strings) or NULL if fail
  */
-char	**tokenize(char *entry, size_t *tokencount)
+char	**tokenize(char *entry, t_env_var **vars, size_t *amount)
 {
 	size_t	count;
 	size_t	index;
 	size_t	str_index;
 	char	**result;
 
+	entry = get_expanded_cmd(entry, vars);
+	if (!entry)
+		return (NULL);
 	count = count_tokens(entry);
 	result = malloc(sizeof(char *) * (count + 1));
 	if (!result)
-		return (NULL);
+		return (free(entry), NULL);
 	result[count] = NULL;
 	index = 0;
 	str_index = 0;
@@ -189,13 +178,12 @@ char	**tokenize(char *entry, size_t *tokencount)
 	{
 		result[index] = get_raw_token(&entry[str_index]);
 		if (!result[index])
-			return (free_array((void **)result, NULL), NULL);
+			return (free(entry), free_array((void **)result, NULL), NULL);
 		str_index += token_size(&entry[str_index], true);
 		index++;
 	}
-	if (tokencount)
-		*tokencount = count;
-	return (result);
+	*amount = count;
+	return (free(entry), result);
 }
 
 /**
@@ -304,11 +292,9 @@ char	*sanitize_token(char *token)
 	resindex = 0;
 	quot = MC_NONE;
 	meta = MC_NONE;
-	if (calc_decrease(token) == 0)
-		return (token);
 	res = malloc(sizeof(char) * (ft_strlen(token) - calc_decrease(token) + 1));
 	if (!res)
-		return (NULL);
+		return (NULL); //TODO: May need to free idk
 	while (token[index])
 	{
 		if (incl_in_token(token, index, &quot))
