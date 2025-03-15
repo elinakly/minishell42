@@ -70,7 +70,7 @@ int	echo(char **args)
 	int	status;
 
 	status = 0;
-	if (!args[1])
+	if (!args[1] || !args)
 		return (ft_putchar_fd_echo('\n', 1));
 	flag = check_flag(args, &i);
 	while (args[i])
