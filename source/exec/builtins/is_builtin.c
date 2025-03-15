@@ -22,15 +22,15 @@
 
 int		is_builtin(char *cmd, char **args, char **envp)
 {
-	if (ft_strncmp(cmd, "echo", 5) == 0)
+	if (ft_strncmp(cmd, "echo", 4) == 0)
 		return (echo(args));
 	// if (ft_strncmp(command, "cd") == 0)
 	// 	return (1);
-	if (ft_strncmp(cmd, "pwd", 4) == 0)
+	if (ft_strncmp(cmd, "pwd", 3) == 0)
 		return (pwd());
-	if (ft_strncmp(cmd, "env", 4) == 0)
+	if (ft_strncmp(cmd, "env", 3) == 0)
 		return (env(envp));
-	if (ft_strncmp(cmd, "exit", 5) == 0)
+	if (ft_strncmp(cmd, "exit", 4) == 0)
 		return (ft_exit());
 	//TODO: Make export and unset here
 	// if (ft_strncmp(command, "export") == 0)

@@ -56,8 +56,8 @@ void test_parse_output(char *test, bool isdebug)
 }
 void test_execute(char *test, char **envp)
 {
-	int builtin = is_builtin(test, (char **){NULL}, envp);
-	
+	char **args = ft_split(test, ' ');
+	int builtin = is_builtin(test, args, envp);
 }
 
 int	main(int argc, char **argv, char **envp)
