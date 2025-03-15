@@ -66,7 +66,6 @@ int	main(int argc, char **argv, char **envp)
 	set_signal();	
 	while (1)
 	{
-
 		if (!(test = ft_readline(envp)))
 			return (1);
 		test_execute(test, envp);
@@ -75,5 +74,6 @@ int	main(int argc, char **argv, char **envp)
 		add_history(test);
 		free(test);
 	}
+	rl_clear_history();
 	return (0);
 }
