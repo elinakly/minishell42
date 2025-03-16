@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/16 17:34:01 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/16 17:41:51 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ e_parse_result comp_curr_last_types(e_token_type curr, e_token_type last)
 	return (PARSEOK);
 }
 
-e_parse_result	validate_tokens(t_token **tokens)
+e_parse_result	validate_tokens(t_token **tokens) //TODO: Validate heredoc tokens
 {
 	e_token_type	last;
 	size_t			index;

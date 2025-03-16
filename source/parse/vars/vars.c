@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/13 03:03:42 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/16 23:59:56 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ size_t	skip_var_chars(char *cmd, size_t index)
 /**
  * Calculates how many environment variables are in a command string
  * Considers quotes, escapes, etc. in its calculation
+ * TODO: `<<$` seemingly creates no tokens at all right now, investigate why
  * @param cmd The command string to count variables in
  * @returns The amount of environment variables in the string
  */
@@ -103,7 +104,7 @@ size_t	get_var_count(char *cmd)
 	{
 		temp_skip = 0;
 		set_quote_state(cmd, index, &in_quot);
-		if (cmd[index] == '$' && is_meta(cmd, index, NULL))
+		if (cmd[index] == '$' && is_meta(cmd, index, NULL) && cmd[index + 1])
 		{
 			temp_skip = skip_var_chars(cmd, ++index);
 			res += temp_skip > 0 && in_quot != MC_SQUOTE;

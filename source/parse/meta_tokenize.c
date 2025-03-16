@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/13 03:03:26 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/16 23:51:07 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,32 @@ size_t	skip_env_var(char *str)
 	return (count);
 }
 
+size_t skip_heredoc(char *str)
+{
+	e_metachar	quot;
+	size_t		count;
+
+	quot = MC_NONE;
+	count = 0;
+	
+	while (str[count])
+	{
+		if (set_quote_state(str, count, &quot))
+			count++;
+		else if (quot == MC_NONE && (ft_isalnum(str[count])
+			|| ((unsigned char)(str[count]) >= 128)
+			|| ft_strchr(HEREDOC_SPECIAL_CHARS, str[count])))
+			count++;
+		else if (quot == MC_DQUOTE || quot == MC_SQUOTE)
+			count++;
+		else if (is_escaped_char(str, count) || str[count] == '\\')
+			count++;
+		else
+			break;
+	}
+	return (count);
+}
+
 /**
  * Calculates the length of an input redirection token
  * 
@@ -118,9 +144,7 @@ size_t	skip_redir_in(char *str)
 		return (0);
 	if (*(str + 1) != MC_REDIR_IN)
 		return (1);
-	count = 2;
-	while (is_env_var_char(str[count]))
-		count++;
+	count = 2 + skip_heredoc(str + 2);
 	return (count);
 }
 
