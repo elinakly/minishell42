@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:55:07 by mika          #+#    #+#                 */
-/*   Updated: 2025/02/18 00:15:34 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 00:23:44 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ size_t	skip_spaces(char *str)
 	size_t	spaces;
 
 	spaces = 0;
-	while (str && str[spaces] == ' ')
+	while (str && (str[spaces] == ' ' || str[spaces] == '\t'
+			|| str[spaces] == '\n'))
 		spaces++;
 	return (spaces);
 }

@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/16 17:27:33 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 00:29:44 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ const char *token_type_to_string(e_token_type type)
 		case TT_RE_OUT_APPEND: return "TT_RE_OUT_APPEND";
 		case TT_INFILE: return "TT_INFILE";
 		case TT_OUTFILE: return "TT_OUTFILE";
+		case TT_HEREDOC_DELIM: return "TT_HEREDOC_DELIM";
 		default: return "INVALID_TYPE";
 	}
 }

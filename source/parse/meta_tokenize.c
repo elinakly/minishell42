@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/16 23:51:07 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 00:27:40 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,14 +138,11 @@ size_t skip_heredoc(char *str)
  */
 size_t	skip_redir_in(char *str)
 {
-	size_t	count;
-
 	if (!str || *str != MC_REDIR_IN)
 		return (0);
 	if (*(str + 1) != MC_REDIR_IN)
 		return (1);
-	count = 2 + skip_heredoc(str + 2);
-	return (count);
+	return (2);
 }
 
 /**

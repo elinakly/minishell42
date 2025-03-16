@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/13 01:51:53 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 00:25:40 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound)
 		return (TT_OUTFILE);
 	if (last == TT_RE_IN)
 		return (TT_INFILE);
+	if (last == TT_HEREDOC)
+		return (TT_HEREDOC_DELIM);
 	if (!*cmdfound)
 		return (*cmdfound = true, TT_COMMAND);
 	if (last == TT_ARGUMENT || last == TT_COMMAND || last == TT_INFILE || last == TT_OUTFILE || last == TT_HEREDOC)

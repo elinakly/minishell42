@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/16 17:41:51 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 00:33:34 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 
 e_parse_result get_parse_res_from_last(e_token_type last)
 {
-	if (last == TT_RE_IN || last == TT_RE_OUT || last == TT_RE_OUT_APPEND)
+	if (last == TT_RE_IN || last == TT_RE_OUT || last == TT_RE_OUT_APPEND
+		|| last == TT_HEREDOC)
 		return (SYNTAX_ERROR);
 	if (last == TT_PIPE)
 		return (UNFINISHED_PIPE);
