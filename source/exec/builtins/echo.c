@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/07 17:03:23 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 19:33:24 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   echo.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/07 17:03:23 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/16 14:41:28 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ int	check_flag(char **args, int *i)
 	return (flag);
 }
 
+/**
+ * TODO: Use args from t_command instead (starts at index 0 instead of 1)
+ */
 int	echo(char **args)
 {
 	int	i;

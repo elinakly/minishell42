@@ -6,14 +6,14 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/13 02:58:34 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/16 17:03:21 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/structbuild.h"
 #include "../../include/variable.h"
 #include "../../include/tokenize.h"
 #include "../../include/memory.h"
-#include "../../include/structbuild.h"
 
 t_env_var	**get_vars_from_cmd(char *cmd)
 {
@@ -76,5 +76,35 @@ t_token	**get_tokens_from_cmd(char *cmd, t_env_var **vars)
 					free_array((void **)res, NULL), NULL); //TODO: Del function for t_token **
 	}
 	free(tokens);
+	return (res);
+}
+
+t_redirect	*create_redir(e_redir_type type, char *file)
+{
+	t_redirect	*res;
+
+	res = malloc(sizeof(t_redirect));
+	if (!res)
+		return (NULL);
+	res->type = type;
+	res->file = file;
+	res->next = NULL;
+	return (res);
+}
+
+t_command	*create_command(char *name)
+{
+	t_command	*res;
+
+	res = malloc(sizeof(t_command));
+	if (!res)
+		return (NULL);
+	res->name = name;
+	res->argc = 0;
+	res->argv = NULL;
+	res->has_pipe = false;
+	res->has_redirects = false;
+	res->redirects = NULL;
+	res->next = NULL;
 	return (res);
 }
