@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 00:17:13 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 00:43:13 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 12:54:57 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,13 @@ typedef struct t_tokeninfo
 	size_t			index;
 }					t_tokeninfo;
 
+/**
+ * TODO: Turn into linkedlist since it is A LOT easier to work with
+ */
 typedef struct t_token
 {
 	e_token_type	type;
+	char			*raw_value;
 	char			*value;
 }	t_token;
 

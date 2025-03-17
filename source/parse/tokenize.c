@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/17 12:33:16 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 12:46:26 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,9 +280,8 @@ bool	incl_in_token(char *token, size_t index, e_metachar *quot)
 /**
  * Removes surrounding quotes and backslashes for valid escapes
  * Allocates memory for the new (smaller) token if necessary
- * Frees the previous, unsanitized token if any changes are made
+ * DOES NOT free the previous, unsanitized token if any changes are made
  * TODO: Make sure not checking for token NULL is ok, but should be
- * TODO: Check that "&& ++index" does not break compile flags
  */
 char	*sanitize_token(char *token)
 {
@@ -298,7 +297,7 @@ char	*sanitize_token(char *token)
 	meta = MC_NONE;
 	res = malloc(sizeof(char) * (ft_strlen(token) - calc_decrease(token) + 1));
 	if (!res)
-		return (NULL); //TODO: May need to free idk
+		return (NULL);
 	while (token[index])
 	{
 		if (incl_in_token(token, index, &quot))
@@ -306,5 +305,5 @@ char	*sanitize_token(char *token)
 		index++;
 	}
 	res[resindex] = '\0';
-	return (free(token), res);
+	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 00:45:27 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 12:57:04 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "../../include/tokenize.h"
 #include "../../include/memory.h"
 
+/**
+ * TODO: Write docs
+ */
 t_env_var	**get_vars_from_cmd(char *cmd)
 {
 	size_t		varcount;
@@ -37,6 +40,9 @@ t_env_var	**get_vars_from_cmd(char *cmd)
 	return (variables);
 }
 
+/**
+ * TODO: Write docs
+ */
 t_token	*make_token(char *raw_token, e_token_type type)
 {
 	t_token	*token;
@@ -46,11 +52,15 @@ t_token	*make_token(char *raw_token, e_token_type type)
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
+	token->raw_value = raw_token;
 	token->value = sanitize_token(raw_token);
 	token->type = type;
 	return (token);
 }
 
+/**
+ * TODO: Write docs
+ */
 t_token	**get_tokens_from_cmd(char *cmd, t_env_var **vars)
 {
 	t_tokeninfo		info;
@@ -79,6 +89,10 @@ t_token	**get_tokens_from_cmd(char *cmd, t_env_var **vars)
 	return (res);
 }
 
+/**
+ * TODO: Take whole token instead, I think! That way we can get heredoc info from raw values etc
+ * TODO: Write docs
+ */
 t_redirect	*create_redir(e_redir_type type, char *file)
 {
 	t_redirect	*res;
@@ -94,6 +108,9 @@ t_redirect	*create_redir(e_redir_type type, char *file)
 	return (res);
 }
 
+/**
+ * TODO: Write docs
+ */
 t_command	*create_command(char *name)
 {
 	t_command	*res;
