@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 01:03:16 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 11:51:16 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,5 @@ e_token_type	get_token_type(char *raw_token, e_token_type last,
 size_t			count_esc_metas(t_env_var *var);
 bool			is_quote_char(char c, e_quote_type *type);
 bool			heredoc_should_expand(char *rawdelim);
+bool			is_wspace(char c);
 #endif

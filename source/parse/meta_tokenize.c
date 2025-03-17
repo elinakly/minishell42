@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 01:02:55 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 12:31:47 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
 		|| c == MC_REDIR_OUT
 		|| c == MC_SQUOTE
 		|| c == MC_VARIABLE
-		|| c == MC_ARG_SEPARATE)
+		|| c == MC_SEPAR_SPACE
+		|| c == MC_SEPAR_TAB)
 		&& !is_escaped_char(str, index);
 	if (meta && result)
 		*meta = (e_metachar)c;
@@ -59,6 +60,9 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
 	return (result);
 }
 
+/**
+ * TODO: Check if this is ever going to be used, as it currently is not
+ */
 bool	is_disrupt_meta(char *str, size_t index, e_metachar *meta)
 {
 	bool		is_any_meta;
@@ -72,6 +76,11 @@ bool	is_disrupt_meta(char *str, size_t index, e_metachar *meta)
 		|| type == MC_REDIR_OUT || type == MC_PIPE);
 }
 
+/**
+ * Checks whether a given metacharacter should start a new token
+ * @param meta The metacharacter to check
+ * @returns `true` if new token should be started, `false` if not
+ */
 bool	disrupts_token(e_metachar meta)
 {
 	return (meta == MC_PIPE || meta == MC_REDIR_IN || meta == MC_REDIR_OUT);
@@ -166,7 +175,7 @@ size_t	skip_meta(char *str)
 {
 	if (!str)
 		return (0);
-	if (*str == MC_PIPE || *str == MC_ARG_SEPARATE)
+	if (*str == MC_PIPE || *str == MC_SEPAR_SPACE || *str == MC_SEPAR_TAB)
 		return (1);
 	if (*str == MC_ESCAPE)
 		return (2);

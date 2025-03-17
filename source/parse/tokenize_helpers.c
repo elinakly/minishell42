@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:55:07 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/17 00:23:44 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 11:50:59 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,4 +141,14 @@ bool	is_quote_char(char c, e_quote_type *type)
 			*type = QUOTE_NONE;
 	}
 	return (c == '\'' || c == '"');
+}
+
+/**
+ * Simple helper function to determine if a character is breaking whitespace
+ * @param c The character to check
+ * @returns `true` if space/newline/tab, `false` if not
+ */
+bool	is_wspace(char c)
+{
+	return (c == '\n' || c == '\t' || c == ' ');
 }

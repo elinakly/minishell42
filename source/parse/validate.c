@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 01:06:53 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 11:44:53 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include "../../include/tokenize.h"
 #include "../../lib/libft/libft.h"
 
+/**
+ * Decides whether the command syntax is correct based on the last token type
+ * @param last The last token type in a parsed command string
+ * @returns A parsing result
+ */
 e_parse_result get_parse_res_from_last(e_token_type last)
 {
 	if (last == TT_RE_IN || last == TT_RE_OUT || last == TT_RE_OUT_APPEND
@@ -25,11 +30,18 @@ e_parse_result get_parse_res_from_last(e_token_type last)
 	return (PARSEOK);
 }
 
-e_parse_result comp_curr_last_types(e_token_type curr, e_token_type last)
+/**
+ * Compares current token type to the previous token type to
+ * decide whether the command syntax is correct up until the current token
+ * @param curr The current token type
+ * @param prev The previous token type
+ * @returns A parsing result
+ */
+e_parse_result comp_curr_last_types(e_token_type curr, e_token_type prev)
 {
-	if ((last == TT_PIPE && curr == TT_PIPE)
-			|| ((last == TT_RE_IN || last == TT_RE_OUT
-				|| last == TT_RE_OUT_APPEND || last == TT_HEREDOC)
+	if ((prev == TT_PIPE && curr == TT_PIPE)
+			|| ((prev == TT_RE_IN || prev == TT_RE_OUT
+				|| prev == TT_RE_OUT_APPEND || prev == TT_HEREDOC)
 				&& (curr == TT_RE_IN
 					|| curr == TT_RE_OUT
 					|| curr == TT_RE_OUT_APPEND
@@ -38,6 +50,11 @@ e_parse_result comp_curr_last_types(e_token_type curr, e_token_type last)
 	return (PARSEOK);
 }
 
+/**
+ * Validates command syntax based on the order of token types
+ * @param tokens The list of all parsed tokens
+ * @returns A parsing result
+ */
 e_parse_result	validate_tokens(t_token **tokens)
 {
 	e_token_type	last;
@@ -66,6 +83,12 @@ e_parse_result	validate_tokens(t_token **tokens)
 	return (get_parse_res_from_last(last));
 }
 
+/**
+ * Validates a command string before tokenizing takes place
+ * Checks for unclosed quotes and an escape character at the end of the string
+ * @param cmd The command string to validate
+ * @returns A parsing result
+ */
 e_parse_result	validate_cmd_str(char *cmd)
 {
 	size_t			index;
@@ -77,7 +100,7 @@ e_parse_result	validate_cmd_str(char *cmd)
 		return (EMPTY);
 	while (cmd[index])
 		set_quote_state(cmd, index++, &quotstate);
-	if (cmd[index - 1] == '\\') //NOTE: Must come before the others, since it takes priority
+	if (cmd[index - 1] == '\\')
 		return (ESCAPED_NEWLINE);
 	if (quotstate == MC_SQUOTE)
 		return (UNCLOSED_SQUOTE);

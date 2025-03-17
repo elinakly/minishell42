@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/17 00:38:35 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 12:33:16 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ size_t	token_size(char *str, bool include_spaces)
 	skip_count = skip_spaces(str);
 	index = skip_count;
 	meta = MC_NONE;
-	while (str[index] && str[index] != ' ')
+	while (str[index] && !is_wspace(str[index]))
 	{
 		if (!disrupts_token(meta) && is_meta(str, index, &meta))
 			index += skip_meta(&str[index]);
-		if (disrupts_token(meta) || !str[index] || str[index] == ' ')
+		if (disrupts_token(meta) || !str[index] || is_wspace(str[index]))
 			break;
 		while (str[index] && !is_meta(str, index, &meta))
 			index++;
@@ -199,7 +199,8 @@ char	**tokenize(char *entry, t_env_var **vars, size_t *amount)
 bool	can_escape(char c, e_metachar quot)
 {
 	if (quot == MC_NONE)
-		return (c == MC_ARG_SEPARATE
+		return (c == MC_SEPAR_SPACE
+			|| c == MC_SEPAR_TAB
 			|| c == MC_DQUOTE
 			|| c == MC_SQUOTE
 			|| c == MC_PIPE

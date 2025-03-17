@@ -6,12 +6,13 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 01:22:00 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 00:24:19 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 12:33:04 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENANDVAR_H
 # define TOKENANDVAR_H
+
 typedef enum e_metachar
 {
 	MC_ERROR		= -1,
@@ -23,7 +24,8 @@ typedef enum e_metachar
 	MC_REDIR_IN		= '<',
 	MC_ESCAPE		= '\\',
 	MC_VARIABLE		= '$',
-	MC_ARG_SEPARATE	= ' '
+	MC_SEPAR_SPACE	= ' ',
+	MC_SEPAR_TAB	= '\t'
 }	e_metachar;
 
 typedef enum e_token_type
