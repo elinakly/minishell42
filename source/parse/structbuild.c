@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/16 17:03:21 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 00:45:27 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ t_redirect	*create_redir(e_redir_type type, char *file)
 	res->type = type;
 	res->file = file;
 	res->next = NULL;
+	res->heredoc_delim = NULL; //TODO: this is default, gotta set it elsewhere based on next token
+	res->expand_in_heredoc = false; //TODO: This is also default, also gotta set it elsewhere
 	return (res);
 }
 

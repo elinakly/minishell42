@@ -6,13 +6,14 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 00:33:34 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 01:06:53 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/tokenandvar.h"
 #include "../../include/structbuild.h"
 #include "../../include/tokenize.h"
+#include "../../lib/libft/libft.h"
 
 e_parse_result get_parse_res_from_last(e_token_type last)
 {
@@ -37,7 +38,7 @@ e_parse_result comp_curr_last_types(e_token_type curr, e_token_type last)
 	return (PARSEOK);
 }
 
-e_parse_result	validate_tokens(t_token **tokens) //TODO: Validate heredoc tokens
+e_parse_result	validate_tokens(t_token **tokens)
 {
 	e_token_type	last;
 	size_t			index;
@@ -55,6 +56,9 @@ e_parse_result	validate_tokens(t_token **tokens) //TODO: Validate heredoc tokens
 			continue;
 		}
 		else if (comp_curr_last_types(tokens[index]->type, last) != PARSEOK)
+			return (SYNTAX_ERROR);
+		if (tokens[index]->type == TT_HEREDOC_DELIM
+			&& (!tokens[index]->value || !ft_strlen(tokens[index]->value)))
 			return (SYNTAX_ERROR);
 		last = tokens[index]->type;
 		index++;

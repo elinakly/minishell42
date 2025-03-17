@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/16 23:45:08 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 01:03:16 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ typedef enum e_redir_type
 	RE_HEREDOC
 }	e_redir_type;
 
-char	**tokenize(char *entry, t_env_var **vars, size_t *amount);
-char	*sanitize_token(char *token);
+char			**tokenize(char *entry, t_env_var **vars, size_t *amount);
+char			*sanitize_token(char *token);
 e_token_type	get_token_type(char *raw_token, e_token_type last,
 								bool *cmdfound);
-size_t	count_esc_metas(t_env_var *var);
+size_t			count_esc_metas(t_env_var *var);
+bool			is_quote_char(char c, e_quote_type *type);
+bool			heredoc_should_expand(char *rawdelim);
 #endif

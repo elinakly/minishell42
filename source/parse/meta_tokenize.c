@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 00:27:40 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 01:02:55 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,19 @@ size_t	skip_env_var(char *str)
 	return (count);
 }
 
-size_t skip_heredoc(char *str)
+bool	heredoc_should_expand(char *rawdelim)
+{
+	size_t		index;
+	e_metachar	quot;
+
+	index = 0;
+	quot = MC_NONE;
+	while (rawdelim[index] && !set_quote_state(rawdelim, index, &quot))
+		index++;
+	return (!rawdelim[index]);
+}
+
+size_t	skip_heredoc(char *str)
 {
 	e_metachar	quot;
 	size_t		count;

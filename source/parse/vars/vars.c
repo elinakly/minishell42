@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/16 23:59:56 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 01:17:39 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ size_t	skip_var_chars(char *cmd, size_t index)
  * Calculates how many environment variables are in a command string
  * Considers quotes, escapes, etc. in its calculation
  * TODO: `<<$` seemingly creates no tokens at all right now, investigate why
+ * TODO: The above also happens with stuff like `echo hey | $` (ending empty dollarsign)
+ * 
+ * TODO: Diff from above TODOs: try skipping expansion for vars coming after heredoc MAYBE?
  * @param cmd The command string to count variables in
  * @returns The amount of environment variables in the string
  */

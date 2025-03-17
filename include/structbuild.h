@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 00:17:13 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/16 17:06:18 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/17 00:43:13 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ struct t_redirect
 {
 	e_redir_type	type;
 	char			*file;
+	char			*heredoc_delim;
+	bool			expand_in_heredoc;
 	t_redirect		*next;
 };
 
