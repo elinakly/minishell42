@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/17 00:29:44 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/18 15:55:22 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ const char *parse_result_to_string(e_parse_result res)
 		case MALLOC_FAIL: return "MALLOC_FAIL";
 		case EMPTY: return "EMPTY";
 		case PARSEOK: return "PARSEOK";
-		default: "UNKNOWN PARSE RESULT?!";
 	}
 }
 
 void test_parse_output(char *test, bool isdebug)
 {
 	e_parse_result strparseres = validate_cmd_str(test);
+	size_t tokencount = 0;
 	if (isdebug && strparseres != PARSEOK)
 		printf("Parsing validation: %s\n", parse_result_to_string(strparseres));
 	if (strparseres != PARSEOK)
@@ -69,23 +69,23 @@ void test_parse_output(char *test, bool isdebug)
 	t_env_var **variables = get_vars_from_cmd(test);
 	if (!variables)
 		return;
-	t_token **tokens = get_tokens_from_cmd(test, variables);
+	t_token *tokens = get_tokens_from_cmd(test, variables, &tokencount);
+	t_token *tokencpy = tokens;
 	free_array((void **)variables, &clear_env_var);
 	if (!tokens)
 		return;
-	size_t tokenindex = 0;
 	if (isdebug)
 	{
-		while (tokens[tokenindex])
+		while (tokens)
 		{
-			printf("%-16s [%s]\n", token_type_to_string(tokens[tokenindex]->type), 
-				tokens[tokenindex]->value);
-			tokenindex++;
+			printf("%-16s [%s]\n", token_type_to_string(tokens->type), 
+				tokens->value);
+			tokens = tokens->next;
 		}
-		e_parse_result parseres = validate_tokens(tokens);
+		e_parse_result parseres = validate_tokens(tokencpy);
 		printf("Parsing validation: %s\n", parse_result_to_string(parseres));
 	}
-	free_array((void **)tokens, &clear_token_var);
+	// TODO: Free tokens linkedlist with a function that does not yet exist
 }
 void test_execute(char *test, char **envp)
 {

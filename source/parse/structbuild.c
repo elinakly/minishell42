@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   structbuild.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 12:57:04 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   structbuild.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/18 15:50:03 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,38 +55,38 @@ t_token	*make_token(char *raw_token, e_token_type type)
 	token->raw_value = raw_token;
 	token->value = sanitize_token(raw_token);
 	token->type = type;
+	token->next = NULL;
 	return (token);
 }
 
 /**
  * TODO: Write docs
  */
-t_token	**get_tokens_from_cmd(char *cmd, t_env_var **vars)
+t_token	*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount)
 {
 	t_tokeninfo		info;
 	char			**tokens;
-	t_token			**res;
-	size_t			amount;
+	t_token			*head;
+	t_token			*next;
+	t_token			**change;
 
-	tokens = tokenize(cmd, vars, &amount);
+	tokens = tokenize(cmd, vars, tokencount);
 	if (!tokens)
 		return (NULL);
-	res = malloc (sizeof(t_token *) * (amount + 1));
-	if (!res)
-		return (free_array((void **)tokens, NULL), NULL);
-	res[amount] = NULL;
 	info = (t_tokeninfo){TT_UNKNOWN, false, 0};
+	head = NULL;
+	change = &head;
 	while (tokens[info.index])
 	{
 		info.lasttype = get_token_type(tokens[info.index], info.lasttype,
 				&info.cmdfound);
-		res[info.index] = make_token(tokens[info.index], info.lasttype);
-		if (!res[info.index++])
-			return (free_array((void **)tokens, NULL),
-					free_array((void **)res, NULL), NULL); //TODO: Del function for t_token **
+		*change = make_token(tokens[info.index++], info.lasttype);
+		if (!*change)
+			return (free_array((void **)tokens, NULL), NULL); // TODO: Free linkedlist @head too, needs func
+		change = &((*change)->next);
 	}
 	free(tokens);
-	return (res);
+	return (head);
 }
 
 /**

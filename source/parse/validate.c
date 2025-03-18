@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   validate.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/16 16:17:48 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 11:44:53 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   validate.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/16 16:17:48 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/18 15:53:18 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,30 +55,23 @@ e_parse_result comp_curr_last_types(e_token_type curr, e_token_type prev)
  * @param tokens The list of all parsed tokens
  * @returns A parsing result
  */
-e_parse_result	validate_tokens(t_token **tokens)
+e_parse_result	validate_tokens(t_token *token)
 {
 	e_token_type	last;
-	size_t			index;
 
-	last = TT_UNKNOWN;
-	index = 0;
-	if (!tokens || !tokens[0])
+	if (!token)
 		return (EMPTY);
-	while (tokens[index])
+	last = token->type;
+	token = token->next;
+	while (token)
 	{
-		if (index == 0)
-		{
-			last = tokens[index]->type;
-			index++;
-			continue;
-		}
-		else if (comp_curr_last_types(tokens[index]->type, last) != PARSEOK)
+		if (comp_curr_last_types(token->type, last) != PARSEOK)
 			return (SYNTAX_ERROR);
-		if (tokens[index]->type == TT_HEREDOC_DELIM
-			&& (!tokens[index]->value || !ft_strlen(tokens[index]->value)))
+		if (token->type == TT_HEREDOC_DELIM
+			&& (!token->value || !ft_strlen(token->value)))
 			return (SYNTAX_ERROR);
-		last = tokens[index]->type;
-		index++;
+		last = token->type;
+		token = token->next;
 	}
 	return (get_parse_res_from_last(last));
 }

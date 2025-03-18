@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   structbuild.h                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/13 00:17:13 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 12:54:57 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   structbuild.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/13 00:17:13 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/18 15:56:13 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,16 @@ typedef struct t_tokeninfo
 	size_t			index;
 }					t_tokeninfo;
 
-/**
- * TODO: Turn into linkedlist since it is A LOT easier to work with
- */
-typedef struct t_token
+
+typedef struct t_token t_token;
+
+struct t_token
 {
 	e_token_type	type;
 	char			*raw_value;
 	char			*value;
-}	t_token;
+	t_token			*next;
+};
 
 typedef struct t_redirect t_redirect;
 
@@ -80,5 +81,5 @@ typedef enum e_parse_result
 }	e_parse_result;
 
 t_env_var	**get_vars_from_cmd(char *cmd);
-t_token		**get_tokens_from_cmd(char *cmd, t_env_var **vars);
+t_token		*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount);
 #endif
