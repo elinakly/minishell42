@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/19 13:02:09 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:23:33 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,12 @@ t_command	*make_cmd_list(t_token *token)
 	return (cmd_head);
 }
 
+/**
+ * Parses a command string into a useable linked list containing commands
+ * @param cmdstr The command string to parse
+ * @param cmd A pointer to where the linked list should be stored
+ * @returns A parsing result that describes what happened in parsing
+ */
 e_parse_result	parse_commands(char *cmdstr, t_command **cmd)
 {
 	size_t			tokencount;

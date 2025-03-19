@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 13:16:35 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:20:49 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,41 +22,6 @@
 #include <readline/history.h>
 
 char			*ft_readline(char **envp);
-
-const char *token_type_to_string(e_token_type type)
-{
-	switch (type)
-	{
-		case TT_UNKNOWN: return "TT_UNKNOWN";
-		case TT_COMMAND: return "TT_COMMAND";
-		case TT_ARGUMENT: return "TT_ARGUMENT";
-		case TT_HEREDOC: return "TT_HEREDOC";
-		case TT_PIPE: return "TT_PIPE";
-		case TT_RE_IN: return "TT_RE_IN";
-		case TT_RE_OUT: return "TT_RE_OUT";
-		case TT_RE_OUT_APPEND: return "TT_RE_OUT_APPEND";
-		case TT_INFILE: return "TT_INFILE";
-		case TT_OUTFILE: return "TT_OUTFILE";
-		case TT_HEREDOC_DELIM: return "TT_HEREDOC_DELIM";
-		default: return "INVALID_TYPE";
-	}
-}
-
-const char *parse_result_to_string(e_parse_result res)
-{
-	switch (res)
-	{
-		case UNCLOSED_SQUOTE: return "UNCLUSED_SQUOTE";
-		case UNCLOSED_DQUOTE: return "UNCLOSED_DQUOTE";
-		case UNFINISHED_PIPE: return "UNFINISHED_PIPE";
-		case ESCAPED_NEWLINE: return "ESCAPED_NEWLINE";
-		case HEREDOC:	return "HEREDOC";
-		case SYNTAX_ERROR: return "SYNTAX_ERROR";
-		case MALLOC_FAIL: return "MALLOC_FAIL";
-		case EMPTY: return "EMPTY";
-		case PARSEOK: return "PARSEOK";
-	}
-}
 
 void print_redirects(t_redirect *head)
 {
