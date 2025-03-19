@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 13:20:49 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:19:35 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,16 @@ void print_command_list(t_command *head) // Thank you kindly, ChatGPT
 	}
 }
 
+void new_test_exec(t_command *cmds)
+{
+	while (cmds)
+	{
+		if (cmds->has_command && ft_strncmp(cmds->name, "echo", 4) == 0)
+			echo(cmds->argv);
+		cmds = cmds->next;
+	}
+}
+
 void test_execute(char *test, char **envp)
 {
 	char **args = ft_split(test, ' '); // TODO: Currently leaks, but will be replaced with parsed stuff anyway
@@ -89,8 +99,7 @@ int	main(int argc, char **argv, char **envp)
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
-			if (argc == 2 && !ft_strncmp(argv[1], "--debug", 255))
-				print_command_list(cmds);
+			new_test_exec(cmds);
 			free_commands(cmds);
 		}
 		add_history(cmdstr);
