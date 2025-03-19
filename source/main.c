@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 14:19:35 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:34:53 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,6 @@ void new_test_exec(t_command *cmds)
 	}
 }
 
-void test_execute(char *test, char **envp)
-{
-	char **args = ft_split(test, ' '); // TODO: Currently leaks, but will be replaced with parsed stuff anyway
-	int builtin = is_builtin(test, args, envp);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char			*cmdstr;
@@ -95,7 +89,6 @@ int	main(int argc, char **argv, char **envp)
 		cmdstr = ft_readline(envp);
 		if (!cmdstr)
 			return (1);
-		//test_execute(cmdstr, envp);
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
@@ -103,6 +96,7 @@ int	main(int argc, char **argv, char **envp)
 			free_commands(cmds);
 		}
 		add_history(cmdstr);
+		history(cmdstr);
 		free(cmdstr);
 	}
 	rl_clear_history(); // TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions

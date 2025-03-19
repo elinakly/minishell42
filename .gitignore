@@ -25,3 +25,4 @@ objects/*
 .vscode
 # ignore suppression files
 *.supp
+.minishell_history
