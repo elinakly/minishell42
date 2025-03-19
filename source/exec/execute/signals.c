@@ -6,14 +6,14 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:51:58 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 19:25:03 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:24:23 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 #include <stdlib.h>
 
-void signal_handler(int sig)
+void	signal_handler(int sig)
 {
 	(void)sig;
 	printf("\n");
@@ -23,7 +23,7 @@ void signal_handler(int sig)
 }
 
 
-void set_signal()
+void	set_signal(void)
 {
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);

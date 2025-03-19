@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:16:34 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 18:39:41 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:25:30 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 # include <unistd.h>
 #include <readline/readline.h>
 
-void set_signal();
+void set_signal(void);
+int	get_history(void);
+int	history(char *line);
 
 #endif
 

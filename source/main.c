@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 14:34:53 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:38:13 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,6 @@ void print_command_list(t_command *head) // Thank you kindly, ChatGPT
 	}
 }
 
-void new_test_exec(t_command *cmds)
-{
-	while (cmds)
-	{
-		if (cmds->has_command && ft_strncmp(cmds->name, "echo", 4) == 0)
-			echo(cmds->argv);
-		cmds = cmds->next;
-	}
-}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -84,6 +75,8 @@ int	main(int argc, char **argv, char **envp)
 	t_command		*cmds;
 
 	set_signal();
+	if (get_history())
+		return (1);
 	while (1)
 	{
 		cmdstr = ft_readline(envp);
@@ -92,7 +85,7 @@ int	main(int argc, char **argv, char **envp)
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
-			new_test_exec(cmds);
+			new_test_exec(cmds, envp);
 			free_commands(cmds);
 		}
 		add_history(cmdstr);
