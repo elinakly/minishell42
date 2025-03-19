@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/19 11:34:34 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:43:27 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 /**
  * TODO: Rename the folder since this probably won't be exclusively memory stuff
+ * TODO: Rename this file because this is DEFINITELY not only array stuff
  */
 
 /**
@@ -127,6 +128,10 @@ void	free_redirs(t_redirect *head)
 	}
 }
 
+/**
+ * Frees a command struct and all its allocated fields
+ * @param cmd The command to free
+ */
 void	free_single_cmd(t_command *cmd)
 {
 	if (!cmd)
@@ -137,6 +142,10 @@ void	free_single_cmd(t_command *cmd)
 	free(cmd);
 }
 
+/**
+ * Frees all command structs in a linked list
+ * @param head The first command struct in the list
+ */
 void	free_commands(t_command *head)
 {
 	t_command	*next;
