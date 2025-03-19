@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   structbuild.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/19 01:28:44 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   structbuild.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/19 09:33:35 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ e_redir_type	get_redir_type(t_token *token)
 		return (RE_OUTPUT_TRUNC);
 	if (token->type == TT_RE_OUT_APPEND)
 		return (RE_OUTPUT_APPEND);
-	if (token->type == TT_HEREDOC);
+	if (token->type == TT_HEREDOC)
 		return (RE_HEREDOC);
 	return (RE_UNKNOWN);
 }
