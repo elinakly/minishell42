@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/19 01:20:29 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/19 11:36:33 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,30 +118,32 @@ void test_parse_output(char *test, bool isdebug)
 	{
 			t_command *cmd = make_cmd_list(tokens);
 			if (cmd)
+			{
 				print_command_list(cmd);
+				free_commands(cmd);
+			}
 	}
-	// TODO: Free tokens linkedlist with a function that does not yet exist
+	free_tokens(tokens);
 }
 void test_execute(char *test, char **envp)
 {
-	char **args = ft_split(test, ' ');
+	char **args = ft_split(test, ' '); // TODO: Currently leaks, but will be replaced with parsed stuff anyway
 	int builtin = is_builtin(test, args, envp);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	char *test;
-	set_signal();	
+	set_signal();
 	while (1)
 	{
 		if (!(test = ft_readline(envp)))
 			return (1);
 		test_execute(test, envp);
-		// Just made this function to keep main() a bit readable
 		test_parse_output(test, argc == 2 && !ft_strncmp(argv[1], "--debug", 255));
 		add_history(test);
 		free(test);
 	}
-	rl_clear_history();
+	rl_clear_history(); // TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
 	return (0);
 }

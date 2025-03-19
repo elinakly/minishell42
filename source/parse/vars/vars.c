@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   vars.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/03/17 01:17:39 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   vars.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
+/*   Updated: 2025/03/19 10:58:59 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ t_env_var	*make_var(t_part_var *part)
  * 
  * NOTE: It makes copies of variable names and values, so those must be freed!
  * TODO: Make sure that freeing **names here makes sense
+ * TODO: backslash space in variables seems wrong, figure it out ("\ ") space seems to disappear, backslash stays
  * @param envp Array containing all environment variables
  * @param names Array containing partial env vars (name + quote type)
  * @returns An array of environment variable structs

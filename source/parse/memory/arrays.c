@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   arrays.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/13 01:37:33 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   arrays.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/19 11:34:34 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ void	free_array(void **arr, void (*del)(void *))
 	free(arr);
 }
 
+/**
+ * Frees the data inside of a partial environment variable
+ * @param var The partial variable to free data in (cast to void pointer)
+ */
 void	clear_part_var(void *var)
 {
 	t_part_var *realvar = (t_part_var *)var;
@@ -65,11 +69,84 @@ void	clear_env_var(void *var)
 	}
 }
 
-void	clear_token_var(void *var)
+/**
+ * Frees a single token and all its allocated fields
+ * @param token The token to free
+ */
+void	free_single_token(t_token *token)
 {
-	t_token *token = (t_token *)var;
-	if (var)
-		free(token->value);
+	if (!token)
+		return ;
+	free(token->raw_value);
+	free(token->value);
+	free(token);
+}
+
+/**
+ * Loops through token linkedlist and frees all of them
+ * @param head The first token in the linkedlist
+ */
+void	free_tokens(t_token *head)
+{
+	t_token	*next;
+
+	while (head)
+	{
+		next = head->next;
+		free_single_token(head);
+		head = next;
+	}
+}
+
+/**
+ * Frees a redirect and all its allocated fields
+ * @param redir The redirect to free
+ */
+void	free_single_redir(t_redirect *redir)
+{
+	if (!redir)
+		return ;
+	free(redir->file);
+	free(redir->heredoc_delim);
+	free(redir);
+}
+
+/**
+ * Frees all redirects in a linkedlist
+ * @param head The first redirect in the linkedlist
+ */
+void	free_redirs(t_redirect *head)
+{
+	t_redirect	*next;
+
+	while (head)
+	{
+		next = head->next;
+		free_single_redir(head);
+		head = next;
+	}
+}
+
+void	free_single_cmd(t_command *cmd)
+{
+	if (!cmd)
+		return ;
+	free(cmd->name);
+	free_redirs(cmd->redirects);
+	free_array((void **)cmd->argv, NULL);
+	free(cmd);
+}
+
+void	free_commands(t_command *head)
+{
+	t_command	*next;
+
+	while (head)
+	{
+		next = head->next;
+		free_single_cmd(head);
+		head = next;
+	}
 }
 
 /**
