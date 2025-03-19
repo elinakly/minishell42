@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/07 16:35:59 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/18 18:10:05 by eklymova         ###   ########.fr       */
+/*   Created: 2025/03/18 18:10:39 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/18 19:47:09 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
 
-# include <unistd.h>
-# include "../lib/libft/libft.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <readline/readline.h>
-# include <linux/limits.h>
+#include "../../../lib/libft/libft.h"
+#include "../../../include/builtins.h"
 
-int		echo(char **args);
-int		env(char **envp);
-int		is_builtin(char *cmd, char **args, char **envp);
-int		pwd();
-int 	ft_exit();
-
-#endif
+int history(char **line)
+{
+	int fd;
+	fd = open(history_fle.txt, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	if (fd == -1)
+		return (1);
+	printf(history_file.txt, "%s\n", line);
+	return (0);
+}
