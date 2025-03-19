@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 14:15:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 11:51:16 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/18 22:24:56 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ typedef enum e_quote_type
 
 typedef enum e_redir_type
 {
+	RE_UNKNOWN,
 	RE_OUTPUT_TRUNC,
 	RE_OUTPUT_APPEND,
 	RE_INPUT,
-	RE_HEREDOC
+	RE_HEREDOC,
 }	e_redir_type;
 
 char			**tokenize(char *entry, t_env_var **vars, size_t *amount);

@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/17 13:46:21 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/17 12:46:26 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/03/19 01:48:47 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ e_token_type	get_token_type(char *raw_token, e_token_type last, bool *cmdfound)
 
 /**
  * Takes a full minishell command and tokenizes it (splitting it up)
+ * TODO: Not sure if it is here, but a single space appears to be a valid command when it should not be
  * @param entry The string to tokenize
  * @returns An array of tokens (strings) or NULL if fail
  */
@@ -199,9 +200,7 @@ char	**tokenize(char *entry, t_env_var **vars, size_t *amount)
 bool	can_escape(char c, e_metachar quot)
 {
 	if (quot == MC_NONE)
-		return (c == MC_SEPAR_SPACE
-			|| c == MC_SEPAR_TAB
-			|| c == MC_DQUOTE
+		return (c == MC_DQUOTE
 			|| c == MC_SQUOTE
 			|| c == MC_PIPE
 			|| c == MC_ESCAPE

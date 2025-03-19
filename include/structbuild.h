@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   structbuild.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 00:17:13 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/18 15:56:13 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   structbuild.h                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/13 00:17:13 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/18 23:55:20 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef struct t_tokeninfo
 	bool			cmdfound;
 	size_t			index;
 }					t_tokeninfo;
-
 
 typedef struct t_token t_token;
 
@@ -58,10 +57,9 @@ typedef struct t_command t_command;
 struct t_command
 {
 	bool			has_command;
-	bool			has_pipe;
 	bool			has_redirects;
 	char			*name;
-	int				argc;
+	size_t			argc;
 	char			**argv;
 	t_redirect		*redirects;
 	t_command		*next;
@@ -82,4 +80,5 @@ typedef enum e_parse_result
 
 t_env_var	**get_vars_from_cmd(char *cmd);
 t_token		*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount);
+t_command	*make_cmd_list(t_token *token);
 #endif

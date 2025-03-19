@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/18 15:55:22 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/19 01:20:29 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,67 @@ const char *parse_result_to_string(e_parse_result res)
 	}
 }
 
+void print_redirects(t_redirect *head)
+{
+	t_redirect	*current;
+
+	current = head;
+	while (current)
+	{
+		printf("  - [Type: %d | File: \"%s\" | Delimiter: \"%s\" | Heredoc expand: %s]\n",
+			current->type, current->file ? current->file : "(none)", 
+			current->heredoc_delim ? current->heredoc_delim : "(none)",
+			current->expand_in_heredoc ? "Yes" : "No");
+		current = current->next;
+	}
+}
+
+void print_command_list(t_command *head) // Thank you kindly, ChatGPT
+{
+	t_command	*current;
+	size_t		i;
+
+	current = head;
+	while (current)
+	{
+		printf("Command: %s\n", current->name ? current->name : "(none)");
+		i = 0;
+		if (current->argc > 0)
+		{
+			printf("Arguments:\n");
+			while (i < current->argc)
+			{
+				printf("  - [%s]\n", current->argv[i]);
+				i++;
+			}
+		}
+		if (current->has_redirects)
+		{
+			printf("Redirects:\n");
+			print_redirects(current->redirects);
+		}
+		printf("------------\n");
+		current = current->next;
+	}
+}
+
 void test_parse_output(char *test, bool isdebug)
 {
-	e_parse_result strparseres = validate_cmd_str(test);
 	size_t tokencount = 0;
-	if (isdebug && strparseres != PARSEOK)
-		printf("Parsing validation: %s\n", parse_result_to_string(strparseres));
-	if (strparseres != PARSEOK)
+	if (validate_cmd_str(test) != PARSEOK)
 		return;
 	t_env_var **variables = get_vars_from_cmd(test);
 	if (!variables)
 		return;
 	t_token *tokens = get_tokens_from_cmd(test, variables, &tokencount);
-	t_token *tokencpy = tokens;
 	free_array((void **)variables, &clear_env_var);
 	if (!tokens)
 		return;
-	if (isdebug)
+	if (isdebug && validate_tokens(tokens) == PARSEOK)
 	{
-		while (tokens)
-		{
-			printf("%-16s [%s]\n", token_type_to_string(tokens->type), 
-				tokens->value);
-			tokens = tokens->next;
-		}
-		e_parse_result parseres = validate_tokens(tokencpy);
-		printf("Parsing validation: %s\n", parse_result_to_string(parseres));
+			t_command *cmd = make_cmd_list(tokens);
+			if (cmd)
+				print_command_list(cmd);
 	}
 	// TODO: Free tokens linkedlist with a function that does not yet exist
 }

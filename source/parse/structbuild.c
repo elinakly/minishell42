@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   structbuild.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/18 15:50:03 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   structbuild.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/19 01:28:44 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,40 +90,159 @@ t_token	*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount)
 }
 
 /**
- * TODO: Take whole token instead, I think! That way we can get heredoc info from raw values etc
  * TODO: Write docs
  */
-t_redirect	*create_redir(e_redir_type type, char *file)
+e_redir_type	get_redir_type(t_token *token)
 {
-	t_redirect	*res;
-
-	res = malloc(sizeof(t_redirect));
-	if (!res)
-		return (NULL);
-	res->type = type;
-	res->file = file;
-	res->next = NULL;
-	res->heredoc_delim = NULL; //TODO: this is default, gotta set it elsewhere based on next token
-	res->expand_in_heredoc = false; //TODO: This is also default, also gotta set it elsewhere
-	return (res);
+	if (!token)
+		return (RE_UNKNOWN);
+	if (token->type == TT_RE_IN)
+		return (RE_INPUT);
+	if (token->type == TT_RE_OUT)
+		return (RE_OUTPUT_TRUNC);
+	if (token->type == TT_RE_OUT_APPEND)
+		return (RE_OUTPUT_APPEND);
+	if (token->type == TT_HEREDOC);
+		return (RE_HEREDOC);
+	return (RE_UNKNOWN);
 }
 
 /**
  * TODO: Write docs
  */
-t_command	*create_command(char *name)
+t_redirect	*create_redir(t_token *token)
+{
+	t_redirect	*res;
+
+	if (!token || !token->next)
+		return (NULL);
+	res = malloc(sizeof(t_redirect));
+	if (!res)
+		return (NULL);
+	res->type = get_redir_type(token);
+	res->file = NULL;
+	if (token->next->type == TT_OUTFILE || token->next->type == TT_INFILE)
+		res->file = token->next->value;
+	res->heredoc_delim = NULL;
+	res->expand_in_heredoc = false;
+	if (token->next->type == TT_HEREDOC_DELIM)
+	{
+		res->heredoc_delim = token->next->value;
+		res->expand_in_heredoc = heredoc_should_expand(token->next->raw_value);
+	}
+	res->next = NULL;
+	return (res);
+}
+
+size_t	get_cmd_argc(t_token *token)
+{
+	size_t	argc;
+
+	argc = 0;
+	if (!token)
+		return (argc);
+	while (token && token->type != TT_PIPE)
+	{
+		argc += token->type == TT_ARGUMENT;
+		token = token->next;
+	}
+	return (argc);
+}
+
+bool	insert_redir_in_cmd(t_command *cmd, t_token *token)
+{
+	t_redirect	*tempre;
+	t_redirect *head;
+
+	tempre = create_redir(token);
+	if (!tempre)
+		return (false);
+	cmd->has_redirects = true;
+	if (!cmd->redirects)
+		cmd->redirects = tempre;
+	else
+	{
+		head = cmd->redirects;
+		while (head->next)
+			head = head->next;
+		head->next = tempre;
+	}
+	return (true);
+}
+
+bool	insert_into_command(t_command *cmd, t_token *token, size_t *argv_i)
+{
+	t_redirect	*tempre;
+	
+	if (token->type == TT_COMMAND)
+	{
+		cmd->name = token->value;
+		cmd->has_command = true;
+	}
+	if (token->type == TT_ARGUMENT)
+		cmd->argv[(*argv_i)++] = token->value;
+	if (token->type == TT_HEREDOC || token->type == TT_RE_OUT_APPEND
+		|| token->type == TT_RE_IN || token->type == TT_RE_OUT)
+		return (insert_redir_in_cmd(cmd, token));
+	return (true);
+}
+
+/**
+ * TODO: Write docs
+ */
+t_command	*create_command(t_token *token)
 {
 	t_command	*res;
+	size_t		argv_i;
 
+	argv_i = 0;
 	res = malloc(sizeof(t_command));
 	if (!res)
 		return (NULL);
-	res->name = name;
-	res->argc = 0;
-	res->argv = NULL;
-	res->has_pipe = false;
-	res->has_redirects = false;
+	res->name = NULL;
+	res->argc = get_cmd_argc(token);
+	res->argv = malloc(sizeof(char *) * (res->argc + 1));
+	if (!res->argv)
+		return (free(res), NULL); // TODO: Needs proper free, including stuff inside res
+	res->argv[res->argc] = NULL;
 	res->redirects = NULL;
 	res->next = NULL;
+	res->has_redirects = false;
+	res->has_command = false;
+	if (!insert_into_command(res, token, &argv_i))
+		return (NULL); // TODO: Needs proper free, including stuff inside res
 	return (res);
+}
+
+/**
+ * TODO: write docs
+ * TODO: ensure no token null check is ok (I NEED LINES)
+ */
+t_command	*make_cmd_list(t_token *token)
+{
+	t_command	*cmd;
+	t_command	*cmd_head;
+	size_t		argv_i;
+
+	argv_i = 0;
+	cmd = create_command(token);
+	cmd_head = cmd;
+	if (!cmd)
+		return (NULL);
+	while (token)
+	{
+		if (token->type != TT_PIPE && !insert_into_command(cmd, token, &argv_i))
+				return (NULL); // TODO: Free everything inside cmd with some linkedlist free func
+		else if (token->type == TT_PIPE)
+		{
+			token = token->next; //TODO: Technically could be NULL but that would have been syntax error? Double check or make note of this
+			cmd->next = create_command(token);
+			if (!cmd->next)
+				return (NULL); // TODO: Free everything inside cmd with some linkedlist free func
+			cmd = cmd->next;
+			argv_i = 0;
+		}
+		token = token->next;
+	}
+	return (cmd_head);
 }
