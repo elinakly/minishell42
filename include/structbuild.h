@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   structbuild.h                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/13 00:17:13 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/18 23:55:20 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   structbuild.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/13 00:17:13 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/19 13:11:12 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ typedef enum e_parse_result
 	PARSEOK,
 }	e_parse_result;
 
-t_env_var	**get_vars_from_cmd(char *cmd);
-t_token		*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount);
-t_command	*make_cmd_list(t_token *token);
+t_env_var		**get_vars_from_cmd(char *cmd);
+t_token			*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount);
+t_command		*make_cmd_list(t_token *token);
+e_parse_result	parse_commands(char *cmdstr, t_command **cmd);
 #endif

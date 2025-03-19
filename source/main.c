@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 11:36:33 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:16:35 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,29 +102,6 @@ void print_command_list(t_command *head) // Thank you kindly, ChatGPT
 	}
 }
 
-void test_parse_output(char *test, bool isdebug)
-{
-	size_t tokencount = 0;
-	if (validate_cmd_str(test) != PARSEOK)
-		return;
-	t_env_var **variables = get_vars_from_cmd(test);
-	if (!variables)
-		return;
-	t_token *tokens = get_tokens_from_cmd(test, variables, &tokencount);
-	free_array((void **)variables, &clear_env_var);
-	if (!tokens)
-		return;
-	if (isdebug && validate_tokens(tokens) == PARSEOK)
-	{
-			t_command *cmd = make_cmd_list(tokens);
-			if (cmd)
-			{
-				print_command_list(cmd);
-				free_commands(cmd);
-			}
-	}
-	free_tokens(tokens);
-}
 void test_execute(char *test, char **envp)
 {
 	char **args = ft_split(test, ' '); // TODO: Currently leaks, but will be replaced with parsed stuff anyway
@@ -133,16 +110,26 @@ void test_execute(char *test, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char *test;
+	char			*cmdstr;
+	e_parse_result	result;
+	t_command		*cmds;
+
 	set_signal();
 	while (1)
 	{
-		if (!(test = ft_readline(envp)))
+		cmdstr = ft_readline(envp);
+		if (!cmdstr)
 			return (1);
-		test_execute(test, envp);
-		test_parse_output(test, argc == 2 && !ft_strncmp(argv[1], "--debug", 255));
-		add_history(test);
-		free(test);
+		//test_execute(cmdstr, envp);
+		result = parse_commands(cmdstr, &cmds);
+		if (result == PARSEOK)
+		{
+			if (argc == 2 && !ft_strncmp(argv[1], "--debug", 255))
+				print_command_list(cmds);
+			free_commands(cmds);
+		}
+		add_history(cmdstr);
+		free(cmdstr);
 	}
 	rl_clear_history(); // TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
 	return (0);

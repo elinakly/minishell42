@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/19 11:32:03 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:02:09 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../include/variable.h"
 #include "../../include/tokenize.h"
 #include "../../include/memory.h"
+#include "../../include/validate.h"
 #include "../../lib/libft/libft.h"
 
 /**
@@ -309,4 +310,32 @@ t_command	*make_cmd_list(t_token *token)
 		token = token->next;
 	}
 	return (cmd_head);
+}
+
+e_parse_result	parse_commands(char *cmdstr, t_command **cmd)
+{
+	size_t			tokencount;
+	e_parse_result	res;
+	t_env_var		**variables;
+	t_token			*tokens;
+
+	tokencount = 0;
+	res = validate_cmd_str(cmdstr);
+	if (res != PARSEOK)
+		return (res);
+	variables = get_vars_from_cmd(cmdstr);
+	if (!variables)
+		return (MALLOC_FAIL);
+	tokens = get_tokens_from_cmd(cmdstr, variables, &tokencount);
+	free_array((void **)variables, &clear_env_var);
+	if (!tokens)
+		return (MALLOC_FAIL);
+	res = validate_tokens(tokens);
+	if (res != PARSEOK)
+		return (res);
+	*cmd = make_cmd_list(tokens);
+	if (!*cmd)
+		return (MALLOC_FAIL);
+	free_tokens(tokens);
+	return (PARSEOK);
 }
