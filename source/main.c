@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/18 15:55:22 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:19:35 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,90 +23,88 @@
 
 char			*ft_readline(char **envp);
 
-const char *token_type_to_string(e_token_type type)
+void print_redirects(t_redirect *head)
 {
-	switch (type)
+	t_redirect	*current;
+
+	current = head;
+	while (current)
 	{
-		case TT_UNKNOWN: return "TT_UNKNOWN";
-		case TT_COMMAND: return "TT_COMMAND";
-		case TT_ARGUMENT: return "TT_ARGUMENT";
-		case TT_HEREDOC: return "TT_HEREDOC";
-		case TT_PIPE: return "TT_PIPE";
-		case TT_RE_IN: return "TT_RE_IN";
-		case TT_RE_OUT: return "TT_RE_OUT";
-		case TT_RE_OUT_APPEND: return "TT_RE_OUT_APPEND";
-		case TT_INFILE: return "TT_INFILE";
-		case TT_OUTFILE: return "TT_OUTFILE";
-		case TT_HEREDOC_DELIM: return "TT_HEREDOC_DELIM";
-		default: return "INVALID_TYPE";
+		printf("  - [Type: %d | File: \"%s\" | Delimiter: \"%s\" | Heredoc expand: %s]\n",
+			current->type, current->file ? current->file : "(none)", 
+			current->heredoc_delim ? current->heredoc_delim : "(none)",
+			current->expand_in_heredoc ? "Yes" : "No");
+		current = current->next;
 	}
 }
 
-const char *parse_result_to_string(e_parse_result res)
+void print_command_list(t_command *head) // Thank you kindly, ChatGPT
 {
-	switch (res)
-	{
-		case UNCLOSED_SQUOTE: return "UNCLUSED_SQUOTE";
-		case UNCLOSED_DQUOTE: return "UNCLOSED_DQUOTE";
-		case UNFINISHED_PIPE: return "UNFINISHED_PIPE";
-		case ESCAPED_NEWLINE: return "ESCAPED_NEWLINE";
-		case HEREDOC:	return "HEREDOC";
-		case SYNTAX_ERROR: return "SYNTAX_ERROR";
-		case MALLOC_FAIL: return "MALLOC_FAIL";
-		case EMPTY: return "EMPTY";
-		case PARSEOK: return "PARSEOK";
-	}
-}
+	t_command	*current;
+	size_t		i;
 
-void test_parse_output(char *test, bool isdebug)
-{
-	e_parse_result strparseres = validate_cmd_str(test);
-	size_t tokencount = 0;
-	if (isdebug && strparseres != PARSEOK)
-		printf("Parsing validation: %s\n", parse_result_to_string(strparseres));
-	if (strparseres != PARSEOK)
-		return;
-	t_env_var **variables = get_vars_from_cmd(test);
-	if (!variables)
-		return;
-	t_token *tokens = get_tokens_from_cmd(test, variables, &tokencount);
-	t_token *tokencpy = tokens;
-	free_array((void **)variables, &clear_env_var);
-	if (!tokens)
-		return;
-	if (isdebug)
+	current = head;
+	while (current)
 	{
-		while (tokens)
+		printf("Command: %s\n", current->name ? current->name : "(none)");
+		i = 0;
+		if (current->argc > 0)
 		{
-			printf("%-16s [%s]\n", token_type_to_string(tokens->type), 
-				tokens->value);
-			tokens = tokens->next;
+			printf("Arguments:\n");
+			while (i < current->argc)
+			{
+				printf("  - [%s]\n", current->argv[i]);
+				i++;
+			}
 		}
-		e_parse_result parseres = validate_tokens(tokencpy);
-		printf("Parsing validation: %s\n", parse_result_to_string(parseres));
+		if (current->has_redirects)
+		{
+			printf("Redirects:\n");
+			print_redirects(current->redirects);
+		}
+		printf("------------\n");
+		current = current->next;
 	}
-	// TODO: Free tokens linkedlist with a function that does not yet exist
 }
+
+void new_test_exec(t_command *cmds)
+{
+	while (cmds)
+	{
+		if (cmds->has_command && ft_strncmp(cmds->name, "echo", 4) == 0)
+			echo(cmds->argv);
+		cmds = cmds->next;
+	}
+}
+
 void test_execute(char *test, char **envp)
 {
-	char **args = ft_split(test, ' ');
+	char **args = ft_split(test, ' '); // TODO: Currently leaks, but will be replaced with parsed stuff anyway
 	int builtin = is_builtin(test, args, envp);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char *test;
-	set_signal();	
+	char			*cmdstr;
+	e_parse_result	result;
+	t_command		*cmds;
+
+	set_signal();
 	while (1)
 	{
-		if (!(test = ft_readline(envp)))
+		cmdstr = ft_readline(envp);
+		if (!cmdstr)
 			return (1);
-		test_execute(test, envp);
-		// Just made this function to keep main() a bit readable
-		test_parse_output(test, argc == 2 && !ft_strncmp(argv[1], "--debug", 255));
-		add_history(test);
-		free(test);
+		//test_execute(cmdstr, envp);
+		result = parse_commands(cmdstr, &cmds);
+		if (result == PARSEOK)
+		{
+			new_test_exec(cmds);
+			free_commands(cmds);
+		}
+		add_history(cmdstr);
+		free(cmdstr);
 	}
-	rl_clear_history();
+	rl_clear_history(); // TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
 	return (0);
 }

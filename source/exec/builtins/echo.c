@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   echo.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/07 17:03:23 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/16 14:41:28 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/07 17:03:23 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/19 14:19:18 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	check_flag(char **args, int *i)
 	int	flag;
 	int	j;
 
-	*i = 1;
+	*i = 0;
 	flag = 0;
 	while (args[*i])
 	{
@@ -73,7 +73,7 @@ int	echo(char **args)
 	int	status;
 
 	status = 0;
-	if (!args[1] || !args)
+	if (!args[0] || !args)
 		return (ft_putchar_fd_echo('\n', 1));
 	flag = check_flag(args, &i);
 	while (args[i])

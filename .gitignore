@@ -12,13 +12,16 @@ source/exec/testing/*
 source/exec/testing/*
 objects/*
 # ignore builtin binaries, Makefile will build these
+# TODO: These probably don't need to be here anymore
 /exec/builtins/echo/echo
 /exec/builtins/cd/cd
 /exec/builtins/pwd/pwd
 /exec/builtins/export/export
 /exec/builtins/unset/unset
-#hello
 /exec/builtins/exit/exit
 # ignore all of libft, whether cloned or just dropped into the project
 /lib/*
+# ignore vscode auto-generated crap
 .vscode
+# ignore suppression files
+*.supp

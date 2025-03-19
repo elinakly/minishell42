@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   meta_tokenize.c                                    :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/17 19:41:33 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/17 12:31:47 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   meta_tokenize.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/03/19 13:30:18 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,6 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
 	else if (meta)
 		*meta = MC_NONE;
 	return (result);
-}
-
-/**
- * TODO: Check if this is ever going to be used, as it currently is not
- */
-bool	is_disrupt_meta(char *str, size_t index, e_metachar *meta)
-{
-	bool		is_any_meta;
-	e_metachar	type;
-
-	type = MC_NONE;
-	is_any_meta = is_meta(str, index, &type);
-	if (meta)
-		*meta = type;
-	return (is_any_meta && type == MC_REDIR_IN
-		|| type == MC_REDIR_OUT || type == MC_PIPE);
 }
 
 /**
