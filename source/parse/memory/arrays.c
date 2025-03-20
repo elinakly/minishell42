@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   arrays.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/19 11:43:27 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   arrays.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/21 00:06:20 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,5 +170,18 @@ size_t	ft_arrlen(void **arr)
 	count = 0;
 	while (arr && arr[count])
 		count++;
+	return (count);
+}
+
+size_t	ft_cmdcount(t_command *head)
+{
+	size_t	count;
+
+	count = 0;
+	while (head)
+	{
+		count++;
+		head = head->next;
+	}
 	return (count);
 }
