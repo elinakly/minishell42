@@ -22,6 +22,7 @@
 #include <readline/history.h>
 
 char			*ft_readline(char **envp);
+size_t			ft_cmdcount(t_command *head);
 
 void print_redirects(t_redirect *head)
 {
@@ -75,17 +76,21 @@ int	main(int argc, char **argv, char **envp)
 	t_command		*cmds;
 
 	set_signal();
+
 	if (get_history())
 		return (1);
 	while (1)
 	{
 		cmdstr = ft_readline(envp);
+
 		if (!cmdstr)
 			return (1);
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
-			new_test_exec(cmds, envp);
+			size_t cmdcount = ft_cmdcount(cmds);		
+			if (!new_test_exec(cmds, envp))
+				execute_cmds(*cmds, envp, cmdcount);
 			free_commands(cmds);
 		}
 		add_history(cmdstr);

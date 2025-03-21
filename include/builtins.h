@@ -27,6 +27,6 @@ int		echo(char **args);
 int		env(char **envp);
 int		pwd(void);
 int		ft_exit(void);
-void	new_test_exec(t_command *cmds, char **envp);
+bool	new_test_exec(t_command *cmds, char **envp);
 
 #endif

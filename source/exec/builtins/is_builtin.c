@@ -21,7 +21,7 @@
  * @return int 1 if the command is a built-in command, 0 otherwise
  **/
 
-void	new_test_exec(t_command *cmds, char **envp)
+bool	new_test_exec(t_command *cmds, char **envp)
 {
 	size_t	len;
 
@@ -29,13 +29,14 @@ void	new_test_exec(t_command *cmds, char **envp)
 	while (cmds)
 	{
 		if (cmds->has_command && ft_strncmp(cmds->name, "echo", len) == 0)
-			echo(cmds->argv);
+			return (echo(cmds->argv), true);
 		if (cmds->has_command && ft_strncmp(cmds->name, "pwd", len) == 0)
-			pwd();
+			return (pwd(), true);
 		if (cmds->has_command && ft_strncmp(cmds->name, "env", len) == 0)
-			env(envp);
+			return (env(envp) , true);
 		if (cmds->has_command && ft_strncmp(cmds->name, "exit", len) == 0)
-			ft_exit();
+			return (ft_exit(), true);
 		cmds = cmds->next;
 	}
+	return (false);
 }

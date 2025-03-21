@@ -12,20 +12,20 @@
 
 #include "pipex_bonus.h"
 
-void	close_fd(t_command commands, int **pipes)
-{
-	int	i;
+// void	close_fd(t_command commands, int **pipes)
+// {
+// 	int	i;
 
-	close(commands.input_fd);
-	close(commands.output_fd);
-	i = 0;
-	while (i < commands.num_cmds - 1)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	}
-}
+// 	close(commands.input_fd);
+// 	close(commands.output_fd);
+// 	i = 0;
+// 	while (i < commands.num_cmds - 1)
+// 	{
+// 		close(pipes[i][0]);
+// 		close(pipes[i][1]);
+// 		i++;
+// 	}
+// }
 
 int	error(int status)
 {
@@ -82,29 +82,25 @@ static char	*find_valid_path(const char *com, char **envp)
 	return (free_arr(paths), NULL);
 }
 
-void	execute(char *com, char **envp)
+void	execute(char *com, char **argv, char **envp)
 {
 	char	*find_path;
-	char	**command;
 
-	command = ft_split(com, ' ');
-	if (!command)
-		exit(error(3));
-	find_path = find_valid_path(command[0], envp);
-	if (command[0] == NULL)
+	find_path = find_valid_path(com, envp);
+	if (com == NULL)
 	{
-		free_arr(command);
+		free_arr(argv);
 		exit(error(3));
 	}
 	if (find_path == NULL)
 	{
-		free_arr(command);
+		free_arr(argv);
 		exit(error(127));
 	}
-	if (execve(find_path, command, envp) == -1)
+	if (execve(find_path, argv, envp) == -1)
 	{
 		free(find_path);
-		free_arr(command);
+		free_arr(argv);
 		exit(error(126));
 	}
 }

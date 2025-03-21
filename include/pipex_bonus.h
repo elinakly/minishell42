@@ -21,21 +21,22 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <linux/limits.h>
+# include "structbuild.h"
 
-typedef struct s_command
-{
-	char	*cmd;
-	int		input_fd;
-	int		output_fd;
-	int		argc;
-	char	**args;
-	int		num_cmds;
-}			t_command;
+// typedef struct s_command
+// {
+// 	char	*cmd;
+// 	int		input_fd;
+// 	int		output_fd;
+// 	int		argc;
+// 	char	**args;
+// 	int		num_cmds;
+// }			t_command;
 
-void		execute(char *com, char **envp);
+void		execute(char *com, char **argv, char **envp);
 int			error(int status);
 void		create_pipes(int num_cmds, int **pipes);
 void		free_arr(char **arr);
-void		close_fd(t_command commands, int **pipes);
+// void		close_fd(t_command commands, int **pipes);
 
 #endif
