@@ -14,6 +14,7 @@
 #include "../../../include/pipex_bonus.h"
 #include "../../../include/structbuild.h"
 #include "../../../include/memory.h"
+#include "../../../include/builtins.h"
 
 void	create_pipes(int num_cmds, int **pipes)
 {
@@ -114,6 +115,26 @@ int	pipes(t_command cmds, char *envp[], size_t cmdcount)
 	int			**pipes;
 	int			i;
 
+	pipes = malloc_pipes(cmds, cmdcount);
+	if (!pipes)
+		return (1);
+	create_pipes(cmdcount, pipes);
+	fork_plz(cmds, pipes, envp, cmdcount);
+	// close_fd(cmds, pipes);
+	i = 0;
+	while (i < cmdcount)
+	{
+		wait(NULL);
+		i++;
+	}
+	free(pipes);
+	return (0);
+}
+
+int	execute_signal_cmd(t_command cmds, char *envp[], size_t cmdcount)
+{
+	int			**pipes;
+	int			i;
 
 	pipes = malloc_pipes(cmds, cmdcount);
 	if (!pipes)
@@ -133,14 +154,14 @@ int	pipes(t_command cmds, char *envp[], size_t cmdcount)
 
 int execute_cmds(t_command cmds, char *envp[], size_t cmdcount)
 {
+	if (new_test_exec(&cmds, envp))
+		return (0);
 	if (cmdcount == 1)
-	{
-		pipes(cmds, envp, cmdcount);
-	}
+		execute_signal_cmd(cmds, envp, cmdcount);
 	else
 	{
 		// pipes(cmds, envp, cmdcount);
 		return (0);
 	}
-	return (1);
+	return (0);
 }

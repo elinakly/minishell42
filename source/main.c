@@ -88,9 +88,8 @@ int	main(int argc, char **argv, char **envp)
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
-			size_t cmdcount = ft_cmdcount(cmds);		
-			if (!new_test_exec(cmds, envp))
-				execute_cmds(*cmds, envp, cmdcount);
+			size_t cmdcount = ft_cmdcount(cmds);	
+			execute_cmds(*cmds, envp, cmdcount);
 			free_commands(cmds);
 		}
 		add_history(cmdstr);
