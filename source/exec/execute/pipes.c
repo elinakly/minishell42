@@ -16,6 +16,9 @@
 #include "../../../include/memory.h"
 #include "../../../include/builtins.h"
 
+
+//TODO rederection input and output files , malloc_pipes(malloc) leaking)
+
 void	create_pipes(int num_cmds, int **pipes)
 {
 	int	i;
@@ -32,20 +35,22 @@ void	create_pipes(int num_cmds, int **pipes)
 	}
 }
 
-void	redirection(int i, int **pipes, t_command commands)
+void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
 	// if (i == 0)
 	// 	dup2(commands.input_fd, STDIN_FILENO);
 	// else
+	if (i > 0)
 		dup2(pipes[i - 1][0], STDIN_FILENO);
 	// if (i == commands.num_cmds - 1)
 	// 	dup2(commands.output_fd, STDOUT_FILENO);
 	// else
+	if (i < cmdcount - 1)
 		dup2(pipes[i][1], STDOUT_FILENO);
 }
 
 
-void	child_process(int i, int **pipes, char *envp[], t_command cmds, size_t cmdcount)
+void	child_process(int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
 {
 	// commands.input_fd = open(commands.args[1], O_RDONLY);
 	// /// if (heredoc detected)
@@ -60,13 +65,12 @@ void	child_process(int i, int **pipes, char *envp[], t_command cmds, size_t cmdc
 	// //		O_WRONLY | O_CREAT | O_APPEND, 0777);
 	// if (commands.output_fd == -1)
 	// 	return ;
-	if (cmdcount > 1)
-		redirection(i, pipes, cmds);
-	// close_fd(commands, pipes);
-	execute(cmds.name, cmds.argv, envp);
+	redirection(i, pipes, cmds, cmdcount);
+	close_fd(cmds, pipes, cmdcount);
+	execute(cmds->name, cmds->argv, envp);
 }
 
-int	**malloc_pipes(t_command commands, size_t cmdcount)
+int	**malloc_pipes(t_command *commands, size_t cmdcount)
 {
 	int	i;
 	int	**pipes;
@@ -90,7 +94,7 @@ int	**malloc_pipes(t_command commands, size_t cmdcount)
 	return (pipes);
 }
 
-void	fork_plz(t_command commands, int **pipes, char **envp, size_t cmdcount)
+void	fork_plz(t_command *commands, int **pipes, char **envp, size_t cmdcount)
 {
 	int		i;
 	pid_t	pid;
@@ -107,10 +111,11 @@ void	fork_plz(t_command commands, int **pipes, char **envp, size_t cmdcount)
 		if (pid == 0)
 			child_process(i, pipes, envp, commands, cmdcount);
 		i++;
+		commands = commands->next;
 	}
 }
 
-int	pipes(t_command cmds, char *envp[], size_t cmdcount)
+int	pipes(t_command *cmds, char *envp[], size_t cmdcount)
 {
 	int			**pipes;
 	int			i;
@@ -120,7 +125,7 @@ int	pipes(t_command cmds, char *envp[], size_t cmdcount)
 		return (1);
 	create_pipes(cmdcount, pipes);
 	fork_plz(cmds, pipes, envp, cmdcount);
-	// close_fd(cmds, pipes);
+	close_fd(cmds, pipes, cmdcount);
 	i = 0;
 	while (i < cmdcount)
 	{
@@ -131,37 +136,33 @@ int	pipes(t_command cmds, char *envp[], size_t cmdcount)
 	return (0);
 }
 
-int	execute_signal_cmd(t_command cmds, char *envp[], size_t cmdcount)
+int	execute_signal_cmd(t_command *cmds, char *envp[])
 {
-	int			**pipes;
-	int			i;
+	pid_t	pid;
+	int		status;
 
-	pipes = malloc_pipes(cmds, cmdcount);
-	if (!pipes)
-		return (1);
-	create_pipes(cmdcount, pipes);
-	fork_plz(cmds, pipes, envp, cmdcount);
-	// close_fd(cmds, pipes);
-	i = 0;
-	while (i < cmdcount)
+	pid = fork();
+	if (pid == -1)
 	{
-		wait(NULL);
-		i++;
+		perror("fork failed");
+		return (1);
 	}
-	free(pipes);
+	if (pid == 0)
+	{
+		execute(cmds->name, cmds->argv, envp);
+		exit(0);
+	}
+	waitpid(pid, &status, 0);
 	return (0);
 }
 
-int execute_cmds(t_command cmds, char *envp[], size_t cmdcount)
+int execute_cmds(t_command *cmds, char *envp[], size_t cmdcount)
 {
-	if (new_test_exec(&cmds, envp))
+	if (new_test_exec(cmds, envp))
 		return (0);
 	if (cmdcount == 1)
-		execute_signal_cmd(cmds, envp, cmdcount);
+		execute_signal_cmd(cmds, envp);
 	else
-	{
-		// pipes(cmds, envp, cmdcount);
-		return (0);
-	}
+		pipes(cmds, envp, cmdcount);
 	return (0);
 }

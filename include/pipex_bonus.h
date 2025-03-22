@@ -37,6 +37,6 @@ void		execute(char *com, char **argv, char **envp);
 int			error(int status);
 void		create_pipes(int num_cmds, int **pipes);
 void		free_arr(char **arr);
-// void		close_fd(t_command commands, int **pipes);
+void		close_fd(t_command *commands, int **pipes, size_t cmdscount);
 
 #endif

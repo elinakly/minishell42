@@ -12,20 +12,20 @@
 
 #include "pipex_bonus.h"
 
-// void	close_fd(t_command commands, int **pipes)
-// {
-// 	int	i;
+void	close_fd(t_command *commands, int **pipes, size_t cmdscount)
+{
+	int	i;
 
-// 	close(commands.input_fd);
-// 	close(commands.output_fd);
-// 	i = 0;
-// 	while (i < commands.num_cmds - 1)
-// 	{
-// 		close(pipes[i][0]);
-// 		close(pipes[i][1]);
-// 		i++;
-// 	}
-// }
+	// close(commands.input_fd);
+	// close(commands.output_fd);
+	i = 0;
+	while (i < cmdscount - 1)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
+	}
+}
 
 int	error(int status)
 {
