@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipes.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 16:01:56 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   pipes.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 13:34:38 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/28 19:38:22 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	child_process(int i, int **pipes, char *envp[], t_command *cmds, size_t cmd
 	// 	return ;
 	redirection(i, pipes, cmds, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
-	execute(cmds->name, cmds->argv, envp);
+	execute(cmds, envp);
 }
 
 int	**malloc_pipes(t_command *commands, size_t cmdcount)
@@ -75,7 +75,8 @@ int	**malloc_pipes(t_command *commands, size_t cmdcount)
 	int	i;
 	int	**pipes;
 
-	pipes = malloc(sizeof(int *) * (cmdcount - 1));
+	pipes = malloc(sizeof(int *) * (cmdcount));
+	pipes[cmdcount - 1] = NULL; // NOTE: I added this so the array can be NULL terminated :)
 	if (!pipes)
 		return (NULL);
 	i = 0;
@@ -132,7 +133,7 @@ int	pipes(t_command *cmds, char *envp[], size_t cmdcount)
 		wait(NULL);
 		i++;
 	}
-	free(pipes);
+	free_array((void **)pipes, NULL);
 	return (0);
 }
 
@@ -149,7 +150,7 @@ int	execute_signal_cmd(t_command *cmds, char *envp[])
 	}
 	if (pid == 0)
 	{
-		execute(cmds->name, cmds->argv, envp);
+		execute(cmds, envp);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);

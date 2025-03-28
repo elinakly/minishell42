@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 15:33:10 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   utils.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 13:34:41 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/28 19:40:25 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,26 +81,23 @@ static char	*find_valid_path(const char *com, char **envp)
 	}
 	return (free_arr(paths), NULL);
 }
-
-void	execute(char *com, char **argv, char **envp)
+void	execute(t_command *cmd, char **envp)
 {
 	char	*find_path;
 
-	find_path = find_valid_path(com, envp);
-	if (com == NULL)
-	{
-		free_arr(argv);
+	// NOTE: I added this stuff to insert path to executable in argv (but im not sure if its even correct)
+	// NOTE: Will research more what should actually be in argv[0] but it is *something* and currently
+	// NOTE: it fixes multiple exec?! so yay I guess
+	find_path = find_valid_path(cmd->name, envp);
+	if (find_path)
+		cmd->argv[0] = find_path;
+	if (cmd->name == NULL)
 		exit(error(3));
-	}
 	if (find_path == NULL)
-	{
-		free_arr(argv);
 		exit(error(127));
-	}
-	if (execve(find_path, argv, envp) == -1)
+	if (execve(find_path, cmd->argv, envp) == -1)
 	{
 		free(find_path);
-		free_arr(argv);
 		exit(error(126));
 	}
 }

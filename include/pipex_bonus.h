@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipex_bonus.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 13:50:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/12 18:45:06 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   pipex_bonus.h                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 13:50:36 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/22 10:27:50 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 // 	int		num_cmds;
 // }			t_command;
 
-void		execute(char *com, char **argv, char **envp);
+void		execute(t_command *cmd, char **envp);
 int			error(int status);
 void		create_pipes(int num_cmds, int **pipes);
 void		free_arr(char **arr);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 15:38:13 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/03/28 19:10:26 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,29 @@ void print_redirects(t_redirect *head)
 			current->expand_in_heredoc ? "Yes" : "No");
 		current = current->next;
 	}
+}
+
+/**
+ * TODO: Delete again, ChatGPT generated crap just for testing
+ */
+void	print_parse_result(e_parse_result e)
+{
+	const char *names[] = {
+		"UNCLOSED_SQUOTE",
+		"UNCLOSED_DQUOTE",
+		"UNFINISHED_PIPE",
+		"ESCAPED_NEWLINE",
+		"HEREDOC",
+		"SYNTAX_ERROR",
+		"MALLOC_FAIL",
+		"EMPTY",
+		"PARSEOK"
+	};
+
+	if (e >= 0 && e <= PARSEOK)
+		printf("%s\n", names[e]);
+	else
+		printf("UNKNOWN ENUM VALUE\n");
 }
 
 void print_command_list(t_command *head) // Thank you kindly, ChatGPT
@@ -88,10 +111,11 @@ int	main(int argc, char **argv, char **envp)
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
-			size_t cmdcount = ft_cmdcount(cmds);	
-			execute_cmds(cmds, envp, cmdcount);
+			execute_cmds(cmds, envp, ft_cmdcount(cmds));
 			free_commands(cmds);
 		}
+		else
+			print_parse_result(result);
 		add_history(cmdstr);
 		history(cmdstr);
 		free(cmdstr);

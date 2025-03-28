@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   structbuild.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/19 13:23:33 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   structbuild.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/03/28 19:34:18 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ bool	insert_redir_in_cmd(t_command *cmd, t_token *token)
 
 /**
  * Inserts token data into a command struct
+ * TODO: Find a way to insert path into argv[0] always
  * @param cmd The command in which to insert data
  * @param token The token from which to take data
  * @param argv_i `size_t` pointer to keep track of argument index
@@ -258,17 +259,20 @@ t_command	*create_command(t_token *token)
 	t_command	*res;
 	size_t		argv_i;
 
-	argv_i = 0;
+	argv_i = 1;
 	res = malloc(sizeof(t_command));
 	if (!res)
 		return (NULL);
 	res->name = NULL;
-	res->argc = get_cmd_argc(token);
+	res->argc = get_cmd_argc(token) + 1;
 	res->argv = NULL;
 	res->argv = malloc(sizeof(char *) * (res->argc + 1));
 	if (!res->argv)
 		return (free_single_cmd(res), NULL);
 	res->argv[res->argc] = NULL;
+	res->argv[0] = ft_strdup(""); // TODO: Must become path somewhere, no NULL default because that could break array free func
+	if (!res->argv[0])
+		return (free_single_cmd(res), NULL);
 	res->redirects = NULL;
 	res->next = NULL;
 	res->has_redirects = false;
@@ -289,7 +293,7 @@ t_command	*make_cmd_list(t_token *token)
 	t_command	*cmd_head;
 	size_t		argv_i;
 
-	argv_i = 0;
+	argv_i = 1;
 	cmd = create_command(token);
 	cmd_head = cmd;
 	if (!cmd)
@@ -305,7 +309,7 @@ t_command	*make_cmd_list(t_token *token)
 			if (!cmd->next)
 				return (free_commands(cmd_head), NULL);
 			cmd = cmd->next;
-			argv_i = 0;
+			argv_i = 1;
 		}
 		token = token->next;
 	}
