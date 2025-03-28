@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 15:42:34 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/28 19:59:32 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,33 @@ bool	new_test_exec(t_command *cmds, char **envp)
 	while (cmds)
 	{
 		if (cmds->has_command && ft_strncmp(cmds->name, "echo", len) == 0)
-			return (echo(cmds->argv), true);
+			return (true);
 		if (cmds->has_command && ft_strncmp(cmds->name, "pwd", len) == 0)
-			return (pwd(), true);
+			return (true);
 		if (cmds->has_command && ft_strncmp(cmds->name, "env", len) == 0)
-			return (env(envp) , true);
+			return (true);
 		if (cmds->has_command && ft_strncmp(cmds->name, "exit", len) == 0)
-			return (ft_exit(), true);
+			return (true);
 		cmds = cmds->next;
 	}
 	return (false);
+}
+
+void	execve_builtin(t_command *cmds, char **envp)
+{
+	size_t	len;
+
+	len = ft_strlen(cmds->name);
+	while (cmds)
+	{
+		if (cmds->has_command && ft_strncmp(cmds->name, "echo", len) == 0)
+			echo(cmds->argv);
+		if (cmds->has_command && ft_strncmp(cmds->name, "pwd", len) == 0)
+			pwd();
+		if (cmds->has_command && ft_strncmp(cmds->name, "env", len) == 0)
+			env(envp);
+		if (cmds->has_command && ft_strncmp(cmds->name, "exit", len) == 0)
+			ft_exit();
+		cmds = cmds->next;
+	}
 }

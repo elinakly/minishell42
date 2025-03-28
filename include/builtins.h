@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:35:59 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 15:42:40 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/03/28 19:59:45 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ int		env(char **envp);
 int		pwd(void);
 int		ft_exit(void);
 bool	new_test_exec(t_command *cmds, char **envp);
+void	execve_builtin(t_command *cmds, char **envp);
 
 #endif

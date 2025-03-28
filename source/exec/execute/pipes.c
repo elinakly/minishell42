@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   pipes.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/20 13:34:38 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/28 19:38:22 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   pipes.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
+/*   Updated: 2025/03/28 20:25:26 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	redirection_for_pipes(int i, int **pipes, t_command *commands, size_t cmdco
 		if (i > 0)
 		{
 			if (dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
+			{
+				fprintf(stderr, "dup2 failed1\n");
 				error(1);
+			}
 		}
 	// if (i == cmdcount - 1 && cmds->has_output_redirect)
 	// {
@@ -78,7 +81,10 @@ void	redirection_for_pipes(int i, int **pipes, t_command *commands, size_t cmdco
 		if (i < cmdcount - 1)
 		{
 			if (dup2(pipes[i][1], STDOUT_FILENO) == -1)
+			{
+				fprintf(stderr, "dup2 failed2\n");
 				error(1);
+			}
 		}
 }
 
@@ -181,8 +187,11 @@ int	execute_signal_cmd(t_command *cmds, char *envp[])
 
 int execute_cmds(t_command *cmds, char *envp[], size_t cmdcount)
 {
-	if (new_test_exec(cmds, envp))
-		return (0);
+	if (cmdcount == 1)
+	{
+		if (new_test_exec(cmds, envp))
+			return (execve_builtin(cmds, envp), 0);
+	}
 	if (cmdcount == 1)
 		execute_signal_cmd(cmds, envp);
 	else
