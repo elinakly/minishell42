@@ -35,37 +35,59 @@ void	create_pipes(int num_cmds, int **pipes)
 	}
 }
 
-void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
+// void redirection_for_files(t_command *commands, int i, size_t cmdcount)
+// {
+// 	int input_fd;
+// 	int output_fd;
+
+// 	input_fd = open(commands->argv[1], O_RDONLY);
+// 	/// if (heredoc detected)
+// 	// here_doc(commands.args[1], commands.argc);
+// 	if (input_fd == -1)
+// 		return ;
+// 	if (!commands->append) 
+// 		output_fd = open(commands->argv[commands->argc - 1], //if > then we need to do trunc
+// 			O_WRONLY | O_CREAT | O_TRUNC, 0777);
+// 	else 
+// 		output_fd = open(commands->argv[commands->argc - 1], //if >> then we need to do append
+// 			O_WRONLY | O_CREAT | O_APPEND, 0777);
+// 	if (output_fd == -1)
+// 		return ;
+// }
+
+
+void	redirection_for_pipes(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
-	// if (i == 0)
-	// 	dup2(commands.input_fd, STDIN_FILENO);
+	// if (i == 0 && cmds->has_input_redirect)
+	// {
+	// 	if (dup2(input_fd, STDIN_FILENO) == -1)
+	// 		error(1);
+	// }
 	// else
-	if (i > 0)
-		dup2(pipes[i - 1][0], STDIN_FILENO);
-	// if (i == commands.num_cmds - 1)
-	// 	dup2(commands.output_fd, STDOUT_FILENO);
+		if (i > 0)
+		{
+			if (dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
+				error(1);
+		}
+	// if (i == cmdcount - 1 && cmds->has_output_redirect)
+	// {
+	// 	if (dup2(output_fd, STDOUT_FILENO) == -1)
+	// 		error(1);
+	// }
 	// else
-	if (i < cmdcount - 1)
-		dup2(pipes[i][1], STDOUT_FILENO);
+		if (i < cmdcount - 1)
+		{
+			if (dup2(pipes[i][1], STDOUT_FILENO) == -1)
+				error(1);
+		}
 }
 
 
 void	child_process(int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
 {
-	// commands.input_fd = open(commands.args[1], O_RDONLY);
-	// /// if (heredoc detected)
-	// // here_doc(commands.args[1], commands.argc);
-	// if (commands.input_fd == -1)
-	// 	return ;
-	// //if ( key isnt apend )
-	// 	commands.output_fd = open(commands.args[commands.argc - 1], //if > then we need to do trunc
-	// 		O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	// //else 
-	// //	commands.output_fd = open(commands.args[commands.argc - 1], //if >> then we need to do append
-	// //		O_WRONLY | O_CREAT | O_APPEND, 0777);
-	// if (commands.output_fd == -1)
-	// 	return ;
-	redirection(i, pipes, cmds, cmdcount);
+	// if (cmds->has_redirects)
+	// 	redirection_for_files(cmds, i, cmdcount);	
+	redirection_for_pipes(i, pipes, cmds, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
 	execute(cmds, envp);
 }
