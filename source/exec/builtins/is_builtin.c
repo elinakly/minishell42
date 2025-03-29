@@ -21,7 +21,7 @@
  * @return int 1 if the command is a built-in command, 0 otherwise
  **/
 
-bool	new_test_exec(t_command *cmds, char **envp)
+bool	is_builtins(t_command *cmds, char **envp)
 {
 	size_t	len;
 

@@ -27,7 +27,7 @@ int		echo(char **args);
 int		env(char **envp);
 int		pwd(void);
 int		ft_exit(void);
-bool	new_test_exec(t_command *cmds, char **envp);
+bool	is_builtins(t_command *cmds, char **envp);
 void	execve_builtin(t_command *cmds, char **envp);
 
 #endif

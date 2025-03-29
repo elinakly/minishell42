@@ -90,13 +90,16 @@ void	execute(t_command *cmd, char **envp)
 	// NOTE: Will research more what should actually be in argv[0] but it is *something* and currently
 	// NOTE: it fixes multiple exec?! so yay I guess
 	
-	// if (new_test_exec(cmd, envp))
-	// {
-	// 	return (execve_builtin(cmd, envp));
-	// }
+	if (is_builtins(cmd, envp))
+	{	
+		execve_builtin(cmd, envp);
+		exit(EXIT_SUCCESS);
+	}
 	find_path = find_valid_path(cmd->name, envp);
-	if (find_path)
-		cmd->argv[0] = find_path;
+	//if (find_path)
+	//	cmd->argv[0] = find_path;
+	if (!cmd->argv[0])
+        cmd->argv[0] = cmd->name;
 	if (cmd->name == NULL)
 		exit(error(3));
 	if (find_path == NULL)

@@ -189,7 +189,7 @@ int execute_cmds(t_command *cmds, char *envp[], size_t cmdcount)
 {
 	if (cmdcount == 1)
 	{
-		if (new_test_exec(cmds, envp))
+		if (is_builtins(cmds, envp))
 			return (execve_builtin(cmds, envp), 0);
 	}
 	if (cmdcount == 1)
