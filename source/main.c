@@ -111,6 +111,7 @@ int	main(int argc, char **argv, char **envp)
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
+			//print_command_list(cmds);
 			execute_cmds(cmds, envp, ft_cmdcount(cmds));
 			free_commands(cmds);
 		}

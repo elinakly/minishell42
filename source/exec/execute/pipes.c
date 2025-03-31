@@ -35,32 +35,41 @@ void	create_pipes(int num_cmds, int **pipes)
 	}
 }
 
-// void redirection_for_files(t_command *commands, int i, size_t cmdcount)
-// {
-// 	int input_fd;
-// 	int output_fd;
+ void open_files(t_command *commands, int i, size_t cmdcount)
+ {
+ 	int input_fd;
+ 	int output_fd;
 
-// 	input_fd = open(commands->argv[1], O_RDONLY);
-// 	/// if (heredoc detected)
-// 	// here_doc(commands.args[1], commands.argc);
-// 	if (input_fd == -1)
-// 		return ;
-// 	if (!commands->append) 
-// 		output_fd = open(commands->argv[commands->argc - 1], //if > then we need to do trunc
-// 			O_WRONLY | O_CREAT | O_TRUNC, 0777);
-// 	else 
-// 		output_fd = open(commands->argv[commands->argc - 1], //if >> then we need to do append
-// 			O_WRONLY | O_CREAT | O_APPEND, 0777);
-// 	if (output_fd == -1)
-// 		return ;
-// }
+	while (commands->redirects)
+	{
+		/// if (heredoc detected)
+	// 	// here_doc(commands.args[1], commands.argc);
+		if (commands->redirects->type == RE_INPUT)
+		{	
+			input_fd = open(commands->redirects->file, O_RDONLY);
+			if (input_fd == -1)
+				return ;
+		}
+		if (commands->redirects->type == RE_OUTPUT_TRUNC) 
+			output_fd = open(commands->redirects->file, //if > then we need to do trunc
+				O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		else if (commands->redirects->type == RE_OUTPUT_APPEND)
+		{	
+			output_fd = open(commands->redirects->file, //if >> then we need to do append
+				O_WRONLY | O_CREAT | O_APPEND, 0777);
+			if (output_fd == -1)
+				return ;
+		}
+		commands->redirects = commands->redirects->next;
+	}
+ }
 
 
 void	redirection_for_pipes(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
 	// if (i == 0 && cmds->has_input_redirect)
 	// {
-	// 	if (dup2(input_fd, STDIN_FILENO) == -1)
+	// 		if (dup2(input_fd, STDIN_FILENO) == -1)
 	// 		error(1);
 	// }
 	// else
@@ -72,7 +81,7 @@ void	redirection_for_pipes(int i, int **pipes, t_command *commands, size_t cmdco
 				error(1);
 			}
 		}
-	// if (i == cmdcount - 1 && cmds->has_output_redirect)
+	// if (cmds->has_output_redirect)
 	// {
 	// 	if (dup2(output_fd, STDOUT_FILENO) == -1)
 	// 		error(1);
@@ -91,8 +100,8 @@ void	redirection_for_pipes(int i, int **pipes, t_command *commands, size_t cmdco
 
 void	child_process(int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
 {
-	// if (cmds->has_redirects)
-	// 	redirection_for_files(cmds, i, cmdcount);	
+	//if (cmds->has_redirects)
+	// 	open_files(cmds, i, cmdcount);	
 	redirection_for_pipes(i, pipes, cmds, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
 	execute(cmds, envp);
