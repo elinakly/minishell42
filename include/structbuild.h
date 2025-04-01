@@ -37,6 +37,8 @@ struct t_redirect
 {
 	e_redir_type	type;
 	char			*file;
+	int				in_fd;
+	int				out_fd;
 	char			*heredoc_delim;
 	bool			expand_in_heredoc;
 	t_redirect		*next;
