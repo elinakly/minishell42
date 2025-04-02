@@ -17,7 +17,7 @@
 #include "../../../include/builtins.h"
 
 
-//TODO rederection input and output files , malloc_pipes(malloc) leaking)
+//TODO rederection for singl our own cmd malloc_pipes(malloc) leaking)
 
 void	create_pipes(int num_cmds, int **pipes)
 {
@@ -35,37 +35,37 @@ void	create_pipes(int num_cmds, int **pipes)
 	}
 }
 
- void open_files(t_command *commands, int i, size_t cmdcount)
+ void open_files(t_command *commands)
  {
- 	//int input_fd;
- 	//int output_fd;
+	t_redirect	*redirects;
+	redirects = commands->redirects;
 
-	while (commands->redirects)
+	while (redirects)
 	{
 		/// if (heredoc detected)
 	// 	// here_doc(commands.args[1], commands.argc);
-		if (commands->redirects->type == RE_INPUT)
+		if (redirects->type == RE_INPUT)
 		{	
-			commands->redirects->in_fd = open(commands->redirects->file, O_RDONLY);
-			if (commands->redirects->in_fd == -1)
+			redirects->in_fd = open(redirects->file, O_RDONLY);
+			if (redirects->in_fd == -1)
 				return ;
 		}
-		if (commands->redirects->type == RE_OUTPUT_TRUNC) 
-			commands->redirects->out_fd = open(commands->redirects->file, //if > then we need to do trunc
+		if (redirects->type == RE_OUTPUT_TRUNC) 
+			redirects->out_fd = open(redirects->file, //if > then we need to do trunc
 				O_WRONLY | O_CREAT | O_TRUNC, 0777);
-		else if (commands->redirects->type == RE_OUTPUT_APPEND)
+		else if (redirects->type == RE_OUTPUT_APPEND)
 		{	
-			commands->redirects->out_fd = open(commands->redirects->file, //if >> then we need to do append
+			redirects->out_fd = open(redirects->file, //if >> then we need to do append
 				O_WRONLY | O_CREAT | O_APPEND, 0777);
-			if (commands->redirects->out_fd == -1)
+			if (redirects->out_fd == -1)
 				return ;
 		}
-		commands->redirects = commands->redirects->next;
+		redirects = redirects->next;
 	}
  }
 
 
-void	redirection_for_pipes(int i, int **pipes, t_command *commands, size_t cmdcount)
+void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
 	if (commands->has_redirects && commands->redirects->type == RE_INPUT)
 	{
@@ -106,8 +106,8 @@ void	redirection_for_pipes(int i, int **pipes, t_command *commands, size_t cmdco
 void	child_process(int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
 {
 	if (cmds->has_redirects)
-		open_files(cmds, i, cmdcount);	
-	redirection_for_pipes(i, pipes, cmds, cmdcount);
+		open_files(cmds);	
+	redirection(i, pipes, cmds, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
 	execute(cmds, envp);
 }
@@ -192,6 +192,10 @@ int	execute_signal_cmd(t_command *cmds, char *envp[])
 	}
 	if (pid == 0)
 	{
+		if (cmds->has_redirects)
+			open_files(cmds);	
+		redirection(0, 0, cmds, 1);
+		close_fd(cmds, 0, 1);
 		execute(cmds, envp);
 		exit(0);
 	}
@@ -204,10 +208,19 @@ int execute_cmds(t_command *cmds, char *envp[], size_t cmdcount)
 	if (cmdcount == 1)
 	{
 		if (is_builtins(cmds, envp))
-			return (execve_builtin(cmds, envp), 0);
+		{
+			if (cmds->has_redirects)
+			{
+				open_files(cmds);
+				//redirection(0, 0, cmds, 1);
+				close_fd(cmds, 0, 1);
+				execve_builtin(cmds, envp);
+				return (0);
+			}
+		}
+		else
+			execute_signal_cmd(cmds, envp);
 	}
-	if (cmdcount == 1)
-		execute_signal_cmd(cmds, envp);
 	else
 		pipes(cmds, envp, cmdcount);
 	return (0);
