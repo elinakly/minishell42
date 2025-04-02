@@ -62,16 +62,20 @@ void	create_pipes(int num_cmds, int **pipes)
 		}
 		redirects = redirects->next;
 	}
+
  }
 
 
 void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
-	if (commands->has_redirects && commands->redirects->type == RE_INPUT)
+	t_redirect *redirects = commands->redirects;
+	while (redirects->next)
+   		redirects = redirects->next;
+	if (commands->has_redirects && redirects->type == RE_INPUT)
 	{
-	 	if (dup2(commands->redirects->in_fd, STDIN_FILENO) == -1)
+	 	if (dup2(redirects->in_fd, STDIN_FILENO) == -1)
 		 	error(1);
-		close(commands->redirects->in_fd);
+		close(redirects->in_fd);
 	}
 	else
 		if (i > 0)
@@ -83,12 +87,12 @@ void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 			}
 			close(pipes[i - 1][0]);
 		}
-	if (commands->has_redirects && (commands->redirects->type == RE_OUTPUT_TRUNC ||
-			commands->redirects->type == RE_OUTPUT_APPEND))
+	if (commands->has_redirects && (redirects->type == RE_OUTPUT_TRUNC ||
+			redirects->type == RE_OUTPUT_APPEND))
 	{
-	 	if (dup2(commands->redirects->out_fd, STDOUT_FILENO) == -1)
+	 	if (dup2(redirects->out_fd, STDOUT_FILENO) == -1)
 	 		error(1);
-		close(commands->redirects->out_fd);
+		close(redirects->out_fd);
 	}
 	else
 		if (i < cmdcount - 1)
@@ -102,13 +106,12 @@ void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 		}
 }
 
-
 void	child_process(int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
 {
 	if (cmds->has_redirects)
 		open_files(cmds);	
 	redirection(i, pipes, cmds, cmdcount);
-	close_fd(cmds, pipes, cmdcount);
+	//close_fd(cmds, pipes, cmdcount);
 	execute(cmds, envp);
 }
 
@@ -168,7 +171,7 @@ int	pipes(t_command *cmds, char *envp[], size_t cmdcount)
 		return (1);
 	create_pipes(cmdcount, pipes);
 	fork_plz(cmds, pipes, envp, cmdcount);
-	close_fd(cmds, pipes, cmdcount);
+	//close_fd(cmds, pipes, cmdcount);
 	i = 0;
 	while (i < cmdcount)
 	{
