@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/28 19:10:26 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/03 00:58:19 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	main(int argc, char **argv, char **envp)
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
-			//print_command_list(cmds);
+			print_command_list(cmds);
 			execute_cmds(cmds, envp, ft_cmdcount(cmds));
 			free_commands(cmds);
 		}
