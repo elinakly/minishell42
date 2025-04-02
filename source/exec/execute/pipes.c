@@ -206,21 +206,7 @@ int	execute_signal_cmd(t_command *cmds, char *envp[])
 int execute_cmds(t_command *cmds, char *envp[], size_t cmdcount)
 {
 	if (cmdcount == 1)
-	{
-		if (is_builtins(cmds, envp))
-		{
-			if (cmds->has_redirects)
-			{
-				open_files(cmds);
-				//redirection(0, 0, cmds, 1);
-				close_fd(cmds, 0, 1);
-				execve_builtin(cmds, envp);
-				return (0);
-			}
-		}
-		else
-			execute_signal_cmd(cmds, envp);
-	}
+		execute_signal_cmd(cmds, envp);
 	else
 		pipes(cmds, envp, cmdcount);
 	return (0);
