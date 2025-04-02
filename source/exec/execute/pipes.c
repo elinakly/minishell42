@@ -69,8 +69,11 @@ void	create_pipes(int num_cmds, int **pipes)
 void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
 	t_redirect *redirects = commands->redirects;
-	while (redirects->next)
-   		redirects = redirects->next;
+	if	(commands->has_redirects)
+	{
+		while (redirects->next)
+   			redirects = redirects->next;
+	}
 	if (commands->has_redirects && redirects->type == RE_INPUT)
 	{
 	 	if (dup2(redirects->in_fd, STDIN_FILENO) == -1)
