@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/28 20:26:48 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   utils.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 13:34:41 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/04/04 00:22:53 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,6 @@ static char	*find_valid_path(const char *com, char **envp)
 void	execute(t_command *cmd, char **envp)
 {
 	char	*find_path;
-
-	// NOTE: I added this stuff to insert path to executable in argv (but im not sure if its even correct)
-	// NOTE: Will research more what should actually be in argv[0] but it is *something* and currently
-	// NOTE: it fixes multiple exec?! so yay I guess
 	
 	if (is_builtins(cmd, envp))
 	{	
@@ -96,10 +92,6 @@ void	execute(t_command *cmd, char **envp)
 		exit(EXIT_SUCCESS);
 	}
 	find_path = find_valid_path(cmd->name, envp);
-	//if (find_path)
-	//	cmd->argv[0] = find_path;
-	if (!cmd->argv[0])
-        cmd->argv[0] = cmd->name;
 	if (cmd->name == NULL)
 		exit(error(3));
 	if (find_path == NULL)

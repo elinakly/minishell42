@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/28 19:34:18 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/04 00:22:33 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,9 +230,13 @@ bool	insert_into_command(t_command *cmd, t_token *token, size_t *argv_i)
 	if (token->type == TT_COMMAND && !cmd->has_command)
 	{
 		cmd->name = ft_strdup(token->value);
+		cmd->has_command = true;
 		if (!cmd->name)
 			return (false);
-		cmd->has_command = true;
+		free(cmd->argv[0]);
+		cmd->argv[0] = ft_strdup(token->value);
+		if (!cmd->argv[0])
+			return (false);
 	}
 	else if (token->type == TT_ARGUMENT)
 	{
