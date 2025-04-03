@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vars.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/03/19 13:30:35 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   vars.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
+/*   Updated: 2025/04/04 01:07:07 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,7 +358,7 @@ char	*get_expanded_cmd(char *cmd, t_env_var **vars)
 	{
 		set_quote_state(cmd, i.cmd, &quot);
 		if (is_meta(cmd, i.cmd, &meta) && meta == MC_VARIABLE
-			&& quot != MC_SQUOTE)
+			&& quot != MC_SQUOTE && is_var_char(cmd[i.cmd + 1], true))
 		{
 			if (!insert_var(res, vars[i.var], &i.res))
 				return (free(res), NULL);
