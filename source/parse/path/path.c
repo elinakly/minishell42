@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/05 22:39:00 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/05 23:50:53 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/05 23:54:17 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_path	*get_cwd(void)
 	{
 		temp_res = make_path(*splitpath, res, NULL);
 		if (!temp_res)
-			return (NULL); //TODO: Make free PATH function, currently this leaks
+			return (free_array(splitpath, NULL), NULL); //TODO: Make free PATH linkedlist function, currently this leaks
 		if (res)
 			res->next = temp_res;
 		res = temp_res;
