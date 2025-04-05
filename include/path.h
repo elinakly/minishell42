@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   path.h                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/03/13 18:46:43 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/05 22:35:40 by Mika Schipp   ########   odam.nl         */
+/*   Created: 2025/04/05 22:39:39 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/04/05 22:51:59 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+typedef struct t_path t_path;
 
-int	pwd()
+struct t_path
 {
-	char *buff;
-
-	buff = getcwd(NULL, 0);
-	if (buff)
-	{
-		printf("%s\n", buff);
-		free(buff);
-		return (0);
-	}
-	return (1);
-}
+	char	*name;
+	t_path	*prev;
+	t_path	*next;
+};
