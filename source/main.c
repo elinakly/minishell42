@@ -97,6 +97,7 @@ int	main(int argc, char **argv, char **envp)
 	char			*cmdstr;
 	e_parse_result	result;
 	t_command		*cmds;
+	int 			status;
 
 	set_signal();
 
@@ -111,8 +112,8 @@ int	main(int argc, char **argv, char **envp)
 		result = parse_commands(cmdstr, &cmds);
 		if (result == PARSEOK)
 		{
-			print_command_list(cmds);
-			execute_cmds(cmds, envp, ft_cmdcount(cmds));
+			//print_command_list(cmds);
+			status = execute_cmds(cmds, envp, ft_cmdcount(cmds));
 			free_commands(cmds);
 		}
 		else
@@ -122,5 +123,5 @@ int	main(int argc, char **argv, char **envp)
 		free(cmdstr);
 	}
 	rl_clear_history(); // TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
-	return (0);
+	return (status);
 }

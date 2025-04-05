@@ -63,6 +63,7 @@ struct t_command
 	char			*name;
 	size_t			argc;
 	char			**argv;
+	pid_t			pid;
 	t_redirect		*redirects;
 	t_command		*next;
 };

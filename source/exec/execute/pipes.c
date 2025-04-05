@@ -143,31 +143,36 @@ int	**malloc_pipes(t_command *commands, size_t cmdcount)
 	return (pipes);
 }
 
-void	fork_plz(t_command *commands, int **pipes, char **envp, size_t cmdcount)
+void fork_plz(t_command *commands, int **pipes, char **envp, size_t cmdcount)
 {
 	int		i;
-	pid_t	pid;
+	int		last_pid;
 
 	i = 0;
 	while (i < cmdcount)
 	{
-		pid = fork();
-		if (pid == -1)
+		commands->pid = fork();
+		if (commands->pid == -1)
 		{
 			perror("fork failed");
 			return ;
 		}
-		if (pid == 0)
+		if (commands->pid == 0)
+		{
 			child_process(i, pipes, envp, commands, cmdcount);
+			exit(1);
+		}
 		i++;
 		commands = commands->next;
 	}
 }
 
-int	pipes(t_command *cmds, char *envp[], size_t cmdcount)
+int	pipes(t_command *cmds, char *envp[], size_t cmdcount, int *status)
 {
 	int			**pipes;
 	int			i;
+	t_command 	*commands;
+	int			temp_status;
 
 	pipes = malloc_pipes(cmds, cmdcount);
 	if (!pipes)
@@ -175,20 +180,22 @@ int	pipes(t_command *cmds, char *envp[], size_t cmdcount)
 	create_pipes(cmdcount, pipes);
 	fork_plz(cmds, pipes, envp, cmdcount);
 	//close_fd(cmds, pipes, cmdcount);
-	i = 0;
-	while (i < cmdcount)
+	commands = cmds;
+	temp_status = 0;
+	while (commands)
 	{
-		wait(NULL);
-		i++;
+		waitpid(commands->pid, &temp_status, 0);
+		if (commands->next == NULL)
+			*status = temp_status;
+		commands = commands->next;
 	}
-	free_array((void **)pipes, NULL);
+	free_array((void **)pipes, NULL); 
 	return (0);
 }
 
-int	execute_signal_cmd(t_command *cmds, char *envp[])
+int	execute_signal_cmd(t_command *cmds, char *envp[], int *status)
 {
 	pid_t	pid;
-	int		status;
 
 	pid = fork();
 	if (pid == -1)
@@ -205,15 +212,22 @@ int	execute_signal_cmd(t_command *cmds, char *envp[])
 		execute(cmds, envp);
 		exit(0);
 	}
-	waitpid(pid, &status, 0);
+	waitpid(pid, status, 0);
 	return (0);
 }
 
 int execute_cmds(t_command *cmds, char *envp[], size_t cmdcount)
 {
+	int status;
+
+	status = 0;
 	if (cmdcount == 1)
-		execute_signal_cmd(cmds, envp);
+		execute_signal_cmd(cmds, envp, &status);
 	else
-		pipes(cmds, envp, cmdcount);
-	return (0);
+		pipes(cmds, envp, cmdcount, &status);
+	if (WIFEXITED(status))
+		return WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (1);
 }
