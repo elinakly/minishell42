@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/21 00:06:20 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/07 15:01:46 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "../../include/tokenize.h"
 #include "../../include/structbuild.h"
+#include "../../include/path.h"
 
 /**
  * TODO: Rename the folder since this probably won't be exclusively memory stuff
@@ -155,6 +156,26 @@ void	free_commands(t_command *head)
 		next = head->next;
 		free_single_cmd(head);
 		head = next;
+	}
+}
+
+/**
+ * Frees all path parts in a path part linked list
+ * @param path Any path part
+ */
+void	free_path(t_path *path)
+{
+	t_path	*next;
+
+	if (!path)
+		return ;
+	path = getfirstpath(path);
+	while (path)
+	{
+		next = path->next;
+		free(path->name);
+		free(path);
+		path = next;
 	}
 }
 

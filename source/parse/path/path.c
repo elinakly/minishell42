@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/05 22:39:00 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/05 23:54:17 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/07 15:00:40 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,39 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+/**
+ * Creates a singular path part
+ * Makes a copy of name which must be freed
+ * @param name The name of the path part
+ * @param prev The previous path part (nullable)
+ * @param next The next path part (nullable)
+ * @returns A part of a path
+ */
 t_path	*make_path(char *name, t_path *prev, t_path *next)
 {
 	t_path	*path;
 
+	if (!name)
+		return (NULL);
 	path = malloc(sizeof(t_path));
 	if (!path)
 		return (NULL);
-	path->name = name;
+	path->name = ft_strdup(name);
+	if (!path->name)
+		return (free(path), NULL);
 	path->prev = prev;
 	path->next = next;
 	return (path);
 }
 
+/**
+ * Wrapper function for splitting a path string into parts using ft_split
+ * @returns An array of strings containing path parts
+ */
 char	**get_split_path(void)
 {
 	char	*cwd;
-	char	*splitpath;
+	char	**splitpath;
 	
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
@@ -42,29 +58,40 @@ char	**get_split_path(void)
 	return (splitpath);
 }
 
+/**
+ * Gets a linkedlist of path parts representing the current working directory
+ * @returns A linkedlist of path parts
+ */
 t_path	*get_cwd(void)
 {
-	t_path	*res;
+	t_path	*root;
 	t_path	*temp_res;
-	char	**splitpath;
+	char	**parts;
+	size_t	partsindex;
 
-	res = NULL;
-	splitpath = get_split_path();
-	if (!splitpath)
+	partsindex = 0;
+	root = make_path(ft_strdup("/"), NULL, NULL);
+	if (!root)
 		return (NULL);
-	while (*splitpath)
+	parts = get_split_path();
+	if (!parts)
+		return (root);
+	while (parts[partsindex])
 	{
-		temp_res = make_path(*splitpath, res, NULL);
+		temp_res = make_path(parts[partsindex++], root, NULL);
 		if (!temp_res)
-			return (free_array(splitpath, NULL), NULL); //TODO: Make free PATH linkedlist function, currently this leaks
-		if (res)
-			res->next = temp_res;
-		res = temp_res;
-		splitpath++;
+			return (free_array((void **)parts, NULL), free_path(root), NULL);
+		root->next = temp_res;
+		root = temp_res;
 	}
-	return (res);
+	return (free_array((void **)parts, NULL), root);
 }
 
+/**
+ * Returns the first path part in a path linkedlist
+ * @param path Any path part
+ * @returns The first path part
+ */
 t_path	*getfirstpath(t_path *path)
 {
 	if (!path)
@@ -74,6 +101,11 @@ t_path	*getfirstpath(t_path *path)
 	return (path);
 }
 
+/**
+ * Returns the last path part in a path linkedlist
+ * @param path Any path part
+ * @returns The last path part
+ */
 t_path	*getlastpath(t_path *path)
 {
 	if (!path)
@@ -83,12 +115,18 @@ t_path	*getlastpath(t_path *path)
 	return (path);
 }
 
-int	calc_path_len(t_path *path)
+/**
+ * Calculates what the length of a path string will be
+ * Does not necessarily start at the start of a path
+ * @param path The path part from which to start counting
+ * @returns The length of what the path string would be for this path
+ */
+size_t	calc_path_len(t_path *path)
 {
-	int	slashes;
-	int	charcount;
+	size_t	slashes;
+	size_t	charcount;
 
-	slashes = 0;
+	slashes = 1;
 	charcount = 0;
 	while (path)
 	{
@@ -103,11 +141,37 @@ int	calc_path_len(t_path *path)
 	return (charcount + slashes + 1);
 }
 
+/**
+ * Converts a path part linkedlist to a path string
+ * @param path Any path part to start from
+ * @param from_start Whether to use full path
+ * @returns A path string
+ */
 char	*topathstring(t_path *path, bool from_start)
 {
+	size_t		len;
+	size_t		resindex;
+	size_t		nameindex;
+	char	*res;
+	
 	if (!path)
-		return (ft_strdup(""));
+		return (ft_strdup("/"));
 	if (from_start)
 		path = getfirstpath(path);
-	// TODO: Finish this lol
+	len = calc_path_len(path);
+	res = ft_calloc(len, sizeof(char));
+	if (!res)
+		return (NULL);
+	nameindex = 0;
+	resindex = 0;
+	while (path)
+	{
+		while (path->name[nameindex++])
+		res[resindex++] = path->name[nameindex - 1];
+		if (path->next && path->prev)
+			res[resindex++] = '/';
+		path = path->next;
+		nameindex = 0;
+	}
+	return (res);
 }

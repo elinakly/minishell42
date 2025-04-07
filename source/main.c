@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/03 00:58:19 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/07 14:16:06 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include "../include/tokenize.h"
 #include "../include/variable.h"
+#include "../include/path.h"
 #include "../include/memory.h"
 #include "../include/builtins.h"
 #include "../include/execute.h"
@@ -97,12 +98,13 @@ int	main(int argc, char **argv, char **envp)
 	char			*cmdstr;
 	e_parse_result	result;
 	t_command		*cmds;
-	int 			status;
+	int				status;
+	t_path			*ms_cwd;
 
 	set_signal();
-
 	if (get_history())
 		return (1);
+	ms_cwd = get_cwd();
 	while (1)
 	{
 		cmdstr = ft_readline(envp);
@@ -122,6 +124,8 @@ int	main(int argc, char **argv, char **envp)
 		history(cmdstr);
 		free(cmdstr);
 	}
-	rl_clear_history(); // TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
+	// TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
+	rl_clear_history();
+	free_path(ms_cwd);
 	return (status);
 }
