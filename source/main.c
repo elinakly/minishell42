@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/07 14:16:06 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
+/*   Updated: 2025/04/09 18:36:13 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ int	main(int argc, char **argv, char **envp)
 	if (get_history())
 		return (1);
 	ms_cwd = get_cwd();
+	while (ms_cwd->prev)
+		parent_dir(&ms_cwd);
+	printf("A: %s\nB: %s\n", getcwd(NULL, 0), topathstring(ms_cwd, true));
 	while (1)
 	{
 		cmdstr = ft_readline(envp);
@@ -126,6 +129,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	// TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
 	rl_clear_history();
-	free_path(ms_cwd);
+	free_path(ms_cwd, true);
 	return (status);
 }

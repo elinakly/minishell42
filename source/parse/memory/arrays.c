@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   arrays.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/07 15:01:46 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   arrays.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/04/09 18:19:32 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,13 +163,14 @@ void	free_commands(t_command *head)
  * Frees all path parts in a path part linked list
  * @param path Any path part
  */
-void	free_path(t_path *path)
+void	free_path(t_path *path, bool from_start)
 {
 	t_path	*next;
 
 	if (!path)
 		return ;
-	path = getfirstpath(path);
+	if (from_start)
+		path = getfirstpath(path);
 	while (path)
 	{
 		next = path->next;
@@ -194,6 +195,11 @@ size_t	ft_arrlen(void **arr)
 	return (count);
 }
 
+/**
+ * Counts the amount of commands in a t_command linkedlist
+ * @param head The first command in the linkedlist
+ * @returns The amount of commands
+ */
 size_t	ft_cmdcount(t_command *head)
 {
 	size_t	count;

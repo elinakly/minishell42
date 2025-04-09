@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   path.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/05 22:39:00 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/07 15:00:40 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 22:39:00 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/04/09 18:41:36 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ t_path	*get_cwd(void)
 	{
 		temp_res = make_path(parts[partsindex++], root, NULL);
 		if (!temp_res)
-			return (free_array((void **)parts, NULL), free_path(root), NULL);
+			return (free_array((void **)parts, NULL),
+					free_path(root, true), NULL);
 		root->next = temp_res;
 		root = temp_res;
 	}
@@ -174,4 +175,22 @@ char	*topathstring(t_path *path, bool from_start)
 		nameindex = 0;
 	}
 	return (res);
+}
+
+/**
+ * Goes back 1 folder in the current path, frees everything that comes after
+ * @param path The path from which to go back 1 folder
+ */
+void parent_dir(t_path **path)
+{
+	t_path	*curr;
+	t_path	*prev;
+
+	curr = *path;
+	prev = curr->prev;
+	if (!prev)
+		return ;
+	prev->next = NULL;
+	*path = prev;
+	free_path(curr, false);
 }
