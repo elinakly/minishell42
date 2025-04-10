@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/20 13:34:41 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/04 00:22:53 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
+/*   Updated: 2025/04/10 19:36:42 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ static char	*find_valid_path(const char *com, char **envp)
 void	execute(t_command *cmd, char **envp)
 {
 	char	*find_path;
-	
+
 	if (is_builtins(cmd, envp))
-	{	
+	{
 		execve_builtin(cmd, envp);
 		exit(EXIT_SUCCESS);
 	}
@@ -95,10 +95,17 @@ void	execute(t_command *cmd, char **envp)
 	if (cmd->name == NULL)
 		exit(error(3));
 	if (find_path == NULL)
-		exit(error(127));
+	{
+		ft_putstr_fd(cmd->name, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		exit(127);
+	}
 	if (execve(find_path, cmd->argv, envp) == -1)
 	{
 		free(find_path);
-		exit(error(126));
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->name, 2);
+		ft_putstr_fd("cannot execute binary file\n", 2);
+		exit(126);
 	}
 }
