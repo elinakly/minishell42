@@ -15,7 +15,10 @@ SRCS = $(shell find $(SRC_DIR) -type f -name "*.c")
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJS_DIR)/%.o)
 
-all: $(LIB_DIR)/libft/libft.a $(NAME)
+all: $(LIB_DIR)/libft/libft.a  minishell_tester_lib $(NAME)
+
+minishell_tester_lib:
+	git submodule update --init minishell_tester
 
 $(LIB_DIR)/libft:
 	git clone $(LIBFT_REPO) $(LIB_DIR)/libft
@@ -39,6 +42,7 @@ fclean: clean
 	rm -rf $(NAME)
 	make -C $(LIB_DIR)/libft fclean
 	rm -rf $(LIB_DIR)/libft
+	git submodule deinit -f --all
 
 re: fclean all
 
