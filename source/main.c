@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/09 18:36:13 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/04/12 14:18:10 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 	ms_cwd = get_cwd();
 	while (ms_cwd->prev)
 		parent_dir(&ms_cwd);
-	printf("A: %s\nB: %s\n", getcwd(NULL, 0), topathstring(ms_cwd, true));
+	//printf("A: %s\nB: %s\n", getcwd(NULL, 0), topathstring(ms_cwd, true));
 	while (1)
 	{
 		cmdstr = ft_readline(envp);
@@ -115,14 +115,20 @@ int	main(int argc, char **argv, char **envp)
 		if (!cmdstr)
 			return (1);
 		result = parse_commands(cmdstr, &cmds);
+		// if (cmds->name && ft_strncmp(cmds->name, "echo", 4) == 0 && cmds->argc > 1 && cmds->argv[1][0] == '$')
+		// {
+		// 	if (cmds->argv[1][1] == '?')
+		// 		printf("%d\n", status);
+		// 	continue;
+		// }
 		if (result == PARSEOK)
 		{
 			//print_command_list(cmds);
 			status = execute_cmds(cmds, envp, ft_cmdcount(cmds));
 			free_commands(cmds);
 		}
-		else
-			print_parse_result(result);
+//		else
+//			print_parse_result(result);
 		add_history(cmdstr);
 		history(cmdstr);
 		free(cmdstr);

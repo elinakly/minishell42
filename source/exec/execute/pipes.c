@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/28 20:25:26 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/04/12 14:15:51 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	create_pipes(int num_cmds, int **pipes)
 	}
 }
 
- void open_files(t_command *commands)
+void open_files(t_command *commands)
  {
 	t_redirect	*redirects;
 	redirects = commands->redirects;
@@ -48,7 +48,12 @@ void	create_pipes(int num_cmds, int **pipes)
 		{	
 			redirects->in_fd = open(redirects->file, O_RDONLY);
 			if (redirects->in_fd == -1)
-				return ;
+			{
+				if (errno == ENOENT)
+					return (ft_putstr_fd(" No such file or directory\n", 2), exit(1));
+				else if (errno == EACCES)
+					return (ft_putstr_fd(" Permission denied\n", 2), exit(1));
+			}
 		}
 		if (redirects->type == RE_OUTPUT_TRUNC) 
 			redirects->out_fd = open(redirects->file, //if > then we need to do trunc
@@ -58,11 +63,15 @@ void	create_pipes(int num_cmds, int **pipes)
 			redirects->out_fd = open(redirects->file, //if >> then we need to do append
 				O_WRONLY | O_CREAT | O_APPEND, 0777);
 			if (redirects->out_fd == -1)
-				return ;
+			{
+				if (errno == ENOENT)
+					return (ft_putstr_fd(" No such file or directory\n", 2), exit(1));
+				else if (errno == EACCES)
+					return (ft_putstr_fd(" Permission denied\n", 2), exit(1));
+			}
 		}
 		redirects = redirects->next;
 	}
-
  }
 
 
@@ -114,7 +123,7 @@ void	child_process(int i, int **pipes, char *envp[], t_command *cmds, size_t cmd
 	if (cmds->has_redirects)
 		open_files(cmds);	
 	redirection(i, pipes, cmds, cmdcount);
-	//close_fd(cmds, pipes, cmdcount);
+	close_fd(cmds, pipes, cmdcount);
 	execute(cmds, envp);
 }
 
@@ -179,7 +188,7 @@ int	pipes(t_command *cmds, char *envp[], size_t cmdcount, int *status)
 		return (1);
 	create_pipes(cmdcount, pipes);
 	fork_plz(cmds, pipes, envp, cmdcount);
-	//close_fd(cmds, pipes, cmdcount);
+	close_fd(cmds, pipes, cmdcount);
 	commands = cmds;
 	temp_status = 0;
 	while (commands)

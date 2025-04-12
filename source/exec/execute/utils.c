@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/10 19:36:42 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/04/12 13:28:47 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	close_fd(t_command *commands, int **pipes, size_t cmdscount)
 {
 	int	i;
 
-	// close(commands.input_fd);
-	// close(commands.output_fd);
 	i = 0;
 	while (i < cmdscount - 1)
 	{
