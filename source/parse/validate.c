@@ -6,12 +6,13 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/16 12:59:13 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/16 18:01:23 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/structbuild.h"
 #include "../../include/tokenize.h"
+#include "../../include/variable.h"
 #include "../../lib/libft/libft.h"
 
 /**

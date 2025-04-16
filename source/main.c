@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/16 13:08:14 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/16 19:01:03 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,15 @@ int	main(int argc, char **argv, char **envp)
 	//TODO: Check cwd and venv NULL in shell
 	//TODO: Free everything inside shell, some even still need functions made
 	shell = (t_shell){NULL, NONE, 0, get_cwd(), make_venv(envp), true};
-	while (1)
+	// TODO: test add and remove env var functions
+	while (shell.loop_active)
 	{
 		shell.main_rl_str = ft_readline(envp);
-
+		if (ft_strncmp(shell.main_rl_str, "debug", 6) == 0)
+		{
+			shell.loop_active = false;
+			break;
+		}
 		if (!shell.main_rl_str)
 			return (1);
 		shell.last_parse_res = parse_commands(shell, &cmds);
@@ -125,5 +130,6 @@ int	main(int argc, char **argv, char **envp)
 	// TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
 	rl_clear_history();
 	free_path(shell.cwd, true);
+	free_venv(shell.venv);
 	return (0); // probably? maybe needs to be different depending on signal or whatever
 }

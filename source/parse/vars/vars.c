@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/04/16 12:28:47 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/16 17:58:24 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,11 +219,11 @@ t_env_var	*make_var(t_part_var *part, t_venv *envp)
 		return (NULL);
 	var->name = ft_strdup(part->name);
 	var->quote_type = part->in_quote_type;
-	value = get_env(envp, part->name);
+	value = get_env_val(envp, part->name); // TODO: If strdup is used to copy this below, maybe we need to free this here
 	if (!value)
 		var->value = ft_strdup("");
 	else
-		var->value = ft_strdup(value);
+		var->value = ft_strdup(value); // TODO: May not need strdup
 	if (!var->value)
 		return (free(var), NULL); // TODO: Make sure we really don't want to free name here (but probably not)
 		return (var);

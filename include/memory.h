@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 01:24:49 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/16 12:43:41 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/16 18:33:36 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,5 @@ void	free_single_token(t_token *token);
 void	free_single_redir(t_redirect *redir);
 void	free_single_cmd(t_command *cmd);
 void	free_path(t_path *path, bool from_start);
+void	free_venv(t_venv *base);
 #endif

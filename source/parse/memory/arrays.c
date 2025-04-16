@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   arrays.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/04/09 18:19:32 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   arrays.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/04/16 18:36:05 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,25 @@ void	free_path(t_path *path, bool from_start)
 		free(path->name);
 		free(path);
 		path = next;
+	}
+}
+
+void	free_venv(t_venv *base)
+{
+	t_venv	*next;
+
+	if (!base)
+		return ;
+	while (base)
+	{
+		next = base->next;
+		if (!base->base)
+		{
+			free(base->name);
+			free(base->value);
+		}
+		free(base);
+		base = next;
 	}
 }
 

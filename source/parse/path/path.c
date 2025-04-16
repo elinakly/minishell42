@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/05 22:39:00 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/04/09 18:41:36 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   path.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/04/05 22:39:00 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/04/16 18:37:12 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_path	*get_cwd(void)
 	size_t	partsindex;
 
 	partsindex = 0;
-	root = make_path(ft_strdup("/"), NULL, NULL);
+	root = make_path("/", NULL, NULL);
 	if (!root)
 		return (NULL);
 	parts = get_split_path();
