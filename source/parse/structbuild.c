@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/04 00:22:33 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/16 12:32:40 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "../../include/tokenize.h"
 #include "../../include/memory.h"
 #include "../../include/validate.h"
+#include "../../include/venv.h"
+#include "../../include/minishell.h"
 #include "../../lib/libft/libft.h"
 
 /**
@@ -22,7 +24,7 @@
  * @param cmd The command string to use
  * @returns An array of environment variable structures
  */
-t_env_var	**get_vars_from_cmd(char *cmd)
+t_env_var	**get_vars_from_cmd(char *cmd, t_venv *envp)
 {
 	size_t		varcount;
 	t_part_var	**varnames;
@@ -36,7 +38,7 @@ t_env_var	**get_vars_from_cmd(char *cmd)
 		return (NULL);
 	get_var_names(cmd, varcount, varnames);
 	varnames[varcount] = NULL;
-	variables = get_command_vars(varnames);
+	variables = get_command_vars(varnames, envp);
 	if (!variables)
 		return(free_array((void **)variables, &clear_env_var),
 		free_array((void **)varnames, &clear_part_var), NULL);
@@ -326,7 +328,7 @@ t_command	*make_cmd_list(t_token *token)
  * @param cmd A pointer to where the linked list should be stored
  * @returns A parsing result that describes what happened in parsing
  */
-e_parse_result	parse_commands(char *cmdstr, t_command **cmd)
+e_parse_result	parse_commands(t_shell shell, t_command **cmd)
 {
 	size_t			tokencount;
 	e_parse_result	res;
@@ -334,13 +336,13 @@ e_parse_result	parse_commands(char *cmdstr, t_command **cmd)
 	t_token			*tokens;
 
 	tokencount = 0;
-	res = validate_cmd_str(cmdstr);
+	res = validate_cmd_str(shell.main_rl_str);
 	if (res != PARSEOK)
 		return (res);
-	variables = get_vars_from_cmd(cmdstr);
+	variables = get_vars_from_cmd(shell.main_rl_str, shell.venv);
 	if (!variables)
 		return (MALLOC_FAIL);
-	tokens = get_tokens_from_cmd(cmdstr, variables, &tokencount);
+	tokens = get_tokens_from_cmd(shell.main_rl_str, variables, &tokencount);
 	free_array((void **)variables, &clear_env_var);
 	if (!tokens)
 		return (MALLOC_FAIL);

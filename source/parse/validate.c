@@ -1,16 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   validate.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/16 16:17:48 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/18 15:53:18 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   validate.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/16 16:17:48 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/04/16 12:59:13 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/tokenandvar.h"
 #include "../../include/structbuild.h"
 #include "../../include/tokenize.h"
 #include "../../lib/libft/libft.h"

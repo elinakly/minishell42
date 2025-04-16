@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/12 14:18:10 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/04/16 13:08:14 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include "../include/execute.h"
 #include "../include/structbuild.h"
 #include "../include/validate.h"
+#include "../include/minishell.h"
+#include "../include/venv.h"
 #include <readline/history.h>
 
 char			*ft_readline(char **envp);
@@ -95,46 +97,33 @@ void print_command_list(t_command *head) // Thank you kindly, ChatGPT
 
 int	main(int argc, char **argv, char **envp)
 {
-	char			*cmdstr;
-	e_parse_result	result;
 	t_command		*cmds;
-	int				status;
-	t_path			*ms_cwd;
+	t_shell			shell;
 
 	set_signal();
 	if (get_history())
 		return (1);
-	ms_cwd = get_cwd();
-	while (ms_cwd->prev)
-		parent_dir(&ms_cwd);
-	//printf("A: %s\nB: %s\n", getcwd(NULL, 0), topathstring(ms_cwd, true));
+	//TODO: Check cwd and venv NULL in shell
+	//TODO: Free everything inside shell, some even still need functions made
+	shell = (t_shell){NULL, NONE, 0, get_cwd(), make_venv(envp), true};
 	while (1)
 	{
-		cmdstr = ft_readline(envp);
+		shell.main_rl_str = ft_readline(envp);
 
-		if (!cmdstr)
+		if (!shell.main_rl_str)
 			return (1);
-		result = parse_commands(cmdstr, &cmds);
-		// if (cmds->name && ft_strncmp(cmds->name, "echo", 4) == 0 && cmds->argc > 1 && cmds->argv[1][0] == '$')
-		// {
-		// 	if (cmds->argv[1][1] == '?')
-		// 		printf("%d\n", status);
-		// 	continue;
-		// }
-		if (result == PARSEOK)
+		shell.last_parse_res = parse_commands(shell, &cmds);
+		if (shell.last_parse_res == PARSEOK)
 		{
-			//print_command_list(cmds);
-			status = execute_cmds(cmds, envp, ft_cmdcount(cmds));
+			shell.last_status = execute_cmds(cmds, envp, ft_cmdcount(cmds));
 			free_commands(cmds);
 		}
-//		else
-//			print_parse_result(result);
-		add_history(cmdstr);
-		history(cmdstr);
-		free(cmdstr);
+		add_history(shell.main_rl_str);
+		history(shell.main_rl_str);
+		free(shell.main_rl_str);
 	}
 	// TODO: We can't exit the loop so this is probably never actually reached, we will need to handle it in our exit functions
 	rl_clear_history();
-	free_path(ms_cwd, true);
-	return (status);
+	free_path(shell.cwd, true);
+	return (0); // probably? maybe needs to be different depending on signal or whatever
 }

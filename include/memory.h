@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   memory.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 01:24:49 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/04/09 18:20:59 by mschippe         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   memory.h                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 01:24:49 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/04/16 12:43:41 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MEMORY_H
 # define MEMORY_H
-# include "structbuild.h"
-# include "path.h"
+# include "minishell.h"
 
 void	free_array(void **arr, void (*del)(void *));
 void	clear_env_var(void *var);

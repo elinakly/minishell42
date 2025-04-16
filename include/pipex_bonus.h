@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 13:50:36 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/03/22 10:27:50 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/16 12:34:36 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@
 # include <errno.h>
 # include <linux/limits.h>
 # include "structbuild.h"
-
-// typedef struct s_command
-// {
-// 	char	*cmd;
-// 	int		input_fd;
-// 	int		output_fd;
-// 	int		argc;
-// 	char	**args;
-// 	int		num_cmds;
-// }			t_command;
 
 void		execute(t_command *cmd, char **envp);
 int			error(int status);

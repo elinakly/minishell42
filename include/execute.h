@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 18:16:34 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/10 20:11:26 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   execute.h                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/12 18:16:34 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/04/16 12:44:09 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 # define EXECUTE_H
 
 # define _GNU_SOURCE
-# include <signal.h>
-# include <unistd.h>
-#include <readline/readline.h>
-#include "structbuild.h"
+#include "minishell.h"
 
 void		set_signal(void);
 int			get_history(void);

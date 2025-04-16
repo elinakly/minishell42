@@ -6,15 +6,16 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/04/04 01:07:07 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/16 12:28:47 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "../include/variable.h"
-#include "../include/tokenize.h"
-#include "../include/memory.h"
-#include "../lib/libft/libft.h"
+#include "../../../include/variable.h"
+#include "../../../include/tokenize.h"
+#include "../../../include/memory.h"
+#include "../../../include/venv.h"
+#include "../../../lib/libft/libft.h"
 
 bool	is_meta(char *str, size_t index, e_metachar *meta);
 bool	can_escape(char c, e_metachar quot);
@@ -57,12 +58,27 @@ bool	set_quote_state(char *cmd, size_t index, e_metachar *current)
  * @param is_first Whether the character is the first in a variable name
  * @returns `true` if character is valid, `false` if not
  */
-bool	is_var_char(char c, bool is_first)
+bool	is_var_char(char *str, size_t index)
 {
-	return ((c >= '0' && c <= '9' && !is_first)
-		|| (c >= 'a' && c <= 'z')
-		|| (c >= 'A' && c <= 'Z')
-		|| c == '_');
+	bool	is_first;
+	size_t	index_cpy;
+
+	is_first = index > 0 && str[index - 1] == '$';
+	index_cpy = index;
+	if (is_first && str[index] == '?')
+		return (true);
+	if (!is_first)
+	{
+		while (index_cpy >= 0 && str[index_cpy] != '$')
+			index_cpy--;
+		if (str[index_cpy] == '$' && str[index_cpy + 1] == '?'
+			&& index_cpy < index)
+			return (false);
+	}
+	return ((str[index] >= '0' && str[index] <= '9' && !is_first)
+		|| (str[index] >= 'a' && str[index] <= 'z')
+		|| (str[index] >= 'A' && str[index] <= 'Z')
+		|| str[index] == '_');
 }
 
 /**
@@ -76,7 +92,7 @@ size_t	skip_var_chars(char *cmd, size_t index)
 	size_t	use_index;
 
 	use_index = index;
-	while (is_var_char(cmd[use_index], index == use_index))
+	while (is_var_char(cmd, use_index))
 		use_index++;
 	return (use_index - index);
 }
@@ -191,7 +207,7 @@ t_part_var	**get_var_names(char *cmd, size_t varcount, t_part_var **names)
  * @param part Partial environment variable (name + quote type)
  * @returns Malloced environment variable struct holding name and value strings
  */
-t_env_var	*make_var(t_part_var *part)
+t_env_var	*make_var(t_part_var *part, t_venv *envp)
 {
 	t_env_var	*var;
 	char		*value;
@@ -203,7 +219,7 @@ t_env_var	*make_var(t_part_var *part)
 		return (NULL);
 	var->name = ft_strdup(part->name);
 	var->quote_type = part->in_quote_type;
-	value = getenv(part->name);
+	value = get_env(envp, part->name);
 	if (!value)
 		var->value = ft_strdup("");
 	else
@@ -222,7 +238,7 @@ t_env_var	*make_var(t_part_var *part)
  * @param names Array containing partial env vars (name + quote type)
  * @returns An array of environment variable structs
  */
-t_env_var	**get_command_vars(t_part_var **names)
+t_env_var	**get_command_vars(t_part_var **names, t_venv *envp)
 {
 	t_env_var	**vars;
 	size_t		amount;
@@ -238,7 +254,7 @@ t_env_var	**get_command_vars(t_part_var **names)
 	vars[amount] = NULL;
 	while (index < amount)
 	{
-		vars[index] = make_var(names[index]);
+		vars[index] = make_var(names[index], envp);
 		if (!vars[index])
 			return (free_array((void **)vars, &clear_env_var),
 					free_array((void **)names, &clear_part_var), NULL);
@@ -358,7 +374,7 @@ char	*get_expanded_cmd(char *cmd, t_env_var **vars)
 	{
 		set_quote_state(cmd, i.cmd, &quot);
 		if (is_meta(cmd, i.cmd, &meta) && meta == MC_VARIABLE
-			&& quot != MC_SQUOTE && is_var_char(cmd[i.cmd + 1], true))
+			&& quot != MC_SQUOTE && is_var_char(cmd, i.cmd + 1))
 		{
 			if (!insert_var(res, vars[i.var], &i.res))
 				return (free(res), NULL);

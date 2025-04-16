@@ -1,17 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tokenandvar.h                                      :+:    :+:            */
+/*   enums.h                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/03/13 01:22:00 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/03/19 00:52:52 by Mika Schipp   ########   odam.nl         */
+/*   Created: 2025/04/16 12:46:56 by Mika Schipp   #+#    #+#                 */
+/*   Updated: 2025/04/16 12:47:11 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOKENANDVAR_H
-# define TOKENANDVAR_H
+#ifndef ENUMS_H
+# define ENUMS_H
+
+typedef enum e_quote_type
+{
+	QUOTE_NONE,
+	QUOTE_SINGLE,
+	QUOTE_DOUBLE,
+}	e_quote_type;
+
+typedef enum e_redir_type
+{
+	RE_UNKNOWN,
+	RE_OUTPUT_TRUNC,
+	RE_OUTPUT_APPEND,
+	RE_INPUT,
+	RE_HEREDOC,
+}	e_redir_type;
+
+typedef enum e_parse_result
+{
+	UNCLOSED_SQUOTE,
+	UNCLOSED_DQUOTE,
+	UNFINISHED_PIPE,
+	ESCAPED_NEWLINE,
+	HEREDOC,
+	SYNTAX_ERROR,
+	MALLOC_FAIL,
+	EMPTY,
+	PARSEOK,
+	NONE,
+}	e_parse_result;
 
 typedef enum e_metachar
 {
@@ -42,4 +72,5 @@ typedef enum e_token_type
 	TT_INFILE,
 	TT_OUTFILE
 }	e_token_type;
+
 #endif
