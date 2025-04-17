@@ -26,9 +26,11 @@ int	ms_atoi(const char *nptr)
 	if (*nptr == 43 || *nptr == 45)
 		sig = (*nptr++ - 44) * -1;
 	while (*nptr >= '0' && *nptr <= '9')
+	{
 		res = res * 10 + (*nptr++ - 48);
-	if (res > INT_MAX || res < INT_MIN)
-		return (1);
+		if (sig * res > INT_MAX || sig * res < INT_MIN)
+			return (1);
+	}
 	return ((int)(sig * res));
 }
 
@@ -57,8 +59,8 @@ int	ft_exit(char **argv)
 	long status;
 
 	ft_putstr_fd("exit\n", 2);
-	// if (!argv[1])
-	// 	exit(0);
+	if (!argv[1])
+		exit(0);
 	if (argv[2])
 	{
 		ft_putstr_fd("too many arguments\n", 2);
@@ -69,8 +71,8 @@ int	ft_exit(char **argv)
 		ft_putstr_fd("numeric argument required\n", 2);
 		exit(2);
 	}
-	status = ft_atoi(argv[1]);
-	if (status && argv[1][0] != '1')
+	status = ms_atoi(argv[1]);
+	if (status == 1 && argv[1][0] != '1')
 		exit(142);
 	if (status > 255 || status < 0)
 		status = status % 256;
