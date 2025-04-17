@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/16 19:01:03 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/18 01:14:52 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ int	main(int argc, char **argv, char **envp)
 	//TODO: Check cwd and venv NULL in shell
 	//TODO: Free everything inside shell, some even still need functions made
 	shell = (t_shell){NULL, NONE, 0, get_cwd(), make_venv(envp), true};
-	// TODO: test add and remove env var functions
 	while (shell.loop_active)
 	{
 		shell.main_rl_str = ft_readline(envp);

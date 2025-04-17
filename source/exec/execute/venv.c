@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/16 19:00:06 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/18 01:14:32 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ bool	add_env_var(t_venv *base, char *strvar)
 	while (base->next)
 		base = base->next;
 
-	new = malloc(sizeof(t_venv));
+	new = make_t_venv(false);
 	if (!new)
 		return (false);
 	if (!set_env_kv(new, strvar))
@@ -109,10 +109,11 @@ void	remove_env_var(t_venv *base, char *name)
 	prev = base;
 	while (temp)
 	{
-		if (ft_strncmp(base->name, name, ft_strlen(name) + 1) == 0)
+		if (!temp->base && ft_strncmp(temp->name, name,
+			ft_strlen(name) + 1) == 0)
 			break;
 		index++;
-		temp = base;
+		temp = temp->next;
 	}
 	if (!temp)
 		return ;
@@ -127,7 +128,11 @@ void	remove_env_var(t_venv *base, char *name)
 char	*get_env_val(t_venv *envp, char *name)
 {
 	char	res;
+	size_t	namelen;
+	size_t	varnamelen;
 
+
+	namelen = ft_strlen(name);
 	while (envp)
 	{
 		if (envp->base)
@@ -135,7 +140,14 @@ char	*get_env_val(t_venv *envp, char *name)
 			envp = envp->next;
 			continue ;
 		}
-		if (ft_strncmp(name, envp->name, ft_strlen(name) + 1) == 0)
+		if (ft_strncmp(envp->name, "lmaotest", 9) == 0)
+		{
+			printf("aa");
+		}
+		varnamelen = ft_strlen(envp->name);
+		if (namelen > varnamelen)
+			varnamelen = namelen;
+		if (ft_strncmp(name, envp->name, varnamelen + 1) == 0)
 			return (ft_strdup(envp->value));
 		envp = envp->next;
 	}
