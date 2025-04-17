@@ -78,33 +78,32 @@ void open_files(t_command *commands)
 void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
 	t_redirect *redirects = commands->redirects;
-	if	(commands->has_redirects)
+
+	while (redirects)
 	{
-		while (redirects->next)
-   			redirects = redirects->next;
-	}
-	if (commands->has_redirects && redirects->type == RE_INPUT)
-	{
-	 	if (dup2(redirects->in_fd, STDIN_FILENO) == -1)
-		 	error(1);
-		close(redirects->in_fd);
-	}
-	else
-		if (i > 0)
+		if (redirects->type == RE_INPUT)
 		{
-			if (dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
-			{
-				fprintf(stderr, "dup2 failed1\n");
-				error(1);
-			}
-			close(pipes[i - 1][0]);
+			 if (dup2(redirects->in_fd, STDIN_FILENO) == -1)
+				 error(1);
+			close(redirects->in_fd);
 		}
-	if (commands->has_redirects && (redirects->type == RE_OUTPUT_TRUNC ||
-			redirects->type == RE_OUTPUT_APPEND))
+		if (redirects->type == RE_OUTPUT_TRUNC ||
+			redirects->type == RE_OUTPUT_APPEND)
+		{
+	 		if (dup2(redirects->out_fd, STDOUT_FILENO) == -1)
+	 			error(1);
+			close(redirects->out_fd);
+		}
+		redirects = redirects->next;
+	}
+	if (i > 0)
 	{
-	 	if (dup2(redirects->out_fd, STDOUT_FILENO) == -1)
-	 		error(1);
-		close(redirects->out_fd);
+		if (dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
+		{
+			fprintf(stderr, "dup2 failed1\n");
+			error(1);
+		}
+		close(pipes[i - 1][0]);
 	}
 	else
 		if (i < cmdcount - 1)
