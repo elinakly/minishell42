@@ -121,6 +121,7 @@ int	main(int argc, char **argv, char **envp)
 		if (shell.last_parse_res == PARSEOK)
 		{
 			shell.last_status = execute_cmds(cmds, envp, ft_cmdcount(cmds));
+			//printf("Last status: %d\n", shell.last_status);
 			free_commands(cmds);
 		}
 		add_history(shell.main_rl_str);

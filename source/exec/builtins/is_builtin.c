@@ -55,7 +55,7 @@ void	execve_builtin(t_command *cmds, char **envp)
 		if (cmds->has_command && ft_strncmp(cmds->name, "env", len) == 0)
 			env(envp);
 		if (cmds->has_command && ft_strncmp(cmds->name, "exit", len) == 0)
-			ft_exit();
+			ft_exit(cmds->argv);
 		cmds = cmds->next;
 	}
 }
