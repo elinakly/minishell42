@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/05 22:39:00 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/16 18:37:12 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/25 23:43:21 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,25 @@ t_path	*make_path(char *name, t_path *prev, t_path *next)
 
 /**
  * Wrapper function for splitting a path string into parts using ft_split
+ * @param str The path string to split, uses getcwd if NULL
  * @returns An array of strings containing path parts
  */
-char	**get_split_path(void)
+char	**get_split_path(char *str)
 {
-	char	*cwd;
 	char	**splitpath;
+	bool	was_cwd;
 	
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (NULL);
-	splitpath = ft_split(cwd, '/');
-	free(cwd);
+	was_cwd = false;
+	if (!str)
+	{
+		str = getcwd(NULL, 0);
+		if (!str)
+			return (NULL);
+		was_cwd = true;
+	}
+	splitpath = ft_split(str, '/');
+	if (was_cwd)
+		free(str);
 	return (splitpath);
 }
 
@@ -73,7 +80,7 @@ t_path	*get_cwd(void)
 	root = make_path("/", NULL, NULL);
 	if (!root)
 		return (NULL);
-	parts = get_split_path();
+	parts = get_split_path(NULL);
 	if (!parts)
 		return (root);
 	while (parts[partsindex])
@@ -86,6 +93,11 @@ t_path	*get_cwd(void)
 		root = temp_res;
 	}
 	return (free_array((void **)parts, NULL), root);
+}
+
+t_path	str_to_path(t_path *cwd, char *str)
+{
+	
 }
 
 /**

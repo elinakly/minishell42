@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/12 13:28:47 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   utils.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 13:34:41 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/04/26 00:02:19 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,14 @@ void	execute(t_command *cmd, char **envp)
 		ft_putstr_fd("cannot execute binary file\n", 2);
 		exit(126);
 	}
+}
+
+bool strequals(char *one, char *two)
+{
+	size_t	index;
+
+	index = 0;
+	while (one[index] && two[index] && one[index] == two[index])
+		index++;
+	return (!one[index] && !two[index]);
 }
