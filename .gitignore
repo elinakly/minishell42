@@ -26,3 +26,5 @@ objects/*
 # ignore suppression files
 *.supp
 .minishell_history
+# ignore the echo file some tester seems to like to create but not delete
+echo
