@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/18 01:14:52 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/25 18:59:08 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ int	main(int argc, char **argv, char **envp)
 		if (shell.last_parse_res == PARSEOK)
 		{
 			shell.last_status = execute_cmds(cmds, envp, ft_cmdcount(cmds));
-			printf("Last status: %d\n", shell.last_status);
 			free_commands(cmds);
 		}
 		add_history(shell.main_rl_str);

@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/04/16 17:58:24 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/25 19:17:59 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ t_part_var	**get_var_names(char *cmd, size_t varcount, t_part_var **names)
  * @param part Partial environment variable (name + quote type)
  * @returns Malloced environment variable struct holding name and value strings
  */
-t_env_var	*make_var(t_part_var *part, t_venv *envp)
+t_env_var	*make_var(t_part_var *part, t_shell shell)
 {
 	t_env_var	*var;
 	char		*value;
@@ -219,7 +219,7 @@ t_env_var	*make_var(t_part_var *part, t_venv *envp)
 		return (NULL);
 	var->name = ft_strdup(part->name);
 	var->quote_type = part->in_quote_type;
-	value = get_env_val(envp, part->name); // TODO: If strdup is used to copy this below, maybe we need to free this here
+	value = get_env_val(shell, part->name); // TODO: If strdup is used to copy this below, maybe we need to free this here
 	if (!value)
 		var->value = ft_strdup("");
 	else
@@ -238,7 +238,7 @@ t_env_var	*make_var(t_part_var *part, t_venv *envp)
  * @param names Array containing partial env vars (name + quote type)
  * @returns An array of environment variable structs
  */
-t_env_var	**get_command_vars(t_part_var **names, t_venv *envp)
+t_env_var	**get_command_vars(t_part_var **names, t_shell shell)
 {
 	t_env_var	**vars;
 	size_t		amount;
@@ -254,7 +254,7 @@ t_env_var	**get_command_vars(t_part_var **names, t_venv *envp)
 	vars[amount] = NULL;
 	while (index < amount)
 	{
-		vars[index] = make_var(names[index], envp);
+		vars[index] = make_var(names[index], shell);
 		if (!vars[index])
 			return (free_array((void **)vars, &clear_env_var),
 					free_array((void **)names, &clear_part_var), NULL);

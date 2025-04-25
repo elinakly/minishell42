@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/18 01:14:32 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/25 19:16:43 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,24 +125,23 @@ void	remove_env_var(t_venv *base, char *name)
 	free(temp);
 }
 
-char	*get_env_val(t_venv *envp, char *name)
+char	*get_env_val(t_shell shell, char *name)
 {
+	t_venv	*envp;
 	char	res;
 	size_t	namelen;
 	size_t	varnamelen;
 
-
 	namelen = ft_strlen(name);
+	envp = shell.venv;
+	if (ft_strncmp(name, "?", 2) == 0)
+		return (ft_itoa(shell.last_status));
 	while (envp)
 	{
 		if (envp->base)
 		{
 			envp = envp->next;
 			continue ;
-		}
-		if (ft_strncmp(envp->name, "lmaotest", 9) == 0)
-		{
-			printf("aa");
 		}
 		varnamelen = ft_strlen(envp->name);
 		if (namelen > varnamelen)

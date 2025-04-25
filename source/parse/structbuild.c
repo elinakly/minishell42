@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/16 12:32:40 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/25 19:17:28 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
  * @param cmd The command string to use
  * @returns An array of environment variable structures
  */
-t_env_var	**get_vars_from_cmd(char *cmd, t_venv *envp)
+t_env_var	**get_vars_from_cmd(char *cmd, t_shell shell)
 {
 	size_t		varcount;
 	t_part_var	**varnames;
@@ -38,7 +38,7 @@ t_env_var	**get_vars_from_cmd(char *cmd, t_venv *envp)
 		return (NULL);
 	get_var_names(cmd, varcount, varnames);
 	varnames[varcount] = NULL;
-	variables = get_command_vars(varnames, envp);
+	variables = get_command_vars(varnames, shell);
 	if (!variables)
 		return(free_array((void **)variables, &clear_env_var),
 		free_array((void **)varnames, &clear_part_var), NULL);
@@ -339,7 +339,7 @@ e_parse_result	parse_commands(t_shell shell, t_command **cmd)
 	res = validate_cmd_str(shell.main_rl_str);
 	if (res != PARSEOK)
 		return (res);
-	variables = get_vars_from_cmd(shell.main_rl_str, shell.venv);
+	variables = get_vars_from_cmd(shell.main_rl_str, shell);
 	if (!variables)
 		return (MALLOC_FAIL);
 	tokens = get_tokens_from_cmd(shell.main_rl_str, variables, &tokencount);
