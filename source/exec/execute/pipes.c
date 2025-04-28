@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 13:34:38 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/28 14:36:45 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/28 23:01:53 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ int	execute_signal_cmd(t_shell shell, t_command *cmds, char *envp[], int *status
 	if (is_builtins(cmds, envp))
 	{
 		execve_builtin(shell, cmds, envp);
-		exit(EXIT_SUCCESS);
+		return (EXIT_SUCCESS);
 	}
 	pid = fork();
 	if (pid == -1)
