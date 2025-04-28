@@ -6,7 +6,7 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/14 15:45:44 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/28 14:26:31 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/28 17:04:32 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,21 +111,11 @@ struct t_command
 	t_command		*next;
 };
 
-typedef struct t_path t_path;
-
-struct t_path
-{
-	char	*name;
-	t_path	*prev;
-	t_path	*next;
-};
-
 typedef struct s_shell
 {
 	char			*main_rl_str;
 	e_parse_result	last_parse_res;
 	int				last_status;
-	t_path			*cwd;
 	t_venv			*venv;
 	bool			loop_active;
 }	t_shell;

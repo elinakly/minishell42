@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   arrays.c                                           :+:    :+:            */
+/*   memory.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mschippe <mschippe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/16 18:36:05 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/28 17:06:34 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,27 +156,6 @@ void	free_commands(t_command *head)
 		next = head->next;
 		free_single_cmd(head);
 		head = next;
-	}
-}
-
-/**
- * Frees all path parts in a path part linked list
- * @param path Any path part
- */
-void	free_path(t_path *path, bool from_start)
-{
-	t_path	*next;
-
-	if (!path)
-		return ;
-	if (from_start)
-		path = getfirstpath(path);
-	while (path)
-	{
-		next = path->next;
-		free(path->name);
-		free(path);
-		path = next;
 	}
 }
 
