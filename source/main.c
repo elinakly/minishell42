@@ -119,7 +119,7 @@ int	main(int argc, char **argv, char **envp)
 		shell.last_parse_res = parse_commands(shell, &cmds);
 		if (shell.last_parse_res == PARSEOK)
 		{
-			shell.last_status = execute_cmds(shell, cmds, envp, ft_cmdcount(cmds));
+			shell.last_status = execute_cmds(shell, cmds, venv_to_arr(shell.venv), ft_cmdcount(cmds));
 			free_commands(cmds);
 		}
 		add_history(shell.main_rl_str);
