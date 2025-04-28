@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 13:50:36 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/16 12:34:36 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/28 14:33:50 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <linux/limits.h>
 # include "structbuild.h"
 
-void		execute(t_command *cmd, char **envp);
+void		execute(t_shell shell, t_command *cmd, char **envp);
 int			error(int status);
 void		create_pipes(int num_cmds, int **pipes);
 void		free_arr(char **arr);

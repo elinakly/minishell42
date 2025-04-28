@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/07 16:35:59 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/26 00:02:48 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/28 14:33:20 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int		env(char **envp);
 int		pwd(void);
 int		ft_exit(char **argv);
 bool	is_builtins(t_command *cmds, char **envp);
-void	execve_builtin(t_command *cmds, char **envp);
+void	execve_builtin(t_shell shell, t_command *cmds, char **envp);
 bool	strequals(char *one, char *two);
+int		cd(t_shell shell, t_command *cmd);
 
 #endif

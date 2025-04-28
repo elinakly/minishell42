@@ -6,13 +6,14 @@
 /*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/14 15:45:44 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/16 12:47:34 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/28 14:26:31 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "enums.h"
+# include <errno.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <stdlib.h>

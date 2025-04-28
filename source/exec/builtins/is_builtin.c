@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   is_builtin.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/28 19:59:32 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   is_builtin.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/04 15:35:57 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/04/28 15:53:53 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,39 +23,37 @@
 
 bool	is_builtins(t_command *cmds, char **envp)
 {
-	size_t	len;
-
-	len = ft_strlen(cmds->name);
-	while (cmds)
+	if (cmds && cmds->has_command)
 	{
-		if (cmds->has_command && ft_strncmp(cmds->name, "echo", len) == 0)
+		if (strequals(cmds->name, "echo"))
 			return (true);
-		if (cmds->has_command && ft_strncmp(cmds->name, "pwd", len) == 0)
+		if (strequals(cmds->name, "pwd"))
 			return (true);
-		if (cmds->has_command && ft_strncmp(cmds->name, "env", len) == 0)
+		if (strequals(cmds->name, "env"))
 			return (true);
-		if (cmds->has_command && ft_strncmp(cmds->name, "exit", len) == 0)
+		if (strequals(cmds->name, "exit"))
+			return (true);
+		if (strequals(cmds->name, "cd"))
 			return (true);
 		cmds = cmds->next;
 	}
 	return (false);
 }
 
-void	execve_builtin(t_command *cmds, char **envp)
+void	execve_builtin(t_shell shell, t_command *cmds, char **envp)
 {
-	size_t	len;
-
-	len = ft_strlen(cmds->name);
-	while (cmds)
+	if (cmds && cmds->has_command)
 	{
-		if (cmds->has_command && ft_strncmp(cmds->name, "echo", len) == 0)
+		if (strequals(cmds->name, "echo"))
 			echo(cmds->argv);
-		if (cmds->has_command && ft_strncmp(cmds->name, "pwd", len) == 0)
+		if (strequals(cmds->name, "pwd"))
 			pwd();
-		if (cmds->has_command && ft_strncmp(cmds->name, "env", len) == 0)
+		if (strequals(cmds->name, "env"))
 			env(envp);
-		if (cmds->has_command && ft_strncmp(cmds->name, "exit", len) == 0)
+		if (strequals(cmds->name, "exit"))
 			ft_exit(cmds->argv);
+		if (strequals(cmds->name, "cd"))
+			cd(shell, cmds);
 		cmds = cmds->next;
 	}
 }

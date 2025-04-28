@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipes.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/12 14:15:51 by eklymova         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   pipes.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/02/20 13:34:38 by eklymova      #+#    #+#                 */
+/*   Updated: 2025/04/28 14:36:45 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,13 @@ void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 		}
 }
 
-void	child_process(int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
+void	child_process(t_shell shell, int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
 {
 	if (cmds->has_redirects)
 		open_files(cmds);	
 	redirection(i, pipes, cmds, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
-	execute(cmds, envp);
+	execute(shell, cmds, envp);
 }
 
 int	**malloc_pipes(t_command *commands, size_t cmdcount)
@@ -151,7 +151,7 @@ int	**malloc_pipes(t_command *commands, size_t cmdcount)
 	return (pipes);
 }
 
-void fork_plz(t_command *commands, int **pipes, char **envp, size_t cmdcount)
+void fork_plz(t_shell shell, t_command *commands, int **pipes, char **envp, size_t cmdcount)
 {
 	int		i;
 	int		last_pid;
@@ -167,7 +167,7 @@ void fork_plz(t_command *commands, int **pipes, char **envp, size_t cmdcount)
 		}
 		if (commands->pid == 0)
 		{
-			child_process(i, pipes, envp, commands, cmdcount);
+			child_process(shell, i, pipes, envp, commands, cmdcount);
 			exit(1);
 		}
 		i++;
@@ -175,7 +175,7 @@ void fork_plz(t_command *commands, int **pipes, char **envp, size_t cmdcount)
 	}
 }
 
-int	pipes(t_command *cmds, char *envp[], size_t cmdcount, int *status)
+int	pipes(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount, int *status)
 {
 	int			**pipes;
 	int			i;
@@ -186,7 +186,7 @@ int	pipes(t_command *cmds, char *envp[], size_t cmdcount, int *status)
 	if (!pipes)
 		return (1);
 	create_pipes(cmdcount, pipes);
-	fork_plz(cmds, pipes, envp, cmdcount);
+	fork_plz(shell, cmds, pipes, envp, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
 	commands = cmds;
 	temp_status = 0;
@@ -201,7 +201,7 @@ int	pipes(t_command *cmds, char *envp[], size_t cmdcount, int *status)
 	return (0);
 }
 
-int	execute_signal_cmd(t_command *cmds, char *envp[], int *status)
+int	execute_signal_cmd(t_shell shell, t_command *cmds, char *envp[], int *status)
 {
 	pid_t	pid;
 
@@ -217,22 +217,22 @@ int	execute_signal_cmd(t_command *cmds, char *envp[], int *status)
 			open_files(cmds);	
 		redirection(0, 0, cmds, 1);
 		close_fd(cmds, 0, 1);
-		execute(cmds, envp);
+		execute(shell, cmds, envp);
 		exit(0);
 	}
 	waitpid(pid, status, 0);
 	return (0);
 }
 
-int execute_cmds(t_command *cmds, char *envp[], size_t cmdcount)
+int execute_cmds(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount)
 {
 	int status;
 
 	status = 0;
 	if (cmdcount == 1)
-		execute_signal_cmd(cmds, envp, &status);
+		execute_signal_cmd(shell, cmds, envp, &status);
 	else
-		pipes(cmds, envp, cmdcount, &status);
+		pipes(shell, cmds, envp, cmdcount, &status);
 	if (WIFEXITED(status))
 		return WEXITSTATUS(status);
 	if (WIFSIGNALED(status))

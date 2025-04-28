@@ -6,12 +6,14 @@
 /*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/02/20 13:34:41 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/26 00:02:19 by Mika Schipp   ########   odam.nl         */
+/*   Updated: 2025/04/28 16:57:11 by Mika Schipp   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include "builtins.h"
+#include "../../../include/minishell.h"
+#include "../../../include/path.h"
 
 void	close_fd(t_command *commands, int **pipes, size_t cmdscount)
 {
@@ -54,13 +56,15 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-static char	*find_valid_path(const char *com, char **envp)
+static char	*find_valid_path(t_shell shell, const char *com, char **envp)
 {
 	int		i;
 	char	**paths;
 	char	path[PATH_MAX];
 
 	i = 0;
+	if (ft_strchr(com, '/'))
+		return resolve_exec_path(shell, (char *)com); //TODO: SHOULD be freed by execute already but make sure
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
@@ -80,16 +84,17 @@ static char	*find_valid_path(const char *com, char **envp)
 	}
 	return (free_arr(paths), NULL);
 }
-void	execute(t_command *cmd, char **envp)
+
+void	execute(t_shell shell, t_command *cmd, char **envp)
 {
 	char	*find_path;
 
 	if (is_builtins(cmd, envp))
 	{
-		execve_builtin(cmd, envp);
+		execve_builtin(shell, cmd, envp);
 		exit(EXIT_SUCCESS);
 	}
-	find_path = find_valid_path(cmd->name, envp);
+	find_path = find_valid_path(shell, cmd->name, envp);
 	if (cmd->name == NULL)
 		exit(error(3));
 	if (find_path == NULL)
