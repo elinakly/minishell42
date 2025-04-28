@@ -78,6 +78,8 @@ void open_files(t_command *commands)
 void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
 	t_redirect *redirects = commands->redirects;
+	bool has_in = false;
+	bool has_out = false;
 
 	while (redirects)
 	{
@@ -86,6 +88,7 @@ void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 			 if (dup2(redirects->in_fd, STDIN_FILENO) == -1)
 				 error(1);
 			close(redirects->in_fd);
+			has_in = true;
 		}
 		if (redirects->type == RE_OUTPUT_TRUNC ||
 			redirects->type == RE_OUTPUT_APPEND)
@@ -93,10 +96,11 @@ void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 	 		if (dup2(redirects->out_fd, STDOUT_FILENO) == -1)
 	 			error(1);
 			close(redirects->out_fd);
+			has_out = true;
 		}
 		redirects = redirects->next;
 	}
-	if (i > 0)
+	if (i > 0 && has_in == false)
 	{
 		if (dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
 		{
@@ -105,16 +109,15 @@ void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 		}
 		close(pipes[i - 1][0]);
 	}
-	else
-		if (i < cmdcount - 1)
+	if (i < cmdcount - 1 && has_out == false)
+	{
+		if (dup2(pipes[i][1], STDOUT_FILENO) == -1)
 		{
-			if (dup2(pipes[i][1], STDOUT_FILENO) == -1)
-			{
-				fprintf(stderr, "dup2 failed2\n");
-				error(1);
-			}
-			close(pipes[i][1]);
+			fprintf(stderr, "dup2 failed2\n");
+			error(1);
 		}
+		close(pipes[i][1]);
+	}
 }
 
 void	child_process(t_shell shell, int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
