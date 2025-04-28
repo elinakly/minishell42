@@ -208,6 +208,12 @@ int	execute_signal_cmd(t_shell shell, t_command *cmds, char *envp[], int *status
 {
 	pid_t	pid;
 
+
+	if (is_builtins(cmds, envp))
+	{
+		execve_builtin(shell, cmds, envp);
+		exit(EXIT_SUCCESS);
+	}
 	pid = fork();
 	if (pid == -1)
 	{

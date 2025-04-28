@@ -73,7 +73,7 @@ int	ft_exit(char **argv)
 	}
 	status = ms_atoi(argv[1]);
 	if (status == 1 && argv[1][0] != '1')
-		exit(142);
+		exit(1);
 	if (status > 255 || status < 0)
 		status = status % 256;
 	exit((unsigned char)(status));

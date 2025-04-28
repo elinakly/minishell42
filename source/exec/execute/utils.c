@@ -89,11 +89,11 @@ void	execute(t_shell shell, t_command *cmd, char **envp)
 {
 	char	*find_path;
 
-	if (is_builtins(cmd, envp))
-	{
-		execve_builtin(shell, cmd, envp);
-		exit(EXIT_SUCCESS);
-	}
+	// if (is_builtins(cmd, envp))
+	// {
+	// 	execve_builtin(shell, cmd, envp);
+	// 	exit(EXIT_SUCCESS);
+	// }
 	find_path = find_valid_path(shell, cmd->name, envp);
 	if (cmd->name == NULL)
 		exit(error(3));
