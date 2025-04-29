@@ -1,17 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/06 15:24:30 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/28 17:04:24 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
+/*   Updated: 2025/04/29 15:29:30 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdbool.h>
 #include "../include/tokenize.h"
 #include "../include/variable.h"
 #include "../include/path.h"
@@ -22,7 +20,7 @@
 #include "../include/validate.h"
 #include "../include/minishell.h"
 #include "../include/venv.h"
-#include <readline/history.h>
+#include "../include/heredoc.h"
 
 char			*ft_readline(char **envp);
 size_t			ft_cmdcount(t_command *head);
@@ -109,10 +107,15 @@ int	main(int argc, char **argv, char **envp)
 	while (shell.loop_active)
 	{
 		shell.main_rl_str = ft_readline(envp);
+		if (ft_strncmp(shell.main_rl_str, "heredoc", 9) == 0)
+		{
+			printf("%s\n", get_heredoc("test", true));
+			continue ;
+		}
 		if (ft_strncmp(shell.main_rl_str, "debug", 6) == 0)
 		{
 			shell.loop_active = false;
-			break;
+			break ;
 		}
 		if (!shell.main_rl_str)
 			return (1);
