@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/20 13:34:41 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/28 16:57:11 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
+/*   Updated: 2025/04/29 16:20:10 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,12 @@ static char	*find_valid_path(t_shell shell, const char *com, char **envp)
 	return (free_arr(paths), NULL);
 }
 
-void	execute(t_shell shell, t_command *cmd, char **envp)
+void	execute(t_shell shell, t_command *cmd, char **envp, size_t cmdcount)
 {
 	char	*find_path;
 
-	// if (is_builtins(cmd, envp))
-	// {
-	// 	execve_builtin(shell, cmd, envp);
-	// 	exit(EXIT_SUCCESS);
-	// }
+	if (is_builtins(cmd))
+		exit(execve_builtin(shell, cmd, envp, cmdcount));
 	find_path = find_valid_path(shell, cmd->name, envp);
 	if (cmd->name == NULL)
 		exit(error(3));
@@ -113,7 +110,7 @@ void	execute(t_shell shell, t_command *cmd, char **envp)
 	}
 }
 
-bool strequals(char *one, char *two)
+bool	strequals(char *one, char *two)
 {
 	size_t	index;
 

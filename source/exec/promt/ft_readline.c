@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_readline.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/04 20:11:57 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/25 19:57:29 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_readline.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
+/*   Updated: 2025/04/29 16:42:06 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ char	*ft_readline(char **envp)
 	line = readline(prompt);
 	if (line == 0)
 	{
-		if (isatty(STDIN_FILENO))
-			ft_putstr_fd("exit\n", 2);
+		// if (isatty(STDIN_FILENO))
+		// 	ft_putstr_fd("exit\n", 2);
 		exit(0);
 	}
 	return (line);

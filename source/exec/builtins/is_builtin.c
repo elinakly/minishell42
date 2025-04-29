@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   is_builtin.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/04 15:35:57 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/28 15:53:53 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   is_builtin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
+/*   Updated: 2025/04/29 16:27:06 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * @return int 1 if the command is a built-in command, 0 otherwise
  **/
 
-bool	is_builtins(t_command *cmds, char **envp)
+bool	is_builtins(t_command *cmds)
 {
 	if (cmds && cmds->has_command)
 	{
@@ -40,20 +40,21 @@ bool	is_builtins(t_command *cmds, char **envp)
 	return (false);
 }
 
-void	execve_builtin(t_shell shell, t_command *cmds, char **envp)
+int	execve_builtin(t_shell shell, t_command *cmds, char **envp, size_t cmdcount)
 {
 	if (cmds && cmds->has_command)
 	{
 		if (strequals(cmds->name, "echo"))
-			echo(cmds->argv);
+			return (echo(cmds->argv));
 		if (strequals(cmds->name, "pwd"))
-			pwd();
+			return (pwd());
 		if (strequals(cmds->name, "env"))
-			env(envp);
+			return (env(envp));
 		if (strequals(cmds->name, "exit"))
-			ft_exit(cmds->argv);
+			ft_exit(cmds->argv, cmdcount);
 		if (strequals(cmds->name, "cd"))
-			cd(shell, cmds);
+			return (cd(shell, cmds));
 		cmds = cmds->next;
 	}
+	return (0);	
 }

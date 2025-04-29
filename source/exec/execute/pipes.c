@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   pipes.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: eklymova <eklymova@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/20 13:34:38 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/28 23:01:53 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   pipes.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
+/*   Updated: 2025/04/29 16:38:51 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	child_process(t_shell shell, int i, int **pipes, char *envp[], t_command *c
 		open_files(cmds);	
 	redirection(i, pipes, cmds, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
-	execute(shell, cmds, envp);
+	execute(shell, cmds, envp, cmdcount);
 }
 
 int	**malloc_pipes(t_command *commands, size_t cmdcount)
@@ -207,12 +207,20 @@ int	pipes(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount, int *st
 int	execute_signal_cmd(t_shell shell, t_command *cmds, char *envp[], int *status)
 {
 	pid_t	pid;
+	int		builtin_status;
 
-
-	if (is_builtins(cmds, envp))
+	if (is_builtins(cmds))
 	{
-		execve_builtin(shell, cmds, envp);
-		return (EXIT_SUCCESS);
+		int oldstout = dup(STDOUT_FILENO);
+		if (cmds->has_redirects)
+			open_files(cmds);	
+		redirection(0, 0, cmds, 1);
+		close_fd(cmds, 0, 1);
+		builtin_status = execve_builtin(shell, cmds, envp, 1);
+		if (dup2(oldstout, STDOUT_FILENO) == -1)
+			return (error(1));
+		close(oldstout);
+		return (builtin_status);
 	}
 	pid = fork();
 	if (pid == -1)
@@ -226,7 +234,7 @@ int	execute_signal_cmd(t_shell shell, t_command *cmds, char *envp[], int *status
 			open_files(cmds);	
 		redirection(0, 0, cmds, 1);
 		close_fd(cmds, 0, 1);
-		execute(shell, cmds, envp);
+		execute(shell, cmds, envp, 1);
 		exit(0);
 	}
 	waitpid(pid, status, 0);
@@ -239,7 +247,7 @@ int execute_cmds(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount)
 
 	status = 0;
 	if (cmdcount == 1)
-		execute_signal_cmd(shell, cmds, envp, &status);
+		return (execute_signal_cmd(shell, cmds, envp, &status));
 	else
 		pipes(shell, cmds, envp, cmdcount, &status);
 	if (WIFEXITED(status))
