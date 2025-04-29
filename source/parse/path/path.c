@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   path.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/05 22:39:00 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/28 17:05:17 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 22:39:00 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/04/29 17:15:25 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char	*get_homedir(t_shell shell)
 	homedir = get_env_val(shell, "HOME");
 	if (!homedir)
 		return (ft_strdup("/"));
+	return (homedir);
 }
 
 /**

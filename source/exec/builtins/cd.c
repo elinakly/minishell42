@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   cd.c                                               :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/28 14:03:31 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/28 16:02:03 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/28 14:03:31 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/04/29 16:52:06 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	cd(t_shell shell, t_command *cmd)
 	char	*homedir;
 	int		res;
 
+	homedir = NULL;
 	if (!cmd)
 		return (1);
 	if (cmd->argc > 2)
