@@ -203,25 +203,10 @@ int	pipes(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount, int *st
 	free_array((void **)pipes, NULL); 
 	return (0);
 }
-
 int	execute_signal_cmd(t_shell shell, t_command *cmds, char *envp[], int *status)
 {
 	pid_t	pid;
-	int		builtin_status;
 
-	if (is_builtins(cmds))
-	{
-		int oldstout = dup(STDOUT_FILENO);
-		if (cmds->has_redirects)
-			open_files(cmds);	
-		redirection(0, 0, cmds, 1);
-		close_fd(cmds, 0, 1);
-		builtin_status = execve_builtin(shell, cmds, envp, 1);
-		if (dup2(oldstout, STDOUT_FILENO) == -1)
-			return (error(1));
-		close(oldstout);
-		return (builtin_status);
-	}
 	pid = fork();
 	if (pid == -1)
 	{
@@ -247,7 +232,23 @@ int execute_cmds(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount)
 
 	status = 0;
 	if (cmdcount == 1)
-		return (execute_signal_cmd(shell, cmds, envp, &status));
+	{	
+		if (is_builtins(cmds))
+		{
+			int oldstout = dup(STDOUT_FILENO);
+			if (cmds->has_redirects)
+				open_files(cmds);	
+			redirection(0, 0, cmds, 1);
+			close_fd(cmds, 0, 1);
+			status = execve_builtin(shell, cmds, envp, 1);
+			if (dup2(oldstout, STDOUT_FILENO) == -1)
+				return (error(1));
+			close(oldstout);
+			return (status);
+		}
+		else 
+			execute_signal_cmd(shell, cmds, envp, &status);
+	}
 	else
 		pipes(shell, cmds, envp, cmdcount, &status);
 	if (WIFEXITED(status))
