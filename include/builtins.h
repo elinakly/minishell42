@@ -25,5 +25,6 @@ int		execve_builtin(t_shell shell, t_command *cmds,
 			char **envp, size_t cmdcount);
 bool	strequals(char *one, char *two);
 int		cd(t_shell shell, t_command *cmd);
+int		export(t_shell shell, t_command *cmds, char **envp);
 
 #endif

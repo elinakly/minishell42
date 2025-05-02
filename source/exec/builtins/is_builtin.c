@@ -35,6 +35,8 @@ bool	is_builtins(t_command *cmds)
 			return (true);
 		if (strequals(cmds->name, "cd"))
 			return (true);
+		if (strequals(cmds->name, "export"))
+			return (true);
 		cmds = cmds->next;
 	}
 	return (false);
@@ -51,9 +53,11 @@ int	execve_builtin(t_shell shell, t_command *cmds, char **envp, size_t cmdcount)
 		if (strequals(cmds->name, "env"))
 			return (env(envp));
 		if (strequals(cmds->name, "exit"))
-			ft_exit(cmds->argv, cmdcount);
+			return(ft_exit(cmds->argv, cmdcount));
 		if (strequals(cmds->name, "cd"))
 			return (cd(shell, cmds));
+		if (strequals(cmds->name, "export"))
+			return (export(shell, cmds, envp));
 		cmds = cmds->next;
 	}
 	return (0);	

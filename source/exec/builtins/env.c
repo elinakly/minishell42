@@ -3,17 +3,9 @@
 
 int	env(char **envp)
 {
-	int	i;
-
 	while(*envp)
 	{
-		i = 0;
-		while(envp[0][i])
-		{
-			printf("%c", envp[0][i]);
-			i++;
-		}
-		printf("\n");
+			printf("%s\n", *envp);
 		envp++;
 	}
 	return (0);

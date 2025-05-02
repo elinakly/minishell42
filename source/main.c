@@ -106,7 +106,7 @@ int	main(int argc, char **argv, char **envp)
 	shell = (t_shell){NULL, NONE, 0, make_venv(envp), true};
 	while (shell.loop_active)
 	{
-		shell.main_rl_str = ft_readline(envp);
+		shell.main_rl_str = ft_readline(venv_to_arr(shell.venv));
 		if (ft_strncmp(shell.main_rl_str, "heredoc", 9) == 0)
 		{
 			printf("%s\n", get_heredoc("test", true));
