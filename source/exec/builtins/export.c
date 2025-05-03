@@ -38,7 +38,7 @@ int export(t_shell shell, t_command *cmds, char **envp)
         if (!valid_input(cmds->argv[i]))
             return (1);
         remove_env_var(shell.venv, cmds->argv[i]);
-        if (!add_env_var(shell.venv, cmds->argv[i]));
+        if (!add_env_var(shell.venv, cmds->argv[i]))
             return (1);
         i++;
     }
