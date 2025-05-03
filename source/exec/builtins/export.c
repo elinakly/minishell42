@@ -1,14 +1,29 @@
+#include "builtins.h"
+#include "venv.h"
 #include "minishell.h"
+
+int valid_input(char *name)
+{
+    if (!isalpha(name[0]) && name[0] != '_')
+        return (ft_putstr_fd("minishell: export: not a valid identifier\n", 2), 0);
+    while (*name && *name != '=')
+    {   
+        if (!isalnum(*name) && *name != '_')
+            return (ft_putstr_fd("minishell: export: not a valid identifier\n", 2), 0);
+        name++;
+    }
+    return (1);
+}
 
 
 int export(t_shell shell, t_command *cmds, char **envp)
 {
     char *name;
     char *value = NULL;
-    name = cmds->argv[1];
     t_venv *new_var;
-    
-    new_var = malloc(sizeof(t_venv));
+    int i;
+  
+    i = 1;
     if (cmds->argc == 1)
     {
         while (*envp)
@@ -16,18 +31,16 @@ int export(t_shell shell, t_command *cmds, char **envp)
             printf("declare -x %s\n", *envp);
             envp++;
         }
+        return (0);
     }
-    else
-    {
-        if (strchr(name, '='))
-        {
-            value = strchr(name, '=') + 1;
-            *strchr(name, '=') = '\0';
-        }
-        new_var->name = strdup(name);
-        new_var->value = value ? strdup(value) : NULL;
-        new_var->next = shell.venv;
-        shell.venv = new_var;
+    while (i < cmds->argc)
+    { 
+        if (!valid_input(cmds->argv[i]))
+            return (1);
+        remove_env_var(shell.venv, cmds->argv[i]);
+        if (!add_env_var(shell.venv, cmds->argv[i]));
+            return (1);
+        i++;
     }
     return (0);
 }
