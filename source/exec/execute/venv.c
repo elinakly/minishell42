@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   venv.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/14 17:00:10 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/25 19:16:43 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   venv.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/14 17:00:10 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/05/05 13:21:58 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../../include/venv.h"
 #include "../../../include/memory.h"
 #include "../../../lib/libft/libft.h"
+#include "../../../include/builtins.h"
 
 t_venv	*make_t_venv(bool is_base)
 {
@@ -93,6 +94,51 @@ bool	add_env_var(t_venv *base, char *strvar)
 	if (!set_env_kv(new, strvar))
 		return (free_venv(new), false);
 	base->next = new;
+	return (true);
+}
+
+bool	set_name_value(t_venv *var, char *name, char *value)
+{
+	char	*tmpname;
+	char	*tmpvalue;
+
+	tmpname = var->name;
+	tmpvalue = var->value;
+	var->name = ft_strdup(name);
+	if (!var->name)
+	{
+		var->name = tmpname;
+		return (false);
+	}
+	var->value = ft_strdup(value);
+	if (!var->value)
+	{
+		var->name = tmpname;
+		var->value = tmpvalue;
+		return (false);
+	}
+	return (free(tmpname), free(tmpvalue), true);
+}
+
+bool	simple_add_var(t_venv *base, char *name, char *value)
+{
+	t_venv	*cpy;
+
+	cpy = base;
+	while (cpy)
+	{
+		if (cpy->name && strequals(name, cpy->name))
+			break ;
+		cpy = cpy->next;
+	}
+	if (cpy)
+		return set_name_value(cpy, name, value);
+	cpy = make_t_venv(false);
+	if (!cpy || !set_name_value(cpy, name, value))
+		return (free(cpy), false);
+	while (base->next)
+		base = base->next;
+	base->next = cpy;
 	return (true);
 }
 

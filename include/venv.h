@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   venv.h                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: Mika Schipper <mschippe@student.codam.n      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/14 17:00:32 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/25 19:20:00 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   venv.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/14 17:00:32 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/05/04 20:29:08 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,5 @@ char	*get_env_val(t_shell shell, char *name);
 char	**venv_to_arr(t_venv *base);
 bool	add_env_var(t_venv *base, char *strvar);
 void	remove_env_var(t_venv *base, char *name);
+bool	simple_add_var(t_venv *base, char *name, char *value);
 #endif

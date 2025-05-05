@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/29 15:29:30 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:52:12 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,74 +25,6 @@
 char			*ft_readline(char **envp);
 size_t			ft_cmdcount(t_command *head);
 
-void print_redirects(t_redirect *head)
-{
-	t_redirect	*current;
-
-	current = head;
-	while (current)
-	{
-		printf("  - [Type: %d | File: \"%s\" | Delimiter: \"%s\" | Heredoc expand: %s]\n",
-			current->type, current->file ? current->file : "(none)", 
-			current->heredoc_delim ? current->heredoc_delim : "(none)",
-			current->expand_in_heredoc ? "Yes" : "No");
-		current = current->next;
-	}
-}
-
-/**
- * TODO: Delete again, ChatGPT generated crap just for testing
- */
-void	print_parse_result(e_parse_result e)
-{
-	const char *names[] = {
-		"UNCLOSED_SQUOTE",
-		"UNCLOSED_DQUOTE",
-		"UNFINISHED_PIPE",
-		"ESCAPED_NEWLINE",
-		"HEREDOC",
-		"SYNTAX_ERROR",
-		"MALLOC_FAIL",
-		"EMPTY",
-		"PARSEOK"
-	};
-
-	if (e >= 0 && e <= PARSEOK)
-		printf("%s\n", names[e]);
-	else
-		printf("UNKNOWN ENUM VALUE\n");
-}
-
-void print_command_list(t_command *head) // Thank you kindly, ChatGPT
-{
-	t_command	*current;
-	size_t		i;
-
-	current = head;
-	while (current)
-	{
-		printf("Command: %s\n", current->name ? current->name : "(none)");
-		i = 0;
-		if (current->argc > 0)
-		{
-			printf("Arguments:\n");
-			while (i < current->argc)
-			{
-				printf("  - [%s]\n", current->argv[i]);
-				i++;
-			}
-		}
-		if (current->has_redirects)
-		{
-			printf("Redirects:\n");
-			print_redirects(current->redirects);
-		}
-		printf("------------\n");
-		current = current->next;
-	}
-}
-
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_command		*cmds;
@@ -106,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	shell = (t_shell){NULL, NONE, 0, make_venv(envp), true};
 	while (shell.loop_active)
 	{
-		shell.main_rl_str = ft_readline(venv_to_arr(shell.venv));
+		shell.main_rl_str = ft_readline(venv_to_arr(shell.venv)); //TODO: venv array leaks
 		if (ft_strncmp(shell.main_rl_str, "heredoc", 9) == 0)
 		{
 			printf("%s\n", get_heredoc("test", true));
@@ -122,7 +54,7 @@ int	main(int argc, char **argv, char **envp)
 		shell.last_parse_res = parse_commands(shell, &cmds);
 		if (shell.last_parse_res == PARSEOK)
 		{
-			shell.last_status = execute_cmds(shell, cmds, venv_to_arr(shell.venv), ft_cmdcount(cmds));
+			shell.last_status = execute_cmds(shell, cmds, venv_to_arr(shell.venv), ft_cmdcount(cmds)); //TODO: venv array leaks
 			free_commands(cmds);
 		}
 		add_history(shell.main_rl_str);
