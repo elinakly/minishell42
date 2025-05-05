@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/05 13:48:54 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/05 13:55:25 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ int	comp_name_len(char **envp)
 	return (len);
 }
 
+/**
+ * TODO: Make prompt not have ~ if we are not in home dir
+ */
 char	*ft_readline(char **envp)
 {
 	int		i;
