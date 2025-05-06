@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/05 13:21:58 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/07 00:39:47 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,12 @@ bool	set_name_value(t_venv *var, char *name, char *value)
 
 	tmpname = var->name;
 	tmpvalue = var->value;
+	if (!value)
+	{
+		value = ft_strdup("");
+		if (!value)
+			return (false);
+	}
 	var->name = ft_strdup(name);
 	if (!var->name)
 	{
