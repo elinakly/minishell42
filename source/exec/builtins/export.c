@@ -18,12 +18,15 @@ int valid_input(char *name)
 
 int export(t_shell shell, t_command *cmds, char **envp)
 {
-    char *name;
-    char *value = NULL;
     t_venv *new_var;
+    int status;
     int i;
-  
+    char name[1024];
+    char *value = NULL;
+    int j;
+    
     i = 1;
+    status = 0;
     if (cmds->argc == 1)
     {
         while (*envp)
@@ -36,9 +39,22 @@ int export(t_shell shell, t_command *cmds, char **envp)
     while (i < cmds->argc)
     { 
         if (!valid_input(cmds->argv[i]))
-            return (1);
-        remove_env_var(shell.venv, cmds->argv[i]);
-        if (!add_env_var(shell.venv, cmds->argv[i]))
+        {
+            status = 1;
+            i++;
+            continue;
+        }
+        j = 0;
+        while (cmds->argv[i][j] && cmds->argv[i][j] != '=')
+        {
+            name[j] = cmds->argv[i][j];
+            j++;
+        }
+        name[j] = '\0';
+        value = ft_strchr(cmds->argv[i], '=');
+        if (value)
+            value++;
+        if ((!simple_add_var(shell.venv, name, value) || status == 1))
             return (1);
         i++;
     }
