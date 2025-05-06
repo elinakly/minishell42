@@ -5,11 +5,11 @@
 int valid_input(char *name)
 {
     if (!isalpha(name[0]) && name[0] != '_')
-        return (ft_putstr_fd("minishell: export: not a valid identifier\n", 2), 0);
+        return (0);
     while (*name && *name != '=')
     {   
         if (!isalnum(*name) && *name != '_')
-            return (ft_putstr_fd("minishell: export: not a valid identifier\n", 2), 0);
+            return (0);
         name++;
     }
     return (1);
@@ -40,23 +40,31 @@ int export(t_shell shell, t_command *cmds, char **envp)
     { 
         if (!valid_input(cmds->argv[i]))
         {
+            ft_putstr_fd("minishell: export: not a valid identifier\n", 2);
             status = 1;
-            i++;
-            continue;
         }
-        j = 0;
-        while (cmds->argv[i][j] && cmds->argv[i][j] != '=')
-        {
-            name[j] = cmds->argv[i][j];
-            j++;
-        }
-        name[j] = '\0';
-        value = ft_strchr(cmds->argv[i], '=');
-        if (value)
-            value++;
-        if ((!simple_add_var(shell.venv, name, value) || status == 1))
-            return (1);
         i++;
     }
-    return (0);
+    i = 1;
+    while (i < cmds->argc)
+    { 
+        if (valid_input(cmds->argv[i]))
+        {
+            j = 0;
+            while (cmds->argv[i][j] && cmds->argv[i][j] != '=')
+            {
+                name[j] = cmds->argv[i][j];
+                j++;
+            }
+            name[j] = '\0';
+            value = ft_strchr(cmds->argv[i], '=');
+            if (value)
+                value++;
+        
+            if (!simple_add_var(shell.venv, name, value))
+                return (1);
+        }
+        i++;
+    }
+    return (status);
 }
