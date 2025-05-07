@@ -28,5 +28,7 @@ bool	strequals(char *one, char *two);
 int		cd(t_shell *shell, t_command *cmd);
 int		export(t_shell *shell, t_command *cmds, char **envp);
 int		fake_exit(t_shell *shell, int code);
+int 	ft_clear(void);
+int		unset(t_shell *shell, t_command *cmds, char **envp);
 
 #endif

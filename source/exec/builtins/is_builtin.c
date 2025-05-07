@@ -37,6 +37,10 @@ bool	is_builtins(t_command *cmds)
 			return (true);
 		if (strequals(cmds->name, "export"))
 			return (true);
+		if (strequals(cmds->name, "unset"))
+			return (true);
+		if (strequals(cmds->name, "clear"))
+			return (true);
 		cmds = cmds->next;
 	}
 	return (false);
@@ -59,6 +63,10 @@ int	execve_builtin(t_shell *shell, t_command *cmds,
 			return (cd(shell, cmds));
 		if (strequals(cmds->name, "export"))
 			return (export(shell, cmds, envp));
+		if (strequals(cmds->name, "unset"))
+			return (unset(shell, cmds, envp));
+		if (strequals(cmds->name, "clear"))
+			return (ft_clear());
 		cmds = cmds->next;
 	}
 	return (0);
