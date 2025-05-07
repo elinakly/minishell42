@@ -14,7 +14,6 @@
 #include "venv.h"
 #include "minishell.h"
 
-#include <string.h>
 
 void sort_env(char **envp)
 {
@@ -27,7 +26,7 @@ void sort_env(char **envp)
         j = i + 1;
         while (envp[j]) 
 		{
-            if (strcmp(envp[i], envp[j]) > 0)
+            if (ft_strncmp(envp[i], envp[j], 1024) > 0)
 			{
                 tmp = envp[i];
                 envp[i] = envp[j];
