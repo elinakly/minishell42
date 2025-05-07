@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 15:58:15 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:07:13 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-static char	*find_valid_path(t_shell *shell, const char *com, char **envp)
+char	*find_valid_path(t_shell *shell, const char *com, char **envp)
 {
 	int		i;
 	char	**paths;
@@ -83,32 +83,6 @@ static char	*find_valid_path(t_shell *shell, const char *com, char **envp)
 		i++;
 	}
 	return (free_arr(paths), NULL);
-}
-
-int	execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount)
-{
-	char	*find_path;
-
-	if (is_builtins(cmd))
-		exit(execve_builtin(shell, cmd, envp, cmdcount));
-	find_path = find_valid_path(shell, cmd->name, envp);
-	if (cmd->name == NULL)
-		return (fake_exit(shell, error(3)));
-	if (find_path == NULL)
-	{
-		ft_putstr_fd(cmd->name, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		return (fake_exit(shell, 127));
-	}
-	if (execve(find_path, cmd->argv, envp) == -1)
-	{
-		free(find_path);
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->name, 2);
-		ft_putstr_fd("cannot execute binary file\n", 2);
-		return (fake_exit(shell, 126));
-	}
-	return (0);
 }
 
 bool	strequals(char *one, char *two)

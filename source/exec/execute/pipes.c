@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 19:18:32 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:03:02 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,117 +35,6 @@ void	create_pipes(t_shell *shell, int num_cmds, int **pipes)
 		i++;
 	}
 }
-
-
-int	open_in_files(t_redirect	*redirects)
-{
-	if (redirects->type == RE_INPUT)
-	{
-		redirects->in_fd = open(redirects->file, O_RDONLY);
-		if (redirects->in_fd == -1)
-		{
-			if (errno == ENOENT)
-				return (ft_putstr_fd(" No such file or directory\n", 2), 0);
-			else if (errno == EACCES)
-				return (ft_putstr_fd(" Permission denied\n", 2), 0);
-		}
-	}
-	return (1);
-}
-
-int	open_out_files(t_redirect	*redirects)
-{
-	if (redirects->type == RE_OUTPUT_TRUNC)
-		redirects->out_fd = open(redirects->file,//if > then we need to do trunc
-				O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	else if (redirects->type == RE_OUTPUT_APPEND)
-	{
-		redirects->out_fd = open(redirects->file,//if >> then we need to do append
-				O_WRONLY | O_CREAT | O_APPEND, 0777);
-		if (redirects->out_fd == -1)
-		{
-			if (errno == ENOENT)
-				return (ft_putstr_fd(" No such file or directory\n", 2), 0);
-			else if (errno == EACCES)
-				return (ft_putstr_fd(" Permission denied\n", 2), 0);
-		}
-	}
-	return (1);
-}
-
-int	open_files(t_shell *shell, t_command *commands)
-{
-	t_redirect	*redirects;
-
-	redirects = commands->redirects;
-	while (redirects)
-	{
-		/// if (heredoc detected)
-	// 	// here_doc(commands.args[1], commands.argc);
-		if (!open_in_files(redirects))
-			return (fake_exit(shell, 1));
-		if (!open_out_files(redirects))
-			return (fake_exit(shell, 1));
-		redirects = redirects->next;
-	}
-	return (0);
-}
-
-void	redirects_files(t_command *commands, bool *has_in, bool *has_out)
-{
-	t_redirect	*redirects;
-
-	redirects = commands->redirects;
-
-	while (redirects)
-	{
-		if (redirects->type == RE_INPUT)
-		{
-			if (dup2(redirects->in_fd, STDIN_FILENO) == -1)
-				error(1);
-			close(redirects->in_fd);
-			*has_in = true;
-		}
-		if (redirects->type == RE_OUTPUT_TRUNC
-			|| redirects->type == RE_OUTPUT_APPEND)
-		{
-			if (dup2(redirects->out_fd, STDOUT_FILENO) == -1)
-				error(1);
-			close(redirects->out_fd);
-			*has_out = true;
-		}
-		redirects = redirects->next;
-	}
-}
-
-void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
-{
-	bool	has_in;
-	bool	has_out;
-
-	has_in = false;
-	has_out = false;
-	redirects_files(commands, &has_in, &has_out);
-	if (i > 0 && has_in == false)
-	{
-		if (dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
-		{
-			fprintf(stderr, "dup2 failed1\n");
-			error(1);
-		}
-		close(pipes[i - 1][0]);
-	}
-	if (i < cmdcount - 1 && has_out == false)
-	{
-		if (dup2(pipes[i][1], STDOUT_FILENO) == -1)
-		{
-			fprintf(stderr, "dup2 failed2\n");
-			error(1);
-		}
-		close(pipes[i][1]);
-	}
-}
-
 
 void	child_process(t_shell *shell, int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
 {
@@ -230,67 +119,4 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *s
 	}
 	free_array((void **)pipes, NULL);
 	return (0);
-}
-
-int	execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *status)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork failed");
-		return (1);
-	}
-	if (pid == 0)
-	{
-		if (cmds->has_redirects)
-			open_files(shell, cmds);
-		redirection(0, 0, cmds, 1);
-		close_fd(cmds, 0, 1);
-		execute(shell, cmds, envp, 1);
-		return (fake_exit(shell, 0));
-	}
-	waitpid(pid, status, 0);
-	return (0);
-}
-
-int	excute_one_builtin(t_shell *shell, t_command *cmds,
-	char **envp, int *status)
-{
-	int	oldstout;
-
-	oldstout = dup(STDOUT_FILENO);
-	if (oldstout == -1)
-		exit (1);
-	if (cmds->has_redirects)
-		open_files(shell, cmds);
-	redirection(0, 0, cmds, 1);
-	close_fd(cmds, 0, 1);
-	*status = execve_builtin(shell, cmds, envp, 1);
-	if (dup2(oldstout, STDOUT_FILENO) == -1)
-		exit (1);
-	close(oldstout);
-	return (*status);
-}
-
-int	execute_cmds(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount)
-{
-	int	status;
-
-	status = 0;
-	if (cmdcount == 1)
-	{
-		if (is_builtins(cmds))
-			return (excute_one_builtin(shell, cmds, envp, &status));
-		else
-			execute_signal_cmd(shell, cmds, envp, &status);
-	}
-	else
-		pipes(shell, cmds, envp, cmdcount, &status);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (1);
 }
