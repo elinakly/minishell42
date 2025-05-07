@@ -14,6 +14,32 @@
 #include "venv.h"
 #include "minishell.h"
 
+#include <string.h>
+
+void sort_env(char **envp)
+{
+    int i = 0;
+    int j;
+    char *tmp;
+
+    while (envp[i])
+	{
+        j = i + 1;
+        while (envp[j]) 
+		{
+            if (strcmp(envp[i], envp[j]) > 0)
+			{
+                tmp = envp[i];
+                envp[i] = envp[j];
+                envp[j] = tmp;
+            }
+            j++;
+        }
+        i++;
+    }
+}
+
+
 int	valid_input(char *name)
 {
 	if (!isalpha(name[0]) && name[0] != '_')
@@ -58,8 +84,11 @@ int	export(t_shell *shell, t_command *cmds, char **envp)
 	status = 0;
 	if (cmds->argc == 1)
 	{
+		sort_env(envp);
 		while (*envp)
+		{
 			printf("declare -x %s\n", *envp++);
+		}
 		return (0);
 	}
 	while (i < cmds->argc)
