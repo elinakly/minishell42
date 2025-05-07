@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 10:50:28 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/07 15:58:15 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int	execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount)
 		ft_putstr_fd("cannot execute binary file\n", 2);
 		return (fake_exit(shell, 126));
 	}
+	return (0);
 }
 
 bool	strequals(char *one, char *two)

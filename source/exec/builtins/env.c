@@ -3,9 +3,9 @@
 
 int	env(char **envp)
 {
-	while(*envp)
+	while (*envp)
 	{
-			printf("%s\n", *envp);
+		printf("%s\n", *envp);
 		envp++;
 	}
 	return (0);

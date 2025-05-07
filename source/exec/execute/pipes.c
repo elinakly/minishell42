@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 10:50:28 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/07 15:34:44 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	open_files(t_shell *shell, t_command *commands)
 		}
 		redirects = redirects->next;
 	}
+	return (0);
 }
 
 void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
