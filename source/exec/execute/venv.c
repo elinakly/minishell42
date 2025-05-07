@@ -148,33 +148,30 @@ bool	simple_add_var(t_venv *base, char *name, char *value)
 	return (true);
 }
 
-void	remove_env_var(t_venv *base, char *name)
+void	remove_env_var(t_venv **base, char *name)
 {
-	size_t	index;
-	size_t	counter;
-	t_venv	*temp;
-	t_venv	*prev;
+	t_venv *temp;
+	t_venv *prev;
 
-	index = 0;
-	counter = 0;
-	temp = base;
-	prev = base;
+	temp = *base;
+	prev = NULL;
 	while (temp)
 	{
-		if (!temp->base && ft_strncmp(temp->name, name,
-			ft_strlen(name) + 1) == 0)
-			break;
-		index++;
+		if (!temp->base && ft_strncmp(temp->name, name, ft_strlen(name) + 1) == 0)
+		{
+			if (prev)
+				prev->next = temp->next;
+			else
+				*base = temp->next;
+
+			free(temp->name);
+			free(temp->value);
+			free(temp);
+			return;
+		}
+		prev = temp;
 		temp = temp->next;
 	}
-	if (!temp)
-		return ;
-	while (counter++ < index)
-		prev = prev->next;
-	prev->next = temp->next;
-	free(temp->name);
-	free(temp->value);
-	free(temp);
 }
 
 char	*get_env_val(t_shell *shell, char *name)

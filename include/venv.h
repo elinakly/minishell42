@@ -18,6 +18,6 @@ t_venv	*make_venv(char **envp);
 char	*get_env_val(t_shell *shell, char *name);
 char	**venv_to_arr(t_venv *base);
 bool	add_env_var(t_venv *base, char *strvar);
-void	remove_env_var(t_venv *base, char *name);
+void	remove_env_var(t_venv **base, char *name);
 bool	simple_add_var(t_venv *base, char *name, char *value);
 #endif
