@@ -85,11 +85,11 @@ int	export(t_shell *shell, t_command *cmds, char **envp)
 	{
 		sort_env(envp);
 		while (*envp)
-		{
 			printf("declare -x %s\n", *envp++);
-		}
 		return (0);
 	}
+	if (cmds->argv[1][0] == '-' && cmds->argv[1][1])
+		return (ft_putstr_fd("minishell: export: invalid option\n", 2), 2);
 	while (i < cmds->argc)
 	{
 		if (!valid_input(cmds->argv[i]))
