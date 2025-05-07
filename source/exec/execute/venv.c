@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/07 00:39:47 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/07 10:51:51 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ void	remove_env_var(t_venv *base, char *name)
 	free(temp);
 }
 
-char	*get_env_val(t_shell shell, char *name)
+char	*get_env_val(t_shell *shell, char *name)
 {
 	t_venv	*envp;
 	char	res;
@@ -185,9 +185,9 @@ char	*get_env_val(t_shell shell, char *name)
 	size_t	varnamelen;
 
 	namelen = ft_strlen(name);
-	envp = shell.venv;
+	envp = shell->venv;
 	if (ft_strncmp(name, "?", 2) == 0)
-		return (ft_itoa(shell.last_status));
+		return (ft_itoa(shell->last_status));
 	while (envp)
 	{
 		if (envp->base)

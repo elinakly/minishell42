@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   structbuild.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/13 00:10:14 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/25 19:17:28 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   structbuild.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/05/07 10:52:09 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
  * @param cmd The command string to use
  * @returns An array of environment variable structures
  */
-t_env_var	**get_vars_from_cmd(char *cmd, t_shell shell)
+t_env_var	**get_vars_from_cmd(char *cmd, t_shell *shell)
 {
 	size_t		varcount;
 	t_part_var	**varnames;
@@ -328,7 +328,7 @@ t_command	*make_cmd_list(t_token *token)
  * @param cmd A pointer to where the linked list should be stored
  * @returns A parsing result that describes what happened in parsing
  */
-e_parse_result	parse_commands(t_shell shell, t_command **cmd)
+e_parse_result	parse_commands(t_shell *shell, t_command **cmd)
 {
 	size_t			tokencount;
 	e_parse_result	res;
@@ -336,13 +336,13 @@ e_parse_result	parse_commands(t_shell shell, t_command **cmd)
 	t_token			*tokens;
 
 	tokencount = 0;
-	res = validate_cmd_str(shell.main_rl_str);
+	res = validate_cmd_str(shell->main_rl_str);
 	if (res != PARSEOK)
 		return (res);
-	variables = get_vars_from_cmd(shell.main_rl_str, shell);
+	variables = get_vars_from_cmd(shell->main_rl_str, shell);
 	if (!variables)
 		return (MALLOC_FAIL);
-	tokens = get_tokens_from_cmd(shell.main_rl_str, variables, &tokencount);
+	tokens = get_tokens_from_cmd(shell->main_rl_str, variables, &tokencount);
 	free_array((void **)variables, &clear_env_var);
 	if (!tokens)
 		return (MALLOC_FAIL);

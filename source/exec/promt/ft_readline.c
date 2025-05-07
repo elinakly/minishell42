@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/05 13:55:25 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/07 11:18:10 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	comp_name_len(char **envp)
 /**
  * TODO: Make prompt not have ~ if we are not in home dir
  */
-char	*ft_readline(char **envp)
+char	*ft_readline(t_shell *shell, char **envp)
 {
 	int		i;
 	char	*line;
@@ -88,7 +88,7 @@ char	*ft_readline(char **envp)
 	{
 		// if (isatty(STDIN_FILENO))
 		// 	ft_putstr_fd("exit\n", 2);
-		exit(0);
+		fake_exit(shell, shell->last_status);
 	}
 	return (line);
 }

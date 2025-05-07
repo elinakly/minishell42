@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/29 16:27:06 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:50:08 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	is_builtins(t_command *cmds)
 	return (false);
 }
 
-int	execve_builtin(t_shell shell, t_command *cmds, char **envp, size_t cmdcount)
+int	execve_builtin(t_shell *shell, t_command *cmds, char **envp, size_t cmdcount)
 {
 	if (cmds && cmds->has_command)
 	{
@@ -53,7 +53,7 @@ int	execve_builtin(t_shell shell, t_command *cmds, char **envp, size_t cmdcount)
 		if (strequals(cmds->name, "env"))
 			return (env(envp));
 		if (strequals(cmds->name, "exit"))
-			return(ft_exit(cmds->argv, cmdcount));
+			return(ft_exit(shell, cmds->argv, cmdcount));
 		if (strequals(cmds->name, "cd"))
 			return (cd(shell, cmds));
 		if (strequals(cmds->name, "export"))

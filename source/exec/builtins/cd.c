@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:03:31 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/05 13:44:04 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/07 10:51:35 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	print_cd_err(char *homedir, char *cwd)
 	return (1);
 }
 
-int	cd(t_shell shell, t_command *cmd)
+int	cd(t_shell *shell, t_command *cmd)
 {
 	char	*homedir;
 	char	*path;
@@ -50,7 +50,7 @@ int	cd(t_shell shell, t_command *cmd)
 	if (!cwd)
 		return (free(homedir), free(path), res);
 	if (res == 0)
-		return (simple_add_var(shell.venv, path, cwd),
+		return (simple_add_var(shell->venv, path, cwd),
 				free(cwd), free(homedir), free(path), 0);
 	free(path);
 	return (print_cd_err(homedir, cwd));

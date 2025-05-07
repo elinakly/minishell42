@@ -16,7 +16,7 @@ int valid_input(char *name)
 }
 
 
-int export(t_shell shell, t_command *cmds, char **envp)
+int export(t_shell *shell, t_command *cmds, char **envp)
 {
     t_venv *new_var;
     int status;
@@ -61,7 +61,7 @@ int export(t_shell shell, t_command *cmds, char **envp)
             if (value)
                 value++;
         
-            if (!simple_add_var(shell.venv, name, value))
+            if (!simple_add_var(shell->venv, name, value))
                 return (1);
         }
         i++;

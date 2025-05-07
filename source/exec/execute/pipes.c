@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/29 16:38:51 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:50:28 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 //TODO rederection for singl our own cmd malloc_pipes(malloc) leaking)
 
-void	create_pipes(int num_cmds, int **pipes)
+void	create_pipes(t_shell *shell, int num_cmds, int **pipes)
 {
 	int	i;
 
@@ -29,14 +29,15 @@ void	create_pipes(int num_cmds, int **pipes)
 		if (pipe(pipes[i]) == -1)
 		{
 			perror("pipe failed");
-			exit(EXIT_FAILURE);
+			fake_exit(shell, EXIT_FAILURE);
+			return ;
 		}
 		i++;
 	}
 }
 
-void open_files(t_command *commands)
- {
+int	open_files(t_shell *shell, t_command *commands)
+{
 	t_redirect	*redirects;
 	redirects = commands->redirects;
 
@@ -50,9 +51,9 @@ void open_files(t_command *commands)
 			if (redirects->in_fd == -1)
 			{
 				if (errno == ENOENT)
-					return (ft_putstr_fd(" No such file or directory\n", 2), exit(1));
+					return (ft_putstr_fd(" No such file or directory\n", 2), fake_exit(shell, 1));
 				else if (errno == EACCES)
-					return (ft_putstr_fd(" Permission denied\n", 2), exit(1));
+					return (ft_putstr_fd(" Permission denied\n", 2), fake_exit(shell, 1));
 			}
 		}
 		if (redirects->type == RE_OUTPUT_TRUNC) 
@@ -65,15 +66,14 @@ void open_files(t_command *commands)
 			if (redirects->out_fd == -1)
 			{
 				if (errno == ENOENT)
-					return (ft_putstr_fd(" No such file or directory\n", 2), exit(1));
+					return (ft_putstr_fd(" No such file or directory\n", 2), fake_exit(shell, 1));
 				else if (errno == EACCES)
-					return (ft_putstr_fd(" Permission denied\n", 2), exit(1));
+					return (ft_putstr_fd(" Permission denied\n", 2), fake_exit(shell, 1));
 			}
 		}
 		redirects = redirects->next;
 	}
- }
-
+}
 
 void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 {
@@ -120,10 +120,10 @@ void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 	}
 }
 
-void	child_process(t_shell shell, int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
+void	child_process(t_shell *shell, int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
 {
 	if (cmds->has_redirects)
-		open_files(cmds);	
+		open_files(shell, cmds);	
 	redirection(i, pipes, cmds, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
 	execute(shell, cmds, envp, cmdcount);
@@ -154,7 +154,7 @@ int	**malloc_pipes(t_command *commands, size_t cmdcount)
 	return (pipes);
 }
 
-void fork_plz(t_shell shell, t_command *commands, int **pipes, char **envp, size_t cmdcount)
+void fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp, size_t cmdcount)
 {
 	int		i;
 	int		last_pid;
@@ -171,14 +171,15 @@ void fork_plz(t_shell shell, t_command *commands, int **pipes, char **envp, size
 		if (commands->pid == 0)
 		{
 			child_process(shell, i, pipes, envp, commands, cmdcount);
-			exit(1);
+			fake_exit(shell, 1);
+			return ;
 		}
 		i++;
 		commands = commands->next;
 	}
 }
 
-int	pipes(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount, int *status)
+int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *status)
 {
 	int			**pipes;
 	int			i;
@@ -188,7 +189,7 @@ int	pipes(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount, int *st
 	pipes = malloc_pipes(cmds, cmdcount);
 	if (!pipes)
 		return (1);
-	create_pipes(cmdcount, pipes);
+	create_pipes(shell, cmdcount, pipes);
 	fork_plz(shell, cmds, pipes, envp, cmdcount);
 	close_fd(cmds, pipes, cmdcount);
 	commands = cmds;
@@ -203,7 +204,7 @@ int	pipes(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount, int *st
 	free_array((void **)pipes, NULL); 
 	return (0);
 }
-int	execute_signal_cmd(t_shell shell, t_command *cmds, char *envp[], int *status)
+int	execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *status)
 {
 	pid_t	pid;
 
@@ -216,17 +217,17 @@ int	execute_signal_cmd(t_shell shell, t_command *cmds, char *envp[], int *status
 	if (pid == 0)
 	{
 		if (cmds->has_redirects)
-			open_files(cmds);	
+			open_files(shell, cmds);	
 		redirection(0, 0, cmds, 1);
 		close_fd(cmds, 0, 1);
 		execute(shell, cmds, envp, 1);
-		exit(0);
+		return (fake_exit(shell, 0));
 	}
 	waitpid(pid, status, 0);
 	return (0);
 }
 
-int execute_cmds(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount)
+int execute_cmds(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount)
 {
 	int status;
 
@@ -237,7 +238,7 @@ int execute_cmds(t_shell shell, t_command *cmds, char *envp[], size_t cmdcount)
 		{
 			int oldstout = dup(STDOUT_FILENO);
 			if (cmds->has_redirects)
-				open_files(cmds);	
+				open_files(shell, cmds);	
 			redirection(0, 0, cmds, 1);
 			close_fd(cmds, 0, 1);
 			status = execve_builtin(shell, cmds, envp, 1);

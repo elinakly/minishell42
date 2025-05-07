@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:50:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/04/29 16:05:53 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:49:01 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # include <linux/limits.h>
 # include "structbuild.h"
 
-void		execute(t_shell shell, t_command *cmd, char **envp, size_t cmdcount);
+int			execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount);
 int			error(int status);
-void		create_pipes(int num_cmds, int **pipes);
+void		create_pipes(t_shell *shell, int num_cmds, int **pipes);
 void		free_arr(char **arr);
 void		close_fd(t_command *commands, int **pipes, size_t cmdscount);
 

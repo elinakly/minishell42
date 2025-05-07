@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   vars.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/26 17:06:11 by mschippe      #+#    #+#                 */
-/*   Updated: 2025/04/25 19:17:59 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   vars.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
+/*   Updated: 2025/05/07 10:50:28 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ t_part_var	**get_var_names(char *cmd, size_t varcount, t_part_var **names)
  * @param part Partial environment variable (name + quote type)
  * @returns Malloced environment variable struct holding name and value strings
  */
-t_env_var	*make_var(t_part_var *part, t_shell shell)
+t_env_var	*make_var(t_part_var *part, t_shell *shell)
 {
 	t_env_var	*var;
 	char		*value;
@@ -238,7 +238,7 @@ t_env_var	*make_var(t_part_var *part, t_shell shell)
  * @param names Array containing partial env vars (name + quote type)
  * @returns An array of environment variable structs
  */
-t_env_var	**get_command_vars(t_part_var **names, t_shell shell)
+t_env_var	**get_command_vars(t_part_var **names, t_shell *shell)
 {
 	t_env_var	**vars;
 	size_t		amount;

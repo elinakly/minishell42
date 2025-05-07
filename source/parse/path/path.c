@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 22:39:00 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/04/29 17:15:25 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:50:28 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 /**
  * Gets the home directory from environment
  */
-char	*get_homedir(t_shell shell)
+char	*get_homedir(t_shell *shell)
 {
 	char	*homedir;
 	
@@ -32,7 +32,7 @@ char	*get_homedir(t_shell shell)
 /**
  * Expands ~ to home directory if the path starts with ~
  */
-char	*expand_dir(t_shell shell, char *dir)
+char	*expand_dir(t_shell *shell, char *dir)
 {
 	char	*dircpy;
 	char	*home;
@@ -78,7 +78,7 @@ void	join_with_slash(char *cwd, char *add, char *dest)
  * Abuse temporary chdir in combination with getcwd to
  * easily create a full path to something
  */
-char	*resolve_exec_path(t_shell shell, char *path)
+char	*resolve_exec_path(t_shell *shell, char *path)
 {
 	char	*cwd;
 	char	*exp;
