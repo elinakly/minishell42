@@ -28,7 +28,7 @@ int	execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount)
 	{
 		ft_putstr_fd(cmd->name, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		return (fake_exit(shell, 127));
+		return (fake_exit(shell, error(127)));
 	}
 	if (execve(find_path, cmd->argv, envp) == -1)
 	{
@@ -36,7 +36,7 @@ int	execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->name, 2);
 		ft_putstr_fd("cannot execute binary file\n", 2);
-		return (fake_exit(shell, 126));
+		return (fake_exit(shell, error(126)));
 	}
 	return (0);
 }

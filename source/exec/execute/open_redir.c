@@ -58,8 +58,6 @@ int	open_files(t_shell *shell, t_command *commands)
 	redirects = commands->redirects;
 	while (redirects)
 	{
-		/// if (heredoc detected)
-	// 	// here_doc(commands.args[1], commands.argc);
 		if (!open_in_files(redirects))
 			return (fake_exit(shell, 1));
 		if (!open_out_files(redirects))
