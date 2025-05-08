@@ -86,6 +86,8 @@ void fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp, siz
 		}
 		if (commands->pid == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			child_process(shell, i, pipes, envp, commands, cmdcount);
 			fake_exit(shell, 1);
 			return ;
@@ -119,6 +121,11 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *s
 		commands = commands->next;
 	}
 	g_child_process = 0;
+	if (WIFSIGNALED(*status))
+	{
+		if (WTERMSIG(*status) == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", 2);
+	}
 	free_array((void **)pipes, NULL);
 	return (0);
 }

@@ -54,6 +54,8 @@ int	execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *statu
 	}
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (cmds->has_redirects)
 			open_files(shell, cmds);
 		redirection(0, 0, cmds, 1);
@@ -63,6 +65,11 @@ int	execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *statu
 	}
 	waitpid(pid, status, 0);
 	g_child_process = 0;
+	if (WIFSIGNALED(*status))
+	{
+		if (WTERMSIG(*status) == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", 2);
+	}
 	return (0);
 }
 
