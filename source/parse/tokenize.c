@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
-/*   Updated: 2025/03/19 11:10:42 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:10:25 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ char	**tokenize(char *entry, t_env_var **vars, size_t *amount)
 	size_t	str_index;
 	char	**result;
 
-	entry = get_expanded_cmd(entry, vars);
+	entry = get_expanded_cmd(entry, vars, true);
 	if (!entry)
 		return (NULL);
 	count = count_tokens(entry);

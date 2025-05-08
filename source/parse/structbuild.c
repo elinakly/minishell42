@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/07 10:52:09 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/08 13:44:25 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
  * @param cmd The command string to use
  * @returns An array of environment variable structures
  */
-t_env_var	**get_vars_from_cmd(char *cmd, t_shell *shell)
+t_env_var	**get_vars_from_cmd(char *cmd, t_shell *shell, bool track_quotes)
 {
 	size_t		varcount;
 	t_part_var	**varnames;
@@ -32,11 +32,11 @@ t_env_var	**get_vars_from_cmd(char *cmd, t_shell *shell)
 
 	if (!cmd)
 		return (NULL);
-	varcount = get_var_count(cmd);
+	varcount = get_var_count(cmd, track_quotes);
 	varnames = malloc(sizeof(t_part_var *) * (varcount + 1));
 	if (!varnames)
 		return (NULL);
-	get_var_names(cmd, varcount, varnames);
+	get_var_names(cmd, varcount, varnames, track_quotes);
 	varnames[varcount] = NULL;
 	variables = get_command_vars(varnames, shell);
 	if (!variables)
@@ -339,7 +339,7 @@ e_parse_result	parse_commands(t_shell *shell, t_command **cmd)
 	res = validate_cmd_str(shell->main_rl_str);
 	if (res != PARSEOK)
 		return (res);
-	variables = get_vars_from_cmd(shell->main_rl_str, shell);
+	variables = get_vars_from_cmd(shell->main_rl_str, shell, true);
 	if (!variables)
 		return (MALLOC_FAIL);
 	tokens = get_tokens_from_cmd(shell->main_rl_str, variables, &tokencount);

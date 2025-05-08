@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/07 10:50:28 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/08 15:08:23 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ size_t	skip_var_chars(char *cmd, size_t index)
  * @param cmd The command string to count variables in
  * @returns The amount of environment variables in the string
  */
-size_t	get_var_count(char *cmd)
+size_t	get_var_count(char *cmd, bool track_quotes)
 {
 	size_t		index;
 	e_metachar	in_quot;
@@ -122,8 +122,9 @@ size_t	get_var_count(char *cmd)
 	while (cmd[index])
 	{
 		temp_skip = 0;
-		set_quote_state(cmd, index, &in_quot);
-		if (cmd[index] == '$' && is_meta(cmd, index, NULL) && cmd[index + 1])
+		if (track_quotes)
+			set_quote_state(cmd, index, &in_quot);
+		if (cmd[index] == '$' && is_meta(cmd, index, NULL) && (cmd[index + 1] && cmd[index + 1] != '\n')) //TODO: TOO LONG
 		{
 			temp_skip = skip_var_chars(cmd, ++index);
 			res += temp_skip > 0 && in_quot != MC_SQUOTE;
@@ -144,7 +145,7 @@ size_t	get_var_count(char *cmd)
  * @param i The index at which to start counting
  * @returns Length of an environment variable name
  */
-size_t	var_len(char *cmd, size_t i)
+size_t	var_len(char *cmd, size_t i, bool track_quotes)
 {
 	size_t		quotfind;
 	e_metachar	type;
@@ -156,8 +157,11 @@ size_t	var_len(char *cmd, size_t i)
 	if (!cmd || cmd[i] != '$' || !is_meta(cmd, i, &type)
 		|| type != MC_VARIABLE)
 		return (0);
-	while (cmd[quotfind] && quotfind < i)
-		set_quote_state(cmd, quotfind++, &quottype);
+	if (track_quotes)
+	{
+		while (cmd[quotfind] && quotfind < i)
+			set_quote_state(cmd, quotfind++, &quottype);
+	}
 	if (quottype == MC_SQUOTE)
 		return (0);
 	return (skip_var_chars(cmd, ++i) + 1);
@@ -172,30 +176,32 @@ size_t	var_len(char *cmd, size_t i)
  * @param names The array in which to put all the variable data
  * @returns a NULL-terminated array of partial env vars (name + quote type)
  */
-t_part_var	**get_var_names(char *cmd, size_t varcount, t_part_var **names)
+t_part_var	**get_var_names(char *cmd, size_t varcount,
+							t_part_var **names, bool t)
 {
 	size_t		i;
-	size_t		str_i;
+	size_t		si;
 	e_metachar	quot;
 
 	i = 0;
-	str_i = 0;
+	si = 0;
 	quot = MC_NONE;
-	while (cmd[str_i] && i < varcount)
+	while (cmd[si] && i < varcount)
 	{
-		set_quote_state(cmd, str_i, &quot);
-		if (cmd[str_i] == '$' && var_len(cmd, str_i))
+		if (t)
+			set_quote_state(cmd, si, &quot);
+		if (cmd[si] == '$' && var_len(cmd, si, t) > 1)
 		{
 			names[i] = malloc(sizeof(t_part_var));
 			if (!names[i])
 				return (free_array((void **)names, &clear_part_var), NULL);
-			names[i]->name = malloc(sizeof(char) * var_len(cmd, str_i));
+			names[i]->name = malloc(sizeof(char) * var_len(cmd, si, t));
 			if (!names[i]->name)
 				return (free_array((void **)names, &clear_part_var), NULL);
-			ft_strlcpy(names[i]->name, cmd + str_i + 1, var_len(cmd, str_i));
+			ft_strlcpy(names[i]->name, cmd + si + 1, var_len(cmd, si, t));
 			names[i++]->in_quote_type = quot;
 		}
-		str_i++;
+		si++;
 	}
 	return (names);
 }
@@ -352,13 +358,20 @@ bool	insert_var(char *res, t_env_var *var, size_t *index)
 	return (true);
 }
 
+bool	is_meta_var(char *cmd, t_triple_index i, e_metachar *meta,
+					e_metachar *quot)
+{
+	return (is_meta(cmd, i.cmd, meta) && *meta == MC_VARIABLE &&
+			*quot != MC_SQUOTE && is_var_char(cmd, i.cmd + 1));
+}
+
 /**
  * Turns a raw command string into one which has all its
  * environment variables expanded
  * @param cmd The raw command string to create an expanded version of
  * @param vars The variables to find and expand
  */
-char	*get_expanded_cmd(char *cmd, t_env_var **vars)
+char	*get_expanded_cmd(char *cmd, t_env_var **vars, bool track_quotes)
 {
 	char		*res;
 	t_triple_index i;
@@ -372,9 +385,9 @@ char	*get_expanded_cmd(char *cmd, t_env_var **vars)
 		return (NULL);
 	while (cmd[i.cmd])
 	{
-		set_quote_state(cmd, i.cmd, &quot);
-		if (is_meta(cmd, i.cmd, &meta) && meta == MC_VARIABLE
-			&& quot != MC_SQUOTE && is_var_char(cmd, i.cmd + 1))
+		if (track_quotes)
+			set_quote_state(cmd, i.cmd, &quot);
+		if (is_meta_var(cmd, i, &meta, &quot))
 		{
 			if (!insert_var(res, vars[i.var], &i.res))
 				return (free(res), NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:45:44 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/04/29 16:59:30 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/08 17:31:32 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <errno.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <unistd.h>
@@ -119,5 +120,6 @@ typedef struct s_shell
 	int				last_status;
 	t_venv			*venv;
 	bool			loop_active;
+	int				heredoc_counter;
 }	t_shell;
 #endif

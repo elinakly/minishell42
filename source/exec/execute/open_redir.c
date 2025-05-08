@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 20:05:21 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:14:44 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 int	open_in_files(t_redirect	*redirects)
 {
-	if (redirects->type == RE_INPUT)
+	if (redirects->type == RE_INPUT || redirects->type == RE_HEREDOC)
 	{
 		redirects->in_fd = open(redirects->file, O_RDONLY);
 		if (redirects->in_fd == -1)
@@ -77,7 +77,7 @@ void	redirects_files(t_command *commands, bool *has_in, bool *has_out)
 
 	while (redirects)
 	{
-		if (redirects->type == RE_INPUT)
+		if (redirects->type == RE_INPUT || redirects->type == RE_HEREDOC)
 		{
 			if (dup2(redirects->in_fd, STDIN_FILENO) == -1)
 				error(1);

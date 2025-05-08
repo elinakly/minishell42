@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 10:56:34 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/08 18:58:46 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,22 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	//TODO: Check cwd and venv NULL in shell
 	//TODO: Free everything inside shell, some even still need functions made
-	shell = (t_shell){NULL, NONE, 0, make_venv(envp), true};
+	shell = (t_shell){NULL, NONE, 0, make_venv(envp), true, 0};
 	while (shell.loop_active)
 	{
 		shell.main_rl_str = ft_readline(&shell, venv_to_arr(shell.venv)); //TODO: venv array leaks
 		if (!shell.main_rl_str)
 			break ;
-		if (ft_strncmp(shell.main_rl_str, "heredoc", 9) == 0)
-		{
-			printf("%s\n", get_heredoc("test", true));
-			continue ;
-		}
 		if (!shell.main_rl_str)
 			return (1);
 		shell.last_parse_res = parse_commands(&shell, &cmds);
 		if (shell.last_parse_res == PARSEOK)
 		{
+			if (!exec_heredocs(&shell, cmds))
+			{
+				printf("heredoc fail");
+				break ;
+			}
 			shell.last_status = execute_cmds(&shell, cmds, venv_to_arr(shell.venv), ft_cmdcount(cmds)); //TODO: venv array leaks
 			free_commands(cmds);
 		}

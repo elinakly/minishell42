@@ -6,13 +6,12 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:54:40 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 10:51:43 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/08 17:31:54 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-#include "libft.h"
-#include <limits.h>
+#include "../../../include/builtins.h"
+#include "../../../lib/libft/libft.h"
 
 int	ms_atoi(const char *nptr)
 {
