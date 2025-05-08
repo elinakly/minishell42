@@ -102,6 +102,7 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *s
 	t_command	*commands;
 	int			temp_status;
 
+	g_child_process = 1;
 	pipes = malloc_pipes(cmds, cmdcount);
 	if (!pipes)
 		return (1);
@@ -117,6 +118,7 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *s
 			*status = temp_status;
 		commands = commands->next;
 	}
+	g_child_process = 0;
 	free_array((void **)pipes, NULL);
 	return (0);
 }
