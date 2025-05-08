@@ -22,6 +22,8 @@
 #include "../include/venv.h"
 #include "../include/heredoc.h"
 
+int g_child_process = 0;
+
 char			*ft_readline(t_shell *shell, char **envp);
 size_t			ft_cmdcount(t_command *head);
 

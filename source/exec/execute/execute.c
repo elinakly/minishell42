@@ -45,6 +45,7 @@ int	execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *statu
 {
 	pid_t	pid;
 
+	g_child_process = 1;	
 	pid = fork();
 	if (pid == -1)
 	{
@@ -61,6 +62,7 @@ int	execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *statu
 		return (fake_exit(shell, 0));
 	}
 	waitpid(pid, status, 0);
+	g_child_process = 0;
 	return (0);
 }
 

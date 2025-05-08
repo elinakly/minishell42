@@ -26,6 +26,7 @@
 # include <readline/readline.h>
 # include "../lib/libft/libft.h"
 
+extern int g_child_process;
 
 typedef struct t_venv t_venv;
 
