@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:02:42 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 16:57:04 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:37:29 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,28 @@
 #include "minishell.h"
 
 
-void sort_env(char **envp)
+void	sort_env(char **envp)
 {
-    int i = 0;
-    int j;
-    char *tmp;
+	int		i;
+	int		j;
+	char	*tmp;
 
-    while (envp[i])
+	i = 0;
+	while (envp[i])
 	{
-        j = i + 1;
-        while (envp[j]) 
+		j = i + 1;
+		while (envp[j]) 
 		{
-            if (ft_strncmp(envp[i], envp[j], 1024) > 0)
+			if (ft_strncmp(envp[i], envp[j], 1024) > 0)
 			{
-                tmp = envp[i];
-                envp[i] = envp[j];
-                envp[j] = tmp;
-            }
-            j++;
-        }
-        i++;
-    }
+				tmp = envp[i];
+				envp[i] = envp[j];
+				envp[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
 
@@ -69,7 +70,7 @@ int	real_export(char *argv, t_shell *shell)
 	if (value)
 		return (simple_add_var(shell->venv, name, value + 1));
 	else
-		simple_add_var(shell->venv, name, NULL);
+		return (simple_add_var(shell->venv, name, NULL));
 	return (0);
 }
 
@@ -98,7 +99,7 @@ int	export(t_shell *shell, t_command *cmds, char **envp)
 			status = 1;
 		}
 		else if (!real_export(cmds->argv[i], shell))
-			return (1);
+			status = 1;
 		i++;
 	}
 	return (status);

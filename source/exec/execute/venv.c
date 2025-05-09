@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   venv.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/07 10:51:51 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/09 18:44:01 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,11 @@ t_venv	*make_t_venv(bool is_base)
 bool	set_env_kv(t_venv *var, char *strvar)
 {
 	char	**res;
-	
+
 	if (!var || !strvar)
 		return (false);
-	
 	if (!ft_strchr(strvar, '='))
-		return(false);
+		return (false);
 	res = ft_split(strvar, '=');
 	if (!res || !res[0])
 		return (false);
@@ -138,7 +137,7 @@ bool	simple_add_var(t_venv *base, char *name, char *value)
 		cpy = cpy->next;
 	}
 	if (cpy)
-		return set_name_value(cpy, name, value);
+		return (set_name_value(cpy, name, value));
 	cpy = make_t_venv(false);
 	if (!cpy || !set_name_value(cpy, name, value))
 		return (free(cpy), false);
@@ -150,8 +149,8 @@ bool	simple_add_var(t_venv *base, char *name, char *value)
 
 void	remove_env_var(t_venv **base, char *name)
 {
-	t_venv *temp;
-	t_venv *prev;
+	t_venv	*temp;
+	t_venv	*prev;
 
 	temp = *base;
 	prev = NULL;
@@ -167,7 +166,7 @@ void	remove_env_var(t_venv **base, char *name)
 			free(temp->name);
 			free(temp->value);
 			free(temp);
-			return;
+			return ;
 		}
 		prev = temp;
 		temp = temp->next;
