@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/08 19:14:44 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/09 13:38:22 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ int	open_out_files(t_redirect	*redirects)
 {
 	if (redirects->type == RE_OUTPUT_TRUNC)
 		redirects->out_fd = open(redirects->file,//if > then we need to do trunc
-				O_WRONLY | O_CREAT | O_TRUNC, 0777);
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (redirects->type == RE_OUTPUT_APPEND)
 	{
 		redirects->out_fd = open(redirects->file,//if >> then we need to do append
-				O_WRONLY | O_CREAT | O_APPEND, 0777);
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (redirects->out_fd == -1)
 		{
 			if (errno == ENOENT)

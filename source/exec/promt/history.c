@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:10:39 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 15:23:23 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:38:21 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	get_history(void)
 	char	*line;
 	int		fd;
 
-	fd = open(".minishell_history", O_RDONLY | O_CREAT, 0777);
+	fd = open(".minishell_history", O_RDONLY | O_CREAT, 0644);
 	if (fd == -1)
 		return (1);
 	line = get_next_line(fd);
@@ -46,7 +46,7 @@ int	history(char *line)
 
 	if (!line)
 		return (0);
-	fd = open(".minishell_history", O_WRONLY | O_CREAT | O_APPEND, 0777);
+	fd = open(".minishell_history", O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 		return (1);
 	res = write(fd, line, ft_strlen(line));
