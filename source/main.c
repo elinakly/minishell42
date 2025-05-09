@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/08 18:58:46 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/09 13:24:47 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,16 @@ int	main(int argc, char **argv, char **envp)
 	shell = (t_shell){NULL, NONE, 0, make_venv(envp), true, 0};
 	while (shell.loop_active)
 	{
-		shell.main_rl_str = ft_readline(&shell, venv_to_arr(shell.venv)); //TODO: venv array leaks
+		if (isatty(fileno(stdin)))
+			shell.main_rl_str = ft_readline(&shell, venv_to_arr(shell.venv)); //TODO: venv array leaks
+		else
+		{
+			char *prompt = get_next_line(fileno(stdin));
+			if (!prompt)
+				break ;
+			shell.main_rl_str = ft_strtrim(prompt, "\n");
+			free(prompt);
+		}
 		if (!shell.main_rl_str)
 			break ;
 		if (!shell.main_rl_str)

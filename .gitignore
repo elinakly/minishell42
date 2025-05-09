@@ -28,3 +28,10 @@ objects/*
 .minishell_history
 # ignore the echo file some tester seems to like to create but not delete
 echo
+# ignore tester files (theres more)
+tmp_err_bash
+tmp_err_minishell
+tmp_out_bash
+tmp_out_minishell
+tmp_in_bash
+tmp_in_minishell
