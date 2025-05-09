@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:02:42 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 18:37:29 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:47:52 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	export(t_shell *shell, t_command *cmds, char **envp)
 	int		status;
 	int		i;
 
-	i = 1;
+	i = 0;
 	status = 0;
 	if (cmds->argc == 1)
 	{
@@ -91,7 +91,7 @@ int	export(t_shell *shell, t_command *cmds, char **envp)
 	}
 	if (cmds->argv[1][0] == '-' && cmds->argv[1][1])
 		return (ft_putstr_fd("minishell: export: invalid option\n", 2), 2);
-	while (i < cmds->argc)
+	while (++i < cmds->argc)
 	{
 		if (!valid_input(cmds->argv[i]))
 		{
@@ -100,7 +100,6 @@ int	export(t_shell *shell, t_command *cmds, char **envp)
 		}
 		else if (!real_export(cmds->argv[i], shell))
 			status = 1;
-		i++;
 	}
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 17:16:50 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:45:23 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount)
 	return (0);
 }
 
-int	execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *status)
+int	execute_signal_cmd(t_shell *shell, t_command *cmds,
+			char *envp[], int *status)
 {
 	pid_t	pid;
 
