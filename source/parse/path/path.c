@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 22:39:00 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/07 10:50:28 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/09 17:39:50 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 char	*get_homedir(t_shell *shell)
 {
 	char	*homedir;
-	
+
 	homedir = get_env_val(shell, "HOME");
 	if (!homedir)
 		return (ft_strdup("/"));
@@ -84,7 +84,7 @@ char	*resolve_exec_path(t_shell *shell, char *path)
 	char	*exp;
 	char	*res;
 	size_t	index;
-	size_t total;
+	size_t	total;
 
 	exp = expand_dir(shell, path);
 	index = 0;

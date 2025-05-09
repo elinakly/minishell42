@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 20:05:16 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:16:50 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,10 @@ int	execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *statu
 {
 	pid_t	pid;
 
-	g_child_process = 1;	
+	g_child_process = 1;
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("fork failed");
-		return (1);
-	}
+		return (perror("fork failed"), 1);
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);

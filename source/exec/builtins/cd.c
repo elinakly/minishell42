@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:03:31 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/09 14:30:48 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/09 18:20:49 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ int	cd(t_shell *shell, t_command *cmd)
 	path = ft_strdup("PWD");
 	if (!cmd || !path)
 		return (free(path), 1);
+	if (cmd->argc > 2)
+		return (free(path), ft_putstr_fd(CD_TM_ARGS, 2), 1);
 	if (cmd->argc == 1 || (cmd->argc == 2 && strequals(cmd->argv[1], "--")))
 		home = get_homedir(shell);
 	else
 		home = expand_dir(shell, cmd->argv[1 + strequals(cmd->argv[1], "--")]);
-	if (cmd->argc > 2 && !(cmd->argc == 3 && strequals(cmd->argv[1], "--")))
-		return (free(path), ft_putstr_fd(CD_TM_ARGS, 2), 1);
 	if (!home)
 		return (free(path), 1);
 	res = chdir(home);
