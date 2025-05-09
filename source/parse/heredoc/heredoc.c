@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/08 19:50:35 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/09 13:56:27 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,27 @@ char	*expand_heredoc_line(t_shell *shell, char *line, bool expand)
 	return (exp);
 }
 
+char	*heredoc_prompt(void)
+{
+	char	*line;
+	char	*res;
+	
+	if (isatty(fileno(stdin)))
+		res = readline("> ");
+	else
+	{
+		line = get_next_line(fileno(stdin));
+		if (line)
+		{
+			res = ft_strtrim(line, "\n");
+			free(line);
+		}
+		else
+			return (NULL);
+	}
+	return (res);
+}
+
 char	*get_heredoc(t_shell *shell, char *delim, bool expand)
 {
 	char	*total;
@@ -61,7 +82,7 @@ char	*get_heredoc(t_shell *shell, char *delim, bool expand)
 	while ((!line || !strequals(delim, line)) && total)
 	{
 		free(line);
-		line = expand_heredoc_line(shell, readline("> "), expand);
+		line = expand_heredoc_line(shell, heredoc_prompt(), expand);
 		if (!line)
 			break ;
 		else if (!strequals(delim, line))
