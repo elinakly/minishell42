@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:54:40 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/08 17:31:54 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/09 14:38:00 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	fake_exit(t_shell *shell, int code)
 
 int	ft_exit(t_shell *shell, char **argv, size_t cmdcount)
 {
-	long	status;
+	unsigned long long	status;
 
 	// if (cmdcount == 1)
 	// 	ft_putstr_fd("exit\n", 2);
@@ -75,7 +75,7 @@ int	ft_exit(t_shell *shell, char **argv, size_t cmdcount)
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 		return (fake_exit(shell, 2));
 	}
-	status = ms_atoi(argv[1]);
+	status = ft_atoi(argv[1]);
 	if (status == 1 && argv[1][0] != '1')
 		return (fake_exit(shell, 1));
 	if (status > 255 || status < 0)
