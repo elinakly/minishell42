@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:03:31 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/07 10:51:35 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/09 14:26:46 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ int	cd(t_shell *shell, t_command *cmd)
 	path = ft_strdup("PWD");
 	if (!cmd || !path)
 		return (free(path), 1);
-	if (cmd->argc > 2)
-		return (free(path), ft_putstr_fd(CD_TM_ARGS, 2), 1);
-	if (cmd->argc == 1)
+	if (cmd->argc == 1 || (cmd->argc == 2 && strequals(cmd->argv[1], "--")))
 		homedir = get_homedir(shell);
 	else
 		homedir = expand_dir(shell, cmd->argv[1]);
+	if (cmd->argc > 2 || (cmd->argc == 3 && strequals(cmd->argv[1], "--")))
+		return (free(path), ft_putstr_fd(CD_TM_ARGS, 2), 1);
 	if (!homedir)
 		return (free(path), 1);
 	res = chdir(homedir);
