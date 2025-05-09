@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 18:45:23 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:55:37 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount)
 		free(find_path);
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->name, 2);
-		ft_putstr_fd("cannot execute binary file\n", 2);
-		return (fake_exit(shell, error(126)));
+		ft_putstr_fd(" 1cannot execute binary file\n", 2);
+		return (fake_exit(shell, error(127)));
 	}
 	return (0);
 }
