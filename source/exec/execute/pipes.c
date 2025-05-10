@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 20:03:02 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/10 18:07:56 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../../include/structbuild.h"
 #include "../../../include/memory.h"
 #include "../../../include/builtins.h"
-
+#include "execute.h"
 
 //TODO rederection for singl our own cmd malloc_pipes(malloc) leaking)
 
@@ -104,7 +104,7 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *s
 	t_command	*commands;
 	int			temp_status;
 
-	g_child_process = 1;
+	signal(SIGINT, signal_handler_child);
 	pipes = malloc_pipes(cmds, cmdcount);
 	if (!pipes)
 		return (1);
@@ -120,7 +120,6 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *s
 			*status = temp_status;
 		commands = commands->next;
 	}
-	g_child_process = 0;
 	if (WIFSIGNALED(*status))
 	{
 		if (WTERMSIG(*status) == SIGQUIT)

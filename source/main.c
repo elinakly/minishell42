@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 13:24:47 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/10 18:05:56 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 #include "../include/venv.h"
 #include "../include/heredoc.h"
 
-int g_child_process = 0;
 
 char			*ft_readline(t_shell *shell, char **envp);
 size_t			ft_cmdcount(t_command *head);
@@ -32,7 +31,6 @@ int	main(int argc, char **argv, char **envp)
 	t_command		*cmds;
 	t_shell			shell;
 
-	set_signal();
 	if (get_history())
 		return (1);
 	//TODO: Check cwd and venv NULL in shell
@@ -40,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	shell = (t_shell){NULL, NONE, 0, make_venv(envp), true, 0};
 	while (shell.loop_active)
 	{
+		set_signal();
 		if (isatty(fileno(stdin)))
 			shell.main_rl_str = ft_readline(&shell, venv_to_arr(shell.venv)); //TODO: venv array leaks
 		else

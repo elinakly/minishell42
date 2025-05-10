@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:51:58 by eklymova          #+#    #+#             */
-/*   Updated: 2025/03/19 15:24:23 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/10 18:02:40 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,16 @@ void	signal_handler(int sig)
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	if (!g_child_process)
-		rl_redisplay();
+	rl_redisplay();
 }
 
+void	signal_handler_child(int sig)
+{
+	(void)sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+}
 
 void	set_signal(void)
 {

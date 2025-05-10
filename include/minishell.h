@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:45:44 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/08 17:31:32 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/10 18:06:03 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <readline/readline.h>
 # include "../lib/libft/libft.h"
 
-extern int g_child_process;
 
 typedef struct t_venv t_venv;
 

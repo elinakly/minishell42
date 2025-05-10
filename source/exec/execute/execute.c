@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 19:55:37 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/10 18:06:14 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../../include/structbuild.h"
 #include "../../../include/memory.h"
 #include "../../../include/builtins.h"
+#include "execute.h"
 
 int	execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount)
 {
@@ -46,7 +47,7 @@ int	execute_signal_cmd(t_shell *shell, t_command *cmds,
 {
 	pid_t	pid;
 
-	g_child_process = 1;
+	signal(SIGINT, signal_handler_child);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork failed"), 1);
@@ -62,7 +63,6 @@ int	execute_signal_cmd(t_shell *shell, t_command *cmds,
 		return (fake_exit(shell, 0));
 	}
 	waitpid(pid, status, 0);
-	g_child_process = 0;
 	if (WIFSIGNALED(*status))
 	{
 		if (WTERMSIG(*status) == SIGQUIT)
