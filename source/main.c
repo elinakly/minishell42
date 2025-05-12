@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/10 18:05:56 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/12 20:19:07 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ int	main(int argc, char **argv, char **envp)
 			free_commands(cmds);
 		}
 		else if (shell.last_parse_res != EMPTY)
+		{
 			shell.last_status = 2;
+			write(2, "minishell: syntax error\n", 24);
+		}
 		add_history(shell.main_rl_str);
 		history(shell.main_rl_str);
 		free(shell.main_rl_str);
