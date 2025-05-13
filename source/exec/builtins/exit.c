@@ -60,11 +60,11 @@ int	fake_exit(t_shell *shell, int code)
 	return (code);
 }
 
-int	ft_exit(t_shell *shell, char **argv, size_t cmdcount)
+int	ft_exit(t_shell *shell, char **argv)
 {
 	unsigned long long	status;
 
-	// if (cmdcount == 1)
+	// if (shell->cmds_count == 1)
 	// 	ft_putstr_fd("exit\n", 2);
 	if (!argv[1])
 		return (fake_exit(shell, 0));

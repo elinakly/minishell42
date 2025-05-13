@@ -21,8 +21,7 @@ int			get_history(void);
 void		signal_handler(int sig);
 void		signal_handler_child(int sig);
 int			history(char *line);
-int			execute_cmds(t_shell *shell, t_command *cmds,
-				char *envp[], size_t cmdcount);
+int			execute_cmds(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount);
 char		*find_valid_path(t_shell *shell, const char *com, char **envp);
 
 #endif

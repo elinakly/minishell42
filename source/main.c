@@ -24,7 +24,6 @@
 
 
 char			*ft_readline(t_shell *shell, char **envp);
-size_t			ft_cmdcount(t_command *head);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -61,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 				printf("heredoc fail");
 				break ;
 			}
-			shell.last_status = execute_cmds(&shell, cmds, venv_to_arr(shell.venv), ft_cmdcount(cmds)); //TODO: venv array leaks
+			shell.last_status = execute_cmds(&shell, cmds, venv_to_arr(shell.venv)); //TODO: venv array leaks
 			free_commands(cmds);
 		}
 		else if (shell.last_parse_res != EMPTY)

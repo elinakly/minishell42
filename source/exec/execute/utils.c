@@ -15,12 +15,12 @@
 #include "../../../include/minishell.h"
 #include "../../../include/path.h"
 
-void	close_fd(t_command *commands, int **pipes, size_t cmdscount)
+void	close_fd(t_shell *shell, t_command *commands, int **pipes)
 {
 	int	i;
 
 	i = 0;
-	while (i < cmdscount - 1)
+	while (i < shell->cmds_count - 1)
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);

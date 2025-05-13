@@ -47,7 +47,7 @@ bool	is_builtins(t_command *cmds)
 }
 
 int	execve_builtin(t_shell *shell, t_command *cmds,
-		char **envp, size_t cmdcount)
+		char **envp)
 {
 	if (cmds && cmds->has_command)
 	{
@@ -58,7 +58,7 @@ int	execve_builtin(t_shell *shell, t_command *cmds,
 		if (strequals(cmds->name, "env"))
 			return (env(envp));
 		if (strequals(cmds->name, "exit"))
-			return (ft_exit(shell, cmds->argv, cmdcount));
+			return (ft_exit(shell, cmds->argv));
 		if (strequals(cmds->name, "cd"))
 			return (cd(shell, cmds));
 		if (strequals(cmds->name, "export"))

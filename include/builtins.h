@@ -20,10 +20,10 @@
 int		echo(char **args);
 int		env(char **envp);
 int		pwd(void);
-int		ft_exit(t_shell *shell, char **argv, size_t cmdcount);
+int		ft_exit(t_shell *shell, char **argv);
 bool	is_builtins(t_command *cmds);
 int		execve_builtin(t_shell *shell, t_command *cmds,
-			char **envp, size_t cmdcount);
+			char **envp);
 bool	strequals(char *one, char *two);
 int		cd(t_shell *shell, t_command *cmd);
 int		export(t_shell *shell, t_command *cmds, char **envp);

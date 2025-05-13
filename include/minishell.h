@@ -119,5 +119,6 @@ typedef struct s_shell
 	t_venv			*venv;
 	bool			loop_active;
 	int				heredoc_counter;
+	int				cmds_count;
 }	t_shell;
 #endif

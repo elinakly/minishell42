@@ -94,7 +94,7 @@ void	redirects_files(t_command *commands, bool *has_in, bool *has_out)
 	}
 }
 
-void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
+void	redirection(t_shell *shell, int i, int **pipes, t_command *commands)
 {
 	bool	has_in;
 	bool	has_out;
@@ -111,7 +111,7 @@ void	redirection(int i, int **pipes, t_command *commands, size_t cmdcount)
 		}
 		close(pipes[i - 1][0]);
 	}
-	if (i < cmdcount - 1 && has_out == false)
+	if (i < shell->cmds_count - 1 && has_out == false)
 	{
 		if (dup2(pipes[i][1], STDOUT_FILENO) == -1)
 		{

@@ -16,12 +16,14 @@
 #include "../../../include/builtins.h"
 #include "execute.h"
 
-int	execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount)
+size_t			ft_cmdcount(t_command *head);
+
+int	execute(t_shell *shell, t_command *cmd, char **envp)
 {
 	char	*find_path;
 
 	if (is_builtins(cmd))
-		exit(execve_builtin(shell, cmd, envp, cmdcount));
+		exit(execve_builtin(shell, cmd, envp));
 	find_path = find_valid_path(shell, cmd->name, envp);
 	if (cmd->name == NULL)
 		return (fake_exit(shell, error(3)));
@@ -57,9 +59,9 @@ int	execute_signal_cmd(t_shell *shell, t_command *cmds,
 		signal(SIGQUIT, SIG_DFL);
 		if (cmds->has_redirects)
 			open_files(shell, cmds);
-		redirection(0, 0, cmds, 1);
-		close_fd(cmds, 0, 1);
-		execute(shell, cmds, envp, 1);
+		redirection(shell, 0, 0, cmds);
+		close_fd(shell, cmds, 0);
+		execute(shell, cmds, envp);
 		return (fake_exit(shell, 0));
 	}
 	waitpid(pid, status, 0);
@@ -81,21 +83,22 @@ int	excute_one_builtin(t_shell *shell, t_command *cmds,
 		exit (1);
 	if (cmds->has_redirects)
 		open_files(shell, cmds);
-	redirection(0, 0, cmds, 1);
-	close_fd(cmds, 0, 1);
-	*status = execve_builtin(shell, cmds, envp, 1);
+	redirection(shell, 0, 0, cmds);
+	close_fd(shell, cmds, 0);
+	*status = execve_builtin(shell, cmds, envp);
 	if (dup2(oldstout, STDOUT_FILENO) == -1)
 		exit (1);
 	close(oldstout);
 	return (*status);
 }
 
-int	execute_cmds(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount)
+int	execute_cmds(t_shell *shell, t_command *cmds, char *envp[])
 {
 	int	status;
 
 	status = 0;
-	if (cmdcount == 1)
+	shell->cmds_count = ft_cmdcount(cmds);
+	if (shell->cmds_count == 1)
 	{
 		if (is_builtins(cmds))
 			return (excute_one_builtin(shell, cmds, envp, &status));
@@ -103,7 +106,7 @@ int	execute_cmds(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount)
 			execute_signal_cmd(shell, cmds, envp, &status);
 	}
 	else
-		pipes(shell, cmds, envp, cmdcount, &status);
+		pipes(shell, cmds, envp, &status);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))

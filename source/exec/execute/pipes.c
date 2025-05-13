@@ -19,12 +19,12 @@
 
 //TODO rederection for singl our own cmd malloc_pipes(malloc) leaking)
 
-void	create_pipes(t_shell *shell, int num_cmds, int **pipes)
+void	create_pipes(t_shell *shell, int **pipes)
 {
 	int	i;
 
 	i = 0;
-	while (i < num_cmds - 1)
+	while (i < shell->cmds_count - 1)
 	{
 		if (pipe(pipes[i]) == -1)
 		{
@@ -36,26 +36,26 @@ void	create_pipes(t_shell *shell, int num_cmds, int **pipes)
 	}
 }
 
-void	child_process(t_shell *shell, int i, int **pipes, char *envp[], t_command *cmds, size_t cmdcount)
+void	child_process(t_shell *shell, int i, int **pipes, char *envp[], t_command *cmds)
 {
 	if (cmds->has_redirects)
 		open_files(shell, cmds);	
-	redirection(i, pipes, cmds, cmdcount);
-	close_fd(cmds, pipes, cmdcount);
-	execute(shell, cmds, envp, cmdcount);
+	redirection(shell, i, pipes, cmds);
+	close_fd(shell, cmds, pipes);
+	execute(shell, cmds, envp);
 }
 
-int	**malloc_pipes(t_command *commands, size_t cmdcount)
+int	**malloc_pipes(t_shell *shell, t_command *commands)
 {
 	int	i;
 	int	**pipes;
 
-	pipes = malloc(sizeof(int *) * (cmdcount));
-	pipes[cmdcount - 1] = NULL; // NOTE: I added this so the array can be NULL terminated :)
+	pipes = malloc(sizeof(int *) * (shell->cmds_count));
+	pipes[shell->cmds_count - 1] = NULL; // NOTE: I added this so the array can be NULL terminated :)
 	if (!pipes)
 		return (NULL);
 	i = 0;
-	while (i < cmdcount - 1)
+	while (i < shell->cmds_count - 1)
 	{
 		pipes[i] = malloc(sizeof(int) * 2);
 		if (!pipes[i])
@@ -70,13 +70,13 @@ int	**malloc_pipes(t_command *commands, size_t cmdcount)
 	return (pipes);
 }
 
-void fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp, size_t cmdcount)
+void fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 {
 	int		i;
 	int		last_pid;
 
 	i = 0;
-	while (i < cmdcount)
+	while (i < shell->cmds_count)
 	{
 		commands->pid = fork();
 		if (commands->pid == -1)
@@ -88,7 +88,7 @@ void fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp, siz
 		{
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
-			child_process(shell, i, pipes, envp, commands, cmdcount);
+			child_process(shell, i, pipes, envp, commands);
 			fake_exit(shell, 1);
 			return ;
 		}
@@ -97,7 +97,7 @@ void fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp, siz
 	}
 }
 
-int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *status)
+int	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 {
 	int			**pipes;
 	int			i;
@@ -105,12 +105,12 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], size_t cmdcount, int *s
 	int			temp_status;
 
 	signal(SIGINT, signal_handler_child);
-	pipes = malloc_pipes(cmds, cmdcount);
+	pipes = malloc_pipes(shell, cmds);
 	if (!pipes)
 		return (1);
-	create_pipes(shell, cmdcount, pipes);
-	fork_plz(shell, cmds, pipes, envp, cmdcount);
-	close_fd(cmds, pipes, cmdcount);
+	create_pipes(shell, pipes);
+	fork_plz(shell, cmds, pipes, envp);
+	close_fd(shell, cmds, pipes);
 	commands = cmds;
 	temp_status = 0;
 	while (commands)
