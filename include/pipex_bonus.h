@@ -23,12 +23,7 @@
 # include <linux/limits.h>
 # include "structbuild.h"
 
-<<<<<<< HEAD
 int			execute(t_shell *shell, t_command *cmd, char **envp);
-=======
-
-int			execute(t_shell *shell, t_command *cmd, char **envp);
->>>>>>> be74f66 (norminette home)
 int			error(int status);
 void		create_pipes(t_shell *shell, int **pipes);
 void		free_arr(char **arr);
