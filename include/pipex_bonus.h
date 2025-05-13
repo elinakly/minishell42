@@ -24,7 +24,7 @@
 # include "structbuild.h"
 
 <<<<<<< HEAD
-int			execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount);
+int			execute(t_shell *shell, t_command *cmd, char **envp);
 =======
 
 int			execute(t_shell *shell, t_command *cmd, char **envp);
