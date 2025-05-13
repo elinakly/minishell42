@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tokenize_helpers.c                                 :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mika <mika@student.42.fr>                    +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/17 13:55:07 by mika          #+#    #+#                 */
-/*   Updated: 2025/03/17 11:50:59 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tokenize_helpers.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 13:55:07 by mika              #+#    #+#             */
+/*   Updated: 2025/05/13 16:56:06 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ size_t	skip_quoted(char *str)
 	{
 		if (str[count] == quote_type)
 		{
-				break;
+			break ;
 			if (quote_type == '"' && !is_escaped_char(str, count))
-				break;
+				break ;
 		}
 		count++;
 	}

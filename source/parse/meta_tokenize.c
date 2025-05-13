@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meta_tokenize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/03/19 13:30:18 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:07:42 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
 	}
 	c = str[index];
 	result = (c == MC_DQUOTE
-		|| c == MC_ESCAPE
-		|| c == MC_PIPE
-		|| c == MC_REDIR_IN
-		|| c == MC_REDIR_OUT
-		|| c == MC_SQUOTE
-		|| c == MC_VARIABLE
-		|| c == MC_SEPAR_SPACE
-		|| c == MC_SEPAR_TAB)
+			|| c == MC_ESCAPE
+			|| c == MC_PIPE
+			|| c == MC_REDIR_IN
+			|| c == MC_REDIR_OUT
+			|| c == MC_SQUOTE
+			|| c == MC_VARIABLE
+			|| c == MC_SEPAR_SPACE
+			|| c == MC_SEPAR_TAB)
 		&& !is_escaped_char(str, index);
 	if (meta && result)
 		*meta = (e_metachar)c;
@@ -88,6 +88,7 @@ bool	is_env_var_char(char c)
 size_t	skip_env_var(char *str)
 {
 	size_t	count;
+
 	if (!str || *str != MC_VARIABLE)
 		return (0);
 	count = 1;
@@ -115,13 +116,12 @@ size_t	skip_heredoc(char *str)
 
 	quot = MC_NONE;
 	count = 0;
-	
 	while (str[count])
 	{
 		if (set_quote_state(str, count, &quot))
 			count++;
 		else if (quot == MC_NONE && (ft_isalnum(str[count])
-			|| ((unsigned char)(str[count]) >= 128)
+				|| ((unsigned char)(str[count]) >= 128)
 			|| ft_strchr(HEREDOC_SPECIAL_CHARS, str[count])))
 			count++;
 		else if (quot == MC_DQUOTE || quot == MC_SQUOTE)
@@ -129,7 +129,7 @@ size_t	skip_heredoc(char *str)
 		else if (is_escaped_char(str, count) || str[count] == '\\')
 			count++;
 		else
-			break;
+			break ;
 	}
 	return (count);
 }

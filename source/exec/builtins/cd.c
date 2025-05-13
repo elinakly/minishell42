@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:03:31 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/09 19:49:31 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:29:25 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	cd(t_shell *shell, t_command *cmd)
 		return (free(home), free(path), res);
 	if (res == 0)
 		return (simple_add_var(shell->venv, path, cwd),
-				free(cwd), free(home), free(path), 0);
+			free(cwd), free(home), free(path), 0);
 	free(path);
 	return (print_cd_err(home, cwd));
 }

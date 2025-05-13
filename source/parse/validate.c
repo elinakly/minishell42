@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/12 18:30:17 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/13 16:57:09 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @param last The last token type in a parsed command string
  * @returns A parsing result
  */
-e_parse_result get_parse_res_from_last(e_token_type last)
+e_parse_result	get_parse_res_from_last(e_token_type last)
 {
 	if (last == TT_RE_IN || last == TT_RE_OUT || last == TT_RE_OUT_APPEND
 		|| last == TT_HEREDOC)
@@ -37,7 +37,7 @@ e_parse_result get_parse_res_from_last(e_token_type last)
  * @param prev The previous token type
  * @returns A parsing result
  */
-e_parse_result comp_curr_last_types(e_token_type curr, e_token_type prev)
+e_parse_result	comp_curr_last_types(e_token_type curr, e_token_type prev)
 {
 	bool	both_pipes;
 	bool	subsequent_redirects;
@@ -48,13 +48,14 @@ e_parse_result comp_curr_last_types(e_token_type curr, e_token_type prev)
 	either_is_pipe = prev == TT_PIPE || curr == TT_PIPE;
 	subsequent_redirects = ((prev == TT_RE_IN || prev == TT_RE_OUT
 				|| prev == TT_RE_OUT_APPEND || prev == TT_HEREDOC)
-				&& (curr == TT_RE_IN || curr == TT_RE_OUT
-					|| curr == TT_RE_OUT_APPEND || curr == TT_HEREDOC));
+			&& (curr == TT_RE_IN || curr == TT_RE_OUT
+				|| curr == TT_RE_OUT_APPEND || curr == TT_HEREDOC));
 	either_is_redirect = ((prev == TT_RE_IN || prev == TT_RE_OUT
 				|| prev == TT_RE_OUT_APPEND || prev == TT_HEREDOC)
-				|| (curr == TT_RE_IN || curr == TT_RE_OUT
-					|| curr == TT_RE_OUT_APPEND || curr == TT_HEREDOC));
-	if (both_pipes || subsequent_redirects || (either_is_pipe && either_is_redirect))
+			|| (curr == TT_RE_IN || curr == TT_RE_OUT
+				|| curr == TT_RE_OUT_APPEND || curr == TT_HEREDOC));
+	if (both_pipes || subsequent_redirects
+		|| (either_is_pipe && either_is_redirect))
 		return (SYNTAX_ERROR);
 	return (PARSEOK);
 }

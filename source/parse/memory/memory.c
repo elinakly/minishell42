@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   memory.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/02/20 01:19:37 by Mika Schipp   #+#    #+#                 */
-/*   Updated: 2025/04/28 17:06:34 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   memory.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
+/*   Updated: 2025/05/13 16:50:42 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ void	free_array(void **arr, void (*del)(void *))
  */
 void	clear_part_var(void *var)
 {
-	t_part_var *realvar = (t_part_var *)var;
+	t_part_var	*realvar;
+
+	realvar = (t_part_var *)var;
 	if (var)
 		free(realvar->name);
 }
@@ -63,7 +65,9 @@ void	clear_part_var(void *var)
  */
 void	clear_env_var(void *var)
 {
-	t_env_var *realvar = (t_env_var *)var;
+	t_env_var	*realvar;
+
+	realvar = (t_env_var *)var;
 	if (var)
 	{
 		free(realvar->name);

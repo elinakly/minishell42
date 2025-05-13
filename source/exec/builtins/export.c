@@ -6,14 +6,13 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:02:42 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 18:47:52 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:11:33 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "venv.h"
 #include "minishell.h"
-
 
 void	sort_env(char **envp)
 {
@@ -25,7 +24,7 @@ void	sort_env(char **envp)
 	while (envp[i])
 	{
 		j = i + 1;
-		while (envp[j]) 
+		while (envp[j])
 		{
 			if (ft_strncmp(envp[i], envp[j], 1024) > 0)
 			{
@@ -38,7 +37,6 @@ void	sort_env(char **envp)
 		i++;
 	}
 }
-
 
 int	valid_input(char *name)
 {
@@ -73,7 +71,6 @@ int	real_export(char *argv, t_shell *shell)
 		return (simple_add_var(shell->venv, name, NULL));
 	return (0);
 }
-
 
 int	export(t_shell *shell, t_command *cmds, char **envp)
 {

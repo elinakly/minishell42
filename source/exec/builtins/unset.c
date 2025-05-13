@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/13 16:33:11 by eklymova          #+#    #+#             */
+/*   Updated: 2025/05/13 17:12:14 by eklymova         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 #include "venv.h"
 #include "minishell.h"
 
-
-int		unset(t_shell *shell, t_command *cmds, char **envp)
+int	unset(t_shell *shell, t_command *cmds, char **envp)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/09 18:44:01 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:33:58 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ void	remove_env_var(t_venv **base, char *name)
 	prev = NULL;
 	while (temp)
 	{
-		if (!temp->base && ft_strncmp(temp->name, name, ft_strlen(name) + 1) == 0)
+		if (!temp->base && ft_strncmp(temp->name, name,
+				ft_strlen(name) + 1) == 0)
 		{
 			if (prev)
 				prev->next = temp->next;

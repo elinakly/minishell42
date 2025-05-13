@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:10:39 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 13:38:21 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/13 17:08:43 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../../lib/libft/libft.h"
 #include "../../../include/builtins.h"
@@ -17,9 +16,9 @@
 /**
  * TODO: Get this thing into home dir instead of current
  * TODO: Add a limit to the history file (like 1000 lines or whatever)
- * TODO: Somewhere else than in this function: READ this function and add_history for each line :)
+ * TODO: Somewhere else than in this function: READ this
+ * 		function and add_history for each line :)
  */
-
 int	get_history(void)
 {
 	char	*line;
@@ -39,6 +38,7 @@ int	get_history(void)
 	close(fd);
 	return (0);
 }
+
 int	history(char *line)
 {
 	int	res;

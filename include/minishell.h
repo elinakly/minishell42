@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:45:44 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/10 18:06:03 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:05:13 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@
 # include <readline/readline.h>
 # include "../lib/libft/libft.h"
 
-
-typedef struct t_venv t_venv;
+typedef struct t_venv	t_venv;
 
 struct t_venv
 {
@@ -65,7 +64,7 @@ typedef struct t_tokeninfo
 	size_t			index;
 }					t_tokeninfo;
 
-typedef struct t_token t_token;
+typedef struct t_token	t_token;
 
 struct t_token
 {
@@ -75,7 +74,7 @@ struct t_token
 	t_token			*next;
 };
 
-typedef struct t_redirect t_redirect;
+typedef struct t_redirect	t_redirect;
 
 struct t_redirect
 {
@@ -89,7 +88,7 @@ struct t_redirect
 };
 
 
-typedef struct t_command t_command;
+typedef struct t_command	t_command;
 /**
  * Contains all information about a command
  * name: The command name

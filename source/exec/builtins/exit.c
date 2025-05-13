@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:54:40 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 14:38:00 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/13 17:13:52 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,3 @@ int	ft_exit(t_shell *shell, char **argv, size_t cmdcount)
 		status = status % 256;
 	return (fake_exit(shell, (unsigned char)(status)));
 }
-

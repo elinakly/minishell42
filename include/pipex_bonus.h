@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:50:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 20:07:06 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:01:07 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <errno.h>
 # include <linux/limits.h>
 # include "structbuild.h"
-
 
 int			execute(t_shell *shell, t_command *cmd, char **envp, size_t cmdcount);
 int			error(int status);

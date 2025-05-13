@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:35:59 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 10:48:26 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/13 16:58:10 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	strequals(char *one, char *two);
 int		cd(t_shell *shell, t_command *cmd);
 int		export(t_shell *shell, t_command *cmds, char **envp);
 int		fake_exit(t_shell *shell, int code);
-int 	ft_clear(void);
+int		ft_clear(void);
 int		unset(t_shell *shell, t_command *cmds, char **envp);
 
 #endif

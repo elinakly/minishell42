@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/08 15:08:23 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/13 16:53:30 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ bool	can_escape(char c, e_metachar quot);
 bool	set_quote_state(char *cmd, size_t index, e_metachar *current)
 {
 	e_metachar	meta;
+
 	if (!cmd)
 		return (false);
 	if (is_meta(cmd, index, &meta)
@@ -232,7 +233,7 @@ t_env_var	*make_var(t_part_var *part, t_shell *shell)
 		var->value = ft_strdup(value); // TODO: May not need strdup
 	if (!var->value)
 		return (free(var), NULL); // TODO: Make sure we really don't want to free name here (but probably not)
-		return (var);
+	return (var);
 }
 
 /**
@@ -263,7 +264,7 @@ t_env_var	**get_command_vars(t_part_var **names, t_shell *shell)
 		vars[index] = make_var(names[index], shell);
 		if (!vars[index])
 			return (free_array((void **)vars, &clear_env_var),
-					free_array((void **)names, &clear_part_var), NULL);
+				free_array((void **)names, &clear_part_var), NULL);
 		index++;
 	}
 	return (vars);
@@ -362,7 +363,7 @@ bool	is_meta_var(char *cmd, t_triple_index i, e_metachar *meta,
 					e_metachar *quot)
 {
 	return (is_meta(cmd, i.cmd, meta) && *meta == MC_VARIABLE &&
-			*quot != MC_SQUOTE && is_var_char(cmd, i.cmd + 1));
+		*quot != MC_SQUOTE && is_var_char(cmd, i.cmd + 1));
 }
 
 /**
@@ -373,10 +374,10 @@ bool	is_meta_var(char *cmd, t_triple_index i, e_metachar *meta,
  */
 char	*get_expanded_cmd(char *cmd, t_env_var **vars, bool track_quotes)
 {
-	char		*res;
-	t_triple_index i;
-	e_metachar	quot;
-	e_metachar	meta;
+	char			*res;
+	t_triple_index	i;
+	e_metachar		quot;
+	e_metachar		meta;
 
 	quot = MC_NONE;
 	i = (t_triple_index){0, 0, 0};

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/09 14:15:58 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/13 16:49:44 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*expand_heredoc_line(t_shell *shell, char *line, bool expand)
 {
 	char		*exp;
 	t_env_var	**vars;
-	
+
 	if (!line || !expand)
 		return (line);
 	vars = get_vars_from_cmd(line, shell, false);
@@ -54,7 +54,7 @@ char	*heredoc_prompt(void)
 {
 	char	*line;
 	char	*res;
-	
+
 	if (isatty(fileno(stdin)))
 		res = readline("> ");
 	else
@@ -155,6 +155,7 @@ char	*heredoc(t_shell *shell, char *delim, bool expand)
 bool	exec_heredocs(t_shell *shell, t_command *cmd)
 {
 	t_redirect	*r;
+
 	while (cmd)
 	{
 		if (!cmd->has_redirects)
@@ -168,7 +169,7 @@ bool	exec_heredocs(t_shell *shell, t_command *cmd)
 			if (r->type != RE_HEREDOC)
 			{
 				r = r->next;
-				 continue ;
+				continue ;
 			}
 			r->file = heredoc(shell, r->heredoc_delim, r->expand_in_heredoc);
 			if (!r->file)

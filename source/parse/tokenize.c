@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
-/*   Updated: 2025/05/08 13:10:25 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/13 16:56:29 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ size_t	token_size(char *str, bool include_spaces)
 		if (!disrupts_token(meta) && is_meta(str, index, &meta))
 			index += skip_meta(&str[index]);
 		if (disrupts_token(meta) || !str[index] || is_wspace(str[index]))
-			break;
+			break ;
 		while (str[index] && !is_meta(str, index, &meta))
 			index++;
 		if (!str[index + skip_spaces(str + index)])
@@ -235,7 +235,7 @@ size_t	calc_decrease(char *token)
 		if (set_quote_state(token, index, &quot) && quot != MC_NONE)
 			decrease += 2;
 		else if (is_escaped_char(token, index)
-				&& can_escape(token[index], quot) && quot == MC_DQUOTE)
+			&& can_escape(token[index], quot) && quot == MC_DQUOTE)
 			decrease++;
 		else if (is_escaped_char(token, index) && quot == MC_NONE)
 			decrease++;

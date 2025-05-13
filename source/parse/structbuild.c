@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structbuild.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/08 13:44:25 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/13 16:55:46 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ t_env_var	**get_vars_from_cmd(char *cmd, t_shell *shell, bool track_quotes)
 	varnames[varcount] = NULL;
 	variables = get_command_vars(varnames, shell);
 	if (!variables)
-		return(free_array((void **)variables, &clear_env_var),
-		free_array((void **)varnames, &clear_part_var), NULL);
+		return (free_array((void **)variables, &clear_env_var),
+			free_array((void **)varnames, &clear_part_var), NULL);
 	free_array((void **)varnames, &clear_part_var);
 	return (variables);
 }
@@ -199,7 +199,7 @@ size_t	get_cmd_argc(t_token *token)
 bool	insert_redir_in_cmd(t_command *cmd, t_token *token)
 {
 	t_redirect	*tempre;
-	t_redirect *head;
+	t_redirect	*head;
 
 	tempre = create_redir(token);
 	if (!tempre)
@@ -228,7 +228,7 @@ bool	insert_redir_in_cmd(t_command *cmd, t_token *token)
 bool	insert_into_command(t_command *cmd, t_token *token, size_t *argv_i)
 {
 	t_redirect	*tempre;
-	
+
 	if (token->type == TT_COMMAND && !cmd->has_command)
 	{
 		cmd->name = ft_strdup(token->value);
@@ -307,7 +307,7 @@ t_command	*make_cmd_list(t_token *token)
 	while (token)
 	{
 		if (token->type != TT_PIPE && !insert_into_command(cmd, token, &argv_i))
-				return (free_commands(cmd_head), NULL);
+			return (free_commands(cmd_head), NULL);
 		else if (token->type == TT_PIPE)
 		{
 			token = token->next;
