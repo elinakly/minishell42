@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/09 13:38:22 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/16 20:49:32 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	open_in_files(t_redirect	*redirects)
 		if (redirects->in_fd == -1)
 		{
 			if (errno == ENOENT)
-				return (ft_putstr_fd(" No such file or directory\n", 2), 0);
+				return (ft_putstr_fd(" No such file or directory\n", 2), 127);
 			else if (errno == EACCES)
-				return (ft_putstr_fd(" Permission denied\n", 2), 0);
+				return (ft_putstr_fd(" Permission denied\n", 2), 126);
 		}
 	}
 	return (1);
@@ -43,9 +43,9 @@ int	open_out_files(t_redirect	*redirects)
 		if (redirects->out_fd == -1)
 		{
 			if (errno == ENOENT)
-				return (ft_putstr_fd(" No such file or directory\n", 2), 0);
+				return (ft_putstr_fd(" No such file or directory\n", 2), 127);
 			else if (errno == EACCES)
-				return (ft_putstr_fd(" Permission denied\n", 2), 0);
+				return (ft_putstr_fd(" Permission denied\n", 2), 126);
 		}
 	}
 	return (1);
@@ -54,17 +54,21 @@ int	open_out_files(t_redirect	*redirects)
 int	open_files(t_shell *shell, t_command *commands)
 {
 	t_redirect	*redirects;
+	int			status;
 
 	redirects = commands->redirects;
+	status = 0;
 	while (redirects)
 	{
-		if (!open_in_files(redirects))
-			return (fake_exit(shell, 1));
-		if (!open_out_files(redirects))
-			return (fake_exit(shell, 1));
+		status = open_in_files(redirects);
+		if (status != 1)
+			return (not_so_fake_exit(shell, status));
+		status = open_out_files(redirects);
+		if (status != 1)
+			return (not_so_fake_exit(shell, status));
 		redirects = redirects->next;
 	}
-	return (0);
+	return (status);
 }
 
 void	redirects_files(t_command *commands, bool *has_in, bool *has_out)

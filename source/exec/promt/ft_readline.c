@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/13 16:48:44 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:49:32 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*ft_readline(t_shell *shell, char **envp)
 	{
 		// if (isatty(STDIN_FILENO))
 		// 	ft_putstr_fd("exit\n", 2);
-		fake_exit(shell, shell->last_status);
+		not_so_fake_exit(shell, shell->last_status);
 	}
 	return (line);
 }

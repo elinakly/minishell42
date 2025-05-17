@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:50:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/13 17:01:07 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:50:02 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int			open_files(t_shell *shell, t_command *commands);
 void		redirects_files(t_command *commands, bool *has_in, bool *has_out);
 void		redirection(t_shell *shell, int i, int **pipes, t_command *commands);
 int			execute_cmds(t_shell *shell, t_command *cmds, char *envp[]);
-int			excute_one_builtin(t_shell *shell, t_command *cmds, char **envp, int *status);
-int			execute_signal_cmd(t_shell *shell, t_command *cmds, char *envp[], int *status);
+int			execute_one_builtin(t_shell *shell, t_command *cmds, char **envp, int *status);
+int			execute_single_cmd(t_shell *shell, t_command *cmds, char *envp[], int *status);
 char		*find_valid_path(t_shell *shell, const char *com, char **envp);
-int			pipes(t_shell *shell, t_command *cmds, char *envp[], int *status);
+bool		pipes(t_shell *shell, t_command *cmds, char *envp[], int *status);
 
 #endif

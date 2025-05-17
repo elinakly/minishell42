@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:35:59 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/13 16:58:10 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:49:32 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		execve_builtin(t_shell *shell, t_command *cmds,
 bool	strequals(char *one, char *two);
 int		cd(t_shell *shell, t_command *cmd);
 int		export(t_shell *shell, t_command *cmds, char **envp);
-int		fake_exit(t_shell *shell, int code);
+int		not_so_fake_exit(t_shell *shell, int code);
 int		ft_clear(void);
 int		unset(t_shell *shell, t_command *cmds, char **envp);
 

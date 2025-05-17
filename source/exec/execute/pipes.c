@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/10 18:07:56 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/16 21:03:24 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,26 @@ void	create_pipes(t_shell *shell, int **pipes)
 		if (pipe(pipes[i]) == -1)
 		{
 			perror("pipe failed");
-			fake_exit(shell, EXIT_FAILURE);
+			not_so_fake_exit(shell, EXIT_FAILURE);
 			return ;
 		}
 		i++;
 	}
 }
-
-void	child_process(t_shell *shell, int i, int **pipes, char *envp[], t_command *cmds)
+int	child_process(t_shell *shell, int i, int **pipes, char *envp[], t_command *cmds)
 {
+	int	status;
+
 	if (cmds->has_redirects)
-		open_files(shell, cmds);	
+	{
+		status = open_files(shell, cmds);
+		if (status != 1)
+			return (status);
+	}
 	redirection(shell, i, pipes, cmds);
 	close_fd(shell, cmds, pipes);
 	execute(shell, cmds, envp);
+	return (true);
 }
 
 int	**malloc_pipes(t_shell *shell, t_command *commands)
@@ -70,7 +76,7 @@ int	**malloc_pipes(t_shell *shell, t_command *commands)
 	return (pipes);
 }
 
-void fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
+bool fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 {
 	int		i;
 	int		last_pid;
@@ -82,22 +88,24 @@ void fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 		if (commands->pid == -1)
 		{
 			perror("fork failed");
-			return ;
+			return (false);
 		}
 		if (commands->pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
-			child_process(shell, i, pipes, envp, commands);
-			fake_exit(shell, 1);
-			return ;
+			if (child_process(shell, i, pipes, envp, commands) != 1)
+				return (not_so_fake_exit(shell, 1), false);
+			not_so_fake_exit(shell, 1);
+			return (true);
 		}
 		i++;
 		commands = commands->next;
 	}
+	return (true);
 }
 
-int	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
+bool	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 {
 	int			**pipes;
 	int			i;
@@ -107,9 +115,10 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 	signal(SIGINT, signal_handler_child);
 	pipes = malloc_pipes(shell, cmds);
 	if (!pipes)
-		return (1);
+		return (false);
 	create_pipes(shell, pipes);
-	fork_plz(shell, cmds, pipes, envp);
+	if (cmds->has_command && !fork_plz(shell, cmds, pipes, envp))
+		return (false);
 	close_fd(shell, cmds, pipes);
 	commands = cmds;
 	temp_status = 0;
@@ -126,5 +135,5 @@ int	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 			ft_putstr_fd("Quit (core dumped)\n", 2);
 	}
 	free_array((void **)pipes, NULL);
-	return (0);
+	return (true);
 }
