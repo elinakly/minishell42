@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:54:40 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/17 17:09:07 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:58:22 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	checkdigit(char *argv)
 
 int	not_so_fake_exit(t_shell *shell, int code)
 {
-	shell->last_status = code;
+	shell->status = code;
 	shell->loop_active = false;
 	return (code);
 }

@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/18 15:08:39 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/19 20:42:05 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "../../../include/signals.h"
 #include "../../../include/execute.h"
 
-size_t			ft_cmdcount(t_command *head);
+size_t	ft_cmdcount(t_command *head);
 
 int	execute(t_shell *shell, t_command *cmd, char **envp)
 {
@@ -27,12 +27,12 @@ int	execute(t_shell *shell, t_command *cmd, char **envp)
 		exit(execve_builtin(shell, cmd, envp));
 	find_path = find_valid_path(shell, cmd->name, envp);
 	if (cmd->name == NULL)
-		return (not_so_fake_exit(shell, error(3)));
+		return (not_so_fake_exit(shell, error(shell, 3)));
 	if (find_path == NULL)
 	{
 		ft_putstr_fd(cmd->name, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		return (not_so_fake_exit(shell, error(127)));
+		return (not_so_fake_exit(shell, error(shell, 127)));
 	}
 	if (execve(find_path, cmd->argv, envp) == -1)
 	{
@@ -40,7 +40,7 @@ int	execute(t_shell *shell, t_command *cmd, char **envp)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->name, 2);
 		ft_putstr_fd(" 1cannot execute binary file\n", 2);
-		return (not_so_fake_exit(shell, error(127)));
+		return (not_so_fake_exit(shell, error(shell, 127)));
 	}
 	return (0);
 }

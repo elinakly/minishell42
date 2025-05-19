@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 20:07:13 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:20:25 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include "builtins.h"
+#include "../../../include/execute.h"
 #include "../../../include/minishell.h"
 #include "../../../include/path.h"
 
@@ -28,7 +29,7 @@ void	close_fd(t_shell *shell, t_command *commands, int **pipes)
 	}
 }
 
-int	error(int status)
+int	error(t_shell *shell, int status)
 {
 	if (status == 1)
 		perror("Dup2 failed");
@@ -40,7 +41,8 @@ int	error(int status)
 		ft_putstr_fd("Error: command not found\n", 2);
 	else if (status == 127)
 		ft_putstr_fd("Execve failed\n", 2);
-	exit (status);
+	total_cleanup(shell);
+	exit(status);
 }
 
 void	free_arr(char **arr)

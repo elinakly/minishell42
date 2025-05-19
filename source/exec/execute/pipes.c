@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/18 15:09:31 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/19 20:06:11 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	create_pipes(t_shell *shell, int **pipes)
 		i++;
 	}
 }
-int	child_process(t_shell *shell, int i, int **pipes, char *envp[], t_command *cmds)
+int	child_process(t_shell *shell, int i, int **pipes, t_command *cmds)
 {
 	int	status;
 
@@ -48,7 +48,7 @@ int	child_process(t_shell *shell, int i, int **pipes, char *envp[], t_command *c
 	}
 	redirection(shell, i, pipes, cmds);
 	close_fd(shell, cmds, pipes);
-	execute(shell, cmds, envp);
+	execute(shell, cmds, shell->venv_arr);
 	return (true);
 }
 
@@ -94,7 +94,7 @@ bool fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 		if (commands->pid == 0)
 		{
 			set_child_default_signal();
-			if (child_process(shell, i, pipes, envp, commands) != 1)
+			if (child_process(shell, i, pipes, commands) != 1)
 				return (not_so_fake_exit(shell, 1), false);
 			not_so_fake_exit(shell, 1);
 			return (true);

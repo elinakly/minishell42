@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/19 14:41:25 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/19 20:58:22 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ char	*heredoc(t_shell *shell, char *delim, bool expand)
 	res = get_heredoc(shell, delim, expand);
 	if (g_recv_sig == SIGINT)
 	{
-		shell->last_status = 130;
+		shell->status = 130;
 		shell->last_parse_res = HEREDOC_CANCEL;
 	}
 	set_main_signal();

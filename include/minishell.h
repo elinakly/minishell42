@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:45:44 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/19 14:45:08 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/19 21:05:45 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,10 @@ typedef struct s_shell
 {
 	char			*main_rl_str;
 	e_parse_result	last_parse_res;
-	int				last_status;
+	int				status;
 	t_venv			*venv;
+	char			**venv_arr;
+	t_command		*cmd;
 	bool			loop_active;
 	int				heredoc_counter;
 	int				cmds_count;

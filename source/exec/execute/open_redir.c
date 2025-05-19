@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/16 20:49:32 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:35:38 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	open_files(t_shell *shell, t_command *commands)
 	return (status);
 }
 
-void	redirects_files(t_command *commands, bool *has_in, bool *has_out)
+void	redirects_files(t_shell *shell, t_command *commands, bool *has_in, bool *has_out)
 {
 	t_redirect	*redirects;
 
@@ -82,7 +82,7 @@ void	redirects_files(t_command *commands, bool *has_in, bool *has_out)
 		if (redirects->type == RE_INPUT || redirects->type == RE_HEREDOC)
 		{
 			if (dup2(redirects->in_fd, STDIN_FILENO) == -1)
-				error(1);
+				error(shell, 1);
 			close(redirects->in_fd);
 			*has_in = true;
 		}
@@ -90,7 +90,7 @@ void	redirects_files(t_command *commands, bool *has_in, bool *has_out)
 			|| redirects->type == RE_OUTPUT_APPEND)
 		{
 			if (dup2(redirects->out_fd, STDOUT_FILENO) == -1)
-				error(1);
+				error(shell, 1);
 			close(redirects->out_fd);
 			*has_out = true;
 		}
@@ -105,13 +105,13 @@ void	redirection(t_shell *shell, int i, int **pipes, t_command *commands)
 
 	has_in = false;
 	has_out = false;
-	redirects_files(commands, &has_in, &has_out);
+	redirects_files(shell, commands, &has_in, &has_out);
 	if (i > 0 && has_in == false)
 	{
 		if (dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
 		{
 			fprintf(stderr, "dup2 failed1\n");
-			error(1);
+			error(shell, 1);
 		}
 		close(pipes[i - 1][0]);
 	}
@@ -120,7 +120,7 @@ void	redirection(t_shell *shell, int i, int **pipes, t_command *commands)
 		if (dup2(pipes[i][1], STDOUT_FILENO) == -1)
 		{
 			fprintf(stderr, "dup2 failed2\n");
-			error(1);
+			error(shell, 1);
 		}
 		close(pipes[i][1]);
 	}

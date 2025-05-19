@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   venv.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/13 16:33:58 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:58:22 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ char	*get_env_val(t_shell *shell, char *name)
 	namelen = ft_strlen(name);
 	envp = shell->venv;
 	if (ft_strncmp(name, "?", 2) == 0)
-		return (ft_itoa(shell->last_status));
+		return (ft_itoa(shell->status));
 	while (envp)
 	{
 		if (envp->base)
