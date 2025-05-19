@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/13 16:53:30 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/19 22:12:01 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_env_var	*make_var(t_part_var *part, t_shell *shell)
 	if (!value)
 		var->value = ft_strdup("");
 	else
-		var->value = ft_strdup(value); // TODO: May not need strdup
+		var->value = value;
 	if (!var->value)
 		return (free(var), NULL); // TODO: Make sure we really don't want to free name here (but probably not)
 	return (var);
