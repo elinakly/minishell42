@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/12 20:19:07 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/19 14:45:33 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 #include "../include/minishell.h"
 #include "../include/venv.h"
 #include "../include/heredoc.h"
+#include "../include/signals.h"
 
-
-char			*ft_readline(t_shell *shell, char **envp);
+char	*ft_readline(t_shell *shell, char **envp);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 	shell = (t_shell){NULL, NONE, 0, make_venv(envp), true, 0};
 	while (shell.loop_active)
 	{
-		set_signal();
+		set_main_signal();
 		if (isatty(fileno(stdin)))
 			shell.main_rl_str = ft_readline(&shell, venv_to_arr(shell.venv)); //TODO: venv array leaks
 		else
@@ -53,17 +53,12 @@ int	main(int argc, char **argv, char **envp)
 		if (!shell.main_rl_str)
 			return (1);
 		shell.last_parse_res = parse_commands(&shell, &cmds);
-		if (shell.last_parse_res == PARSEOK)
+		if (shell.last_parse_res == PARSEOK && exec_heredocs(&shell, cmds))
 		{
-			if (!exec_heredocs(&shell, cmds))
-			{
-				printf("heredoc fail");
-				break ;
-			}
 			shell.last_status = execute_cmds(&shell, cmds, venv_to_arr(shell.venv)); //TODO: venv array leaks
 			free_commands(cmds);
 		}
-		else if (shell.last_parse_res != EMPTY)
+		else if (shell.last_parse_res == SYNTAX_ERROR)
 		{
 			shell.last_status = 2;
 			write(2, "minishell: syntax error\n", 24);

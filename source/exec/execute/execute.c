@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/17 19:06:57 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:08:39 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../../../include/pipex_bonus.h"
 #include "../../../include/structbuild.h"
 #include "../../../include/memory.h"
 #include "../../../include/builtins.h"
-#include "execute.h"
+#include "../../../include/signals.h"
+#include "../../../include/execute.h"
 
 size_t			ft_cmdcount(t_command *head);
 
@@ -49,14 +50,13 @@ int	execute_single_cmd(t_shell *shell, t_command *cmds,
 {
 	pid_t	pid;
 
-	signal(SIGINT, SIG_IGN);
+	set_ignore_signal();
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork failed"), 1);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		set_child_default_signal();
 		if (cmds->has_redirects)
 		{
 			*status = open_files(shell, cmds);

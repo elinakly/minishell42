@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.h                                          :+:      :+:    :+:   */
+/*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 18:16:34 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/18 15:05:54 by mika             ###   ########.fr       */
+/*   Created: 2025/05/18 15:06:03 by mika              #+#    #+#             */
+/*   Updated: 2025/05/18 15:07:24 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTE_H
-# define EXECUTE_H
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
-# define _GNU_SOURCE
-# include "minishell.h"
-
-int			get_history(void);
-int			history(char *line);
-int			execute_cmds(t_shell *shell, t_command *cmds, char *envp[]);
-char		*find_valid_path(t_shell *shell, const char *com, char **envp);
-
+void	set_main_signal(void);
+void	signal_handler(int sig);
+void	signal_handler_child(int sig);
+void	signal_handler_heredoc(int sig);
+void	set_ignore_signal(void);
+void	set_child_default_signal(void);
+void	set_child_signal(void);
+void	set_heredoc_signal(void);
 #endif

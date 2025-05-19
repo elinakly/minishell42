@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:45:44 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/13 17:05:13 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:45:08 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
 # include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include "../lib/libft/libft.h"
 
+extern int				g_recv_sig;
+
 typedef struct t_venv	t_venv;
+
 
 struct t_venv
 {

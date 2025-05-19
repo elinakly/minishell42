@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/13 16:49:44 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:41:25 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "../../../include/variable.h"
 #include "../../../include/structbuild.h"
 #include "../../../include/memory.h"
+#include "../../../include/signals.h"
+
+int	g_recv_sig;
 
 char	*ft_strjoin_nl(const char *s1, const char *s2)
 {
@@ -71,18 +74,32 @@ char	*heredoc_prompt(void)
 	return (res);
 }
 
+bool	check_heredoc_cancel(t_shell *shell, char *prompt)
+{
+	if (!prompt)
+	{
+		printf("minishell: warning: here-document delimited by EOF\n");
+		return (false);
+	}
+	return (g_recv_sig == SIGINT);
+}
+
 char	*get_heredoc(t_shell *shell, char *delim, bool expand)
 {
 	char	*total;
 	char	*line;
 	char	*tmp;
+	char	*prompt;
 
 	total = ft_strdup("");
 	line = NULL;
 	while ((!line || !strequals(delim, line)) && total)
 	{
 		free(line);
-		line = expand_heredoc_line(shell, heredoc_prompt(), expand);
+		prompt = heredoc_prompt();
+		if (check_heredoc_cancel(shell, prompt))
+			return (free(prompt), free(total), NULL);
+		line = expand_heredoc_line(shell, prompt, expand);
 		if (!line)
 			break ;
 		else if (!strequals(delim, line))
@@ -145,7 +162,14 @@ char	*heredoc(t_shell *shell, char *delim, bool expand)
 	char		*path;
 	t_env_var	**vars;
 
+	set_heredoc_signal();
 	res = get_heredoc(shell, delim, expand);
+	if (g_recv_sig == SIGINT)
+	{
+		shell->last_status = 130;
+		shell->last_parse_res = HEREDOC_CANCEL;
+	}
+	set_main_signal();
 	if (!res)
 		return (NULL);
 	path = make_heredoc_file(shell, delim, res);

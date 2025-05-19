@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/16 21:03:24 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:09:31 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include "../../../include/structbuild.h"
 #include "../../../include/memory.h"
 #include "../../../include/builtins.h"
-#include "execute.h"
+#include "../../../include/execute.h"
+#include "../../../include/signals.h"
 
 //TODO rederection for singl our own cmd malloc_pipes(malloc) leaking)
 
@@ -92,8 +93,7 @@ bool fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 		}
 		if (commands->pid == 0)
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
+			set_child_default_signal();
 			if (child_process(shell, i, pipes, envp, commands) != 1)
 				return (not_so_fake_exit(shell, 1), false);
 			not_so_fake_exit(shell, 1);
@@ -112,7 +112,7 @@ bool	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 	t_command	*commands;
 	int			temp_status;
 
-	signal(SIGINT, signal_handler_child);
+	set_child_signal();
 	pipes = malloc_pipes(shell, cmds);
 	if (!pipes)
 		return (false);

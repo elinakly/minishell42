@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enums.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:46:56 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/13 16:31:05 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:36:25 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef enum e_parse_result
 	MALLOC_FAIL,
 	EMPTY,
 	PARSEOK,
+	HEREDOC_CANCEL,
 	NONE,
 }	e_parse_result;
 
