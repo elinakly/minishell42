@@ -27,4 +27,6 @@ size_t		calc_expanded_len(char *cmd, t_env_var **vars);
 char		*get_escaped_value(t_env_var *var);
 bool		insert_var(char *res, t_env_var *var, size_t *index);
 char		*get_expanded_cmd(char *cmd, t_env_var **vars, bool track_quotes);
+bool		is_meta_var(char *cmd, t_triple_index i, e_metachar *meta,
+				e_metachar *quot);
 #endif

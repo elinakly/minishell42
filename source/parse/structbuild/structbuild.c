@@ -19,32 +19,6 @@
 #include "../../include/minishell.h"
 #include "../../lib/libft/libft.h"
 
-/**
- * Extracts all environment variables from a command string
- * @param cmd The command string to use
- * @returns An array of environment variable structures
- */
-t_env_var	**get_vars_from_cmd(char *cmd, t_shell *shell, bool track_quotes)
-{
-	size_t		varcount;
-	t_part_var	**varnames;
-	t_env_var	**variables;
-
-	if (!cmd)
-		return (NULL);
-	varcount = get_var_count(cmd, track_quotes);
-	varnames = malloc(sizeof(t_part_var *) * (varcount + 1));
-	if (!varnames)
-		return (NULL);
-	get_var_names(cmd, varcount, varnames, track_quotes);
-	varnames[varcount] = NULL;
-	variables = get_command_vars(varnames, shell);
-	if (!variables)
-		return (free_array((void **)variables, &clear_env_var),
-			free_array((void **)varnames, &clear_part_var), NULL);
-	free_array((void **)varnames, &clear_part_var);
-	return (variables);
-}
 
 /**
  * Allocates memory for and creates a single token
@@ -74,64 +48,6 @@ t_token	*make_token(char *raw_token, e_token_type type)
 	return (token);
 }
 
-/**
- * Extracts all tokens from a command string
- * Requires an array of environment variables to expand before tokenizing
- * @param cmd The command string from which to extract
- * @param vars An array of environment variables
- * @param tokencount A pointer to a size_t that will be
- * set to the amount of tokens that were extracted (Can NOT be NULL)
- * @returns A linkedlist with extracted token structs
- */
-t_token	*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount)
-{
-	t_tokeninfo		info;
-	char			**tokens;
-	t_token			*top;
-	t_token			*next;
-	t_token			**change;
-
-	if (!tokencount)
-		return (NULL);
-	tokens = tokenize(cmd, vars, tokencount);
-	if (!tokens)
-		return (NULL);
-	info = (t_tokeninfo){TT_UNKNOWN, false, 0};
-	top = NULL;
-	change = &top;
-	while (tokens[info.index])
-	{
-		info.lasttype = get_token_type(tokens[info.index], info.lasttype,
-				&info.cmdfound);
-		*change = make_token(tokens[info.index++], info.lasttype);
-		if (!*change)
-			return (free_array((void **)tokens, NULL), free_tokens(top), NULL);
-		change = &((*change)->next);
-	}
-	free_array((void **)tokens, NULL);
-	return (top);
-}
-
-/**
- * Converts token type into redirect type based on a given token
- * Defaults to RE_UNKNOWN if original type is not some sort of redirect
- * @param token The token whose type to convert
- * @returns A redirect type
- */
-e_redir_type	get_redir_type(t_token *token)
-{
-	if (!token)
-		return (RE_UNKNOWN);
-	if (token->type == TT_RE_IN)
-		return (RE_INPUT);
-	if (token->type == TT_RE_OUT)
-		return (RE_OUTPUT_TRUNC);
-	if (token->type == TT_RE_OUT_APPEND)
-		return (RE_OUTPUT_APPEND);
-	if (token->type == TT_HEREDOC)
-		return (RE_HEREDOC);
-	return (RE_UNKNOWN);
-}
 
 /**
  * Allocates for and creates a single redirect struct
@@ -167,90 +83,6 @@ t_redirect	*create_redir(t_token *token)
 		res->expand_in_heredoc = heredoc_should_expand(token->next->raw_value);
 	}
 	return (res);
-}
-
-/**
- * Loops through token linkedlist to find any argument types up until a pipe
- * @param token The token from which to start counting arguments
- * @returns The amount of arguments in a command
- */
-size_t	get_cmd_argc(t_token *token)
-{
-	size_t	argc;
-
-	argc = 0;
-	if (!token)
-		return (argc);
-	while (token && token->type != TT_PIPE)
-	{
-		argc += token->type == TT_ARGUMENT;
-		token = token->next;
-	}
-	return (argc);
-}
-
-/**
- * Takes a command struct and inserts a redirect struct into it
- * @param cmd The command in which to insert a redirect
- * @param token The token from which to create a redirect
- * (MUST be of a redirect type)
- * @returns `true` if all allocations in the process succeeded, `false` if not
- */
-bool	insert_redir_in_cmd(t_command *cmd, t_token *token)
-{
-	t_redirect	*tempre;
-	t_redirect	*head;
-
-	tempre = create_redir(token);
-	if (!tempre)
-		return (false);
-	cmd->has_redirects = true;
-	if (!cmd->redirects)
-		cmd->redirects = tempre;
-	else
-	{
-		head = cmd->redirects;
-		while (head->next)
-			head = head->next;
-		head->next = tempre;
-	}
-	return (true);
-}
-
-/**
- * Inserts token data into a command struct
- * TODO: Find a way to insert path into argv[0] always
- * @param cmd The command in which to insert data
- * @param token The token from which to take data
- * @param argv_i `size_t` pointer to keep track of argument index
- * @returns `true` if all allocations in the process succeeded, `false` if not
- */
-bool	insert_into_command(t_command *cmd, t_token *token, size_t *argv_i)
-{
-	t_redirect	*tempre;
-
-	if (token->type == TT_COMMAND && !cmd->has_command)
-	{
-		cmd->name = ft_strdup(token->value);
-		cmd->has_command = true;
-		if (!cmd->name)
-			return (false);
-		free(cmd->argv[0]);
-		cmd->argv[0] = ft_strdup(token->value);
-		if (!cmd->argv[0])
-			return (false);
-	}
-	else if (token->type == TT_ARGUMENT)
-	{
-		cmd->argv[*argv_i] = ft_strdup(token->value);
-		if (!cmd->argv[*argv_i])
-			return (false);
-		(*argv_i)++;
-	}
-	else if (token->type == TT_HEREDOC || token->type == TT_RE_OUT_APPEND
-		|| token->type == TT_RE_IN || token->type == TT_RE_OUT)
-		return (insert_redir_in_cmd(cmd, token));
-	return (true);
 }
 
 /**

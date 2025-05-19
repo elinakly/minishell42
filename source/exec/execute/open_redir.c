@@ -34,11 +34,11 @@ int	open_in_files(t_redirect	*redirects)
 int	open_out_files(t_redirect	*redirects)
 {
 	if (redirects->type == RE_OUTPUT_TRUNC)
-		redirects->out_fd = open(redirects->file,//if > then we need to do trunc
+		redirects->out_fd = open(redirects->file,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (redirects->type == RE_OUTPUT_APPEND)
 	{
-		redirects->out_fd = open(redirects->file,//if >> then we need to do append
+		redirects->out_fd = open(redirects->file,
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (redirects->out_fd == -1)
 		{

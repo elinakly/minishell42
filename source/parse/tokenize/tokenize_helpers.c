@@ -15,23 +15,6 @@
 #include "tokenize.h"
 
 /**
- * Skips any spaces until finding another character or end of string
- * Does this by increasing the char pointer you point to
- * @param str The string you want to skip spaces on
- * @returns The number of spaces it skipped
- */
-size_t	skip_spaces(char *str)
-{
-	size_t	spaces;
-
-	spaces = 0;
-	while (str && (str[spaces] == ' ' || str[spaces] == '\t'
-			|| str[spaces] == '\n'))
-		spaces++;
-	return (spaces);
-}
-
-/**
  * Checks whether a character is being escaped based on
  * the amount of backslashes that come before it
  * @param str The string to look inside

@@ -32,10 +32,13 @@ int			open_in_files(t_redirect	*redirects);
 int			open_out_files(t_redirect	*redirects);
 int			open_files(t_shell *shell, t_command *commands);
 void		redirects_files(t_command *commands, bool *has_in, bool *has_out);
-void		redirection(t_shell *shell, int i, int **pipes, t_command *commands);
+void		redirection(t_shell *shell, int i,
+				int **pipes, t_command *commands);
 int			execute_cmds(t_shell *shell, t_command *cmds, char *envp[]);
-int			execute_one_builtin(t_shell *shell, t_command *cmds, char **envp, int *status);
-int			execute_single_cmd(t_shell *shell, t_command *cmds, char *envp[], int *status);
+int			execute_one_builtin(t_shell *shell, t_command *cmds,
+				char **envp, int *status);
+int			execute_single_cmd(t_shell *shell, t_command *cmds,
+				char *envp[], int *status);
 char		*find_valid_path(t_shell *shell, const char *com, char **envp);
 bool		pipes(t_shell *shell, t_command *cmds, char *envp[], int *status);
 
