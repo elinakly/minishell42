@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:24:49 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:30:21 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:49:56 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,7 @@ void	free_single_token(t_token *token);
 void	free_single_redir(t_redirect *redir);
 void	free_single_cmd(t_command *cmd);
 void	free_venv(t_venv *base);
+void	loop_cleanup(t_shell *shell);
+void	end_cleanup(t_shell *shell);
+void	total_cleanup(t_shell *shell);
 #endif

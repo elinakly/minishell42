@@ -6,13 +6,11 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:03:36 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:58:44 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	errors(char *msg);
 
 char	*get_value(char **envp, char *key)
 {
@@ -42,9 +40,26 @@ int	comp_name_len(char **envp)
 	return (len);
 }
 
-/**
- * TODO: Make prompt not have ~ if we are not in home dir
- */
+bool	build_prompt(char prompt[], char **envp, int home_len)
+{
+	if (!(ft_strlcpy(prompt, get_value(envp, "LOGNAME="), PATH_MAX)))
+		return (errors("Error: ft_strlcpy in readline failed\n"), false);
+	if (!(ft_strlcat(prompt, "@", PATH_MAX)))
+		return (errors("Error : strlcat in readline failed"), false);
+	if (get_value(envp, "SESSION_MANAGER=local/"))
+		ft_strlcat(prompt, get_value(envp, "SESSION_MANAGER=local/"),
+			ft_strlen(prompt) + comp_name_len(envp) + 1);
+	else
+		ft_strlcat(prompt, get_value(envp, "NAME="), PATH_MAX);
+	if (!(ft_strlcat(prompt, ":~", PATH_MAX)))
+		return (errors("Error : strlcat in readline failed"), false);
+	if (!ft_strlcat(prompt, get_value(envp, "PWD=") + home_len, PATH_MAX))
+		return (errors("Error : strlcat in readline failed"), false);
+	if (!ft_strlcat(prompt, "$ ", PATH_MAX))
+		return (errors("Error : strlcat in readline failed"), false);
+	return (true);
+}
+
 char	*ft_readline(t_shell *shell, char **envp)
 {
 	int		i;
@@ -54,33 +69,21 @@ char	*ft_readline(t_shell *shell, char **envp)
 	int		home_len;
 
 	i = 0;
-	if (!(home = get_value(envp, "HOME=")))
+	home = get_value(envp, "HOME=");
+	if (!home)
 		return (NULL);
 	home_len = ft_strlen(home);
 	while (envp[i])
 	{
-		if (!(ft_strlcpy(prompt, get_value(envp, "LOGNAME="), PATH_MAX)))
-			return (errors("Error: ft_strlcpy in readline failed\n"), NULL);
-		if (!(ft_strlcat(prompt, "@", PATH_MAX)))
-			return (errors("Error : strlcat in readline failed"), NULL);
-		if (get_value(envp, "SESSION_MANAGER=local/"))
-			ft_strlcat(prompt, get_value(envp, "SESSION_MANAGER=local/"),
-				ft_strlen(prompt) + comp_name_len(envp) + 1); ///SCHOOL
-		else
-			ft_strlcat(prompt, get_value(envp, "NAME="), PATH_MAX); //HOME REMOVE
-		if (!(ft_strlcat(prompt, ":~", PATH_MAX)))
-			return (errors("Error : strlcat in readline failed"), NULL);
-		if (!ft_strlcat(prompt, get_value(envp, "PWD=") + home_len, PATH_MAX))
-			return (errors("Error : strlcat in readline failed"), NULL);
-		if (!ft_strlcat(prompt, "$ ", PATH_MAX))
-			return (errors("Error : strlcat in readline failed"), NULL);
+		if (!build_prompt(prompt, envp, home_len))
+			return (NULL);
 		i++;
 	}
 	line = readline(prompt);
 	if (line == 0)
 	{
-		// if (isatty(STDIN_FILENO))
-		// 	ft_putstr_fd("exit\n", 2);
+		if (isatty(STDIN_FILENO))
+			ft_putstr_fd("exit\n", 2);
 		not_so_fake_exit(shell, shell->status);
 	}
 	return (line);

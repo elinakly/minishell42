@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:23:28 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:47:36 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ t_venv	*make_venv(char **envp)
 	{
 		temp->next = make_t_venv(false);
 		if (!temp->next)
-			return (NULL); //TODO: Also needs same free logic
+			return (NULL);
 		temp = temp->next;
 		if (!set_env_kv(temp, envp[index]))
-			return (NULL); //TODO: Free t_venv linkedlist, needs a custom function in memory
+			return (NULL);
 		index++;
 	}
 	return (base);

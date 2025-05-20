@@ -6,11 +6,12 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:14:49 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/20 18:31:27 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:57:14 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
+# define STRUCTS_H
 
 typedef struct t_venv	t_venv;
 

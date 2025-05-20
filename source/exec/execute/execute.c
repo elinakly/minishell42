@@ -6,13 +6,11 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:57:55 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-size_t	ft_cmdcount(t_command *head);
 
 int	execute(t_shell *shell, t_command *cmd, char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:02:04 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:37:08 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,21 @@ size_t	calc_decrease(char *token)
 		index++;
 	}
 	return (decrease);
+}
+
+t_token_type	get_token_type2(char *raw_token,
+	t_token_type last, bool *cmdfound)
+{
+	if (last == TT_RE_OUT || last == TT_RE_OUT_APPEND)
+		return (TT_OUTFILE);
+	if (last == TT_RE_IN)
+		return (TT_INFILE);
+	if (last == TT_HEREDOC)
+		return (TT_HEREDOC_DELIM);
+	if (!*cmdfound)
+		return (*cmdfound = true, TT_COMMAND);
+	if (last == TT_ARGUMENT || last == TT_COMMAND || last == TT_INFILE
+		|| last == TT_OUTFILE || last == TT_HEREDOC_DELIM)
+		return (TT_ARGUMENT);
+	return (TT_COMMAND);
 }

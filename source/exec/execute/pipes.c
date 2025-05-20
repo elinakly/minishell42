@@ -6,13 +6,15 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:58:28 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//TODO rederection for singl our own cmd malloc_pipes(malloc) leaking)
+/**
+ * TODO: rederection for singl our own cmd malloc_pipes(malloc) leaking)
+ */
 void	create_pipes(t_shell *shell, int **pipes)
 {
 	int	i;

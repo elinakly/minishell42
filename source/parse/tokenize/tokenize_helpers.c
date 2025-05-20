@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:55:07 by mika              #+#    #+#             */
-/*   Updated: 2025/05/20 18:15:50 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:32:45 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	is_escaped_char(char *str, int index)
 		backslashes++;
 		index--;
 	}
-	return (backslashes % 2) != 0;
+	return ((backslashes % 2) != 0);
 }
 
 /**

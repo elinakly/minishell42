@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:15:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:16:36 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:37:01 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char			**tokenize(char *entry, t_env_var **vars, size_t *amount);
 char			*sanitize_token(char *token);
 t_token_type	get_token_type(char *raw_token, t_token_type last,
 					bool *cmdfound);
+t_token_type	get_token_type2(char *raw_token,
+					t_token_type last, bool *cmdfound);
 size_t			count_esc_metas(t_env_var *var);
 bool			is_quote_char(char c, t_quote_type *type);
 bool			heredoc_should_expand(char *rawdelim);

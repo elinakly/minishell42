@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:06:16 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:56:47 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,36 +33,36 @@ t_shell	make_shell(char **envp)
 	return (shell);
 }
 
-void	loop_cleanup(t_shell *shell)
+void	get_prompt(t_shell *shell)
 {
-	if (shell->cmd)
-		free_commands(shell->cmd);
-	free(shell->main_rl_str);
-	free_array((void **)shell->venv_arr, NULL);
-	shell->venv_arr = NULL;
-	shell->main_rl_str = NULL;
-	shell->cmd = NULL;
+	char	*prompt;
+
+	if (isatty(fileno(stdin)))
+		shell->main_rl_str = ft_readline(shell, shell->venv_arr);
+	else
+	{
+		prompt = get_next_line(fileno(stdin));
+		if (!prompt)
+		{
+			total_cleanup(shell);
+			exit(1);
+		}
+		shell->main_rl_str = ft_strtrim(prompt, "\n");
+		free(prompt);
+	}
 }
 
-void	end_cleanup(t_shell *shell)
+void	finish_loop(t_shell *shell)
 {
-	rl_clear_history();
-	free_venv(shell->venv);
-	free_array((void **)shell->venv_arr, NULL);
-	shell->venv_arr = NULL;
-	shell->venv = NULL;
-}
-
-void	total_cleanup(t_shell *shell)
-{
+	add_history(shell->main_rl_str);
+	history(shell->main_rl_str);
 	loop_cleanup(shell);
-	end_cleanup(shell);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_command		*cmds;
-	t_shell			shell;
+	t_command	*cmds;
+	t_shell		shell;
 
 	if (get_history())
 		return (1);
@@ -70,20 +70,7 @@ int	main(int argc, char **argv, char **envp)
 	while (shell.loop_active)
 	{
 		set_main_signal();
-		if (isatty(fileno(stdin)))
-			shell.main_rl_str = ft_readline(&shell, shell.venv_arr);
-		else
-		{
-			char	*prompt = get_next_line(fileno(stdin));
-			if (!prompt)
-				break ;
-			shell.main_rl_str = ft_strtrim(prompt, "\n");
-			free(prompt);
-		}
-		if (!shell.main_rl_str)
-			break ;
-		if (!shell.main_rl_str)
-			return (1);
+		get_prompt(&shell);
 		shell.last_parse_res = parse_commands(&shell, &shell.cmd);
 		if (shell.last_parse_res == PARSEOK && exec_heredocs(&shell, shell.cmd))
 			shell.status = execute_cmds(&shell, shell.cmd, shell.venv_arr);
@@ -92,9 +79,7 @@ int	main(int argc, char **argv, char **envp)
 			shell.status = 2;
 			write(2, "minishell: syntax error\n", 24);
 		}
-		add_history(shell.main_rl_str);
-		history(shell.main_rl_str);
-		loop_cleanup(&shell);
+		finish_loop(&shell);
 		shell.venv_arr = venv_to_arr(shell.venv);
 		if (!shell.venv_arr)
 			break ;

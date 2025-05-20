@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:53:01 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:40:22 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,37 +82,39 @@ size_t	calc_expanded_len(char *cmd, t_env_var **vars)
  * TODO: `<<$` seemingly creates no tokens at all right now, investigate why
  * TODO: The above also happens with stuff like
  * 	`echo hey | $` (ending empty dollarsign)
+ * c = cmd
+ * i = index
  * 
  * TODO: Diff from above TODOs: try skipping expansion
  * 	for vars coming after heredoc MAYBE?
  * @param cmd The command string to count variables in
  * @returns The amount of environment variables in the string
  */
-size_t	get_var_count(char *cmd, bool track_quotes)
+size_t	get_var_count(char *c, bool track_quotes)
 {
-	size_t		index;
+	size_t		i;
 	t_metachar	in_quot;
 	size_t		temp_skip;
 	size_t		res;
 
-	if (!cmd)
+	if (!c)
 		return (0);
-	index = 0;
+	i = 0;
 	res = 0;
 	in_quot = MC_NONE;
-	while (cmd[index])
+	while (c[i])
 	{
 		temp_skip = 0;
 		if (track_quotes)
-			set_quote_state(cmd, index, &in_quot);
-		if (cmd[index] == '$' && is_meta(cmd, index, NULL) && (cmd[index + 1] && cmd[index + 1] != '\n')) //TODO: TOO LONG
+			set_quote_state(c, i, &in_quot);
+		if (c[i] == '$' && is_meta(c, i, 0) && (c[i + 1] && c[i + 1] != '\n'))
 		{
-			temp_skip = skip_var_chars(cmd, ++index);
+			temp_skip = skip_var_chars(c, ++i);
 			res += temp_skip > 0 && in_quot != MC_SQUOTE;
 		}
-		index += temp_skip;
+		i += temp_skip;
 		if (temp_skip == 0)
-			index += 1;
+			i += 1;
 	}
 	return (res);
 }

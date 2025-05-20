@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
-/*   Updated: 2025/05/20 18:16:36 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:36:14 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,7 @@ t_token_type	get_token_type(char *raw_token,
 		else if (len > 1 && raw_token[1] == '<')
 			return (TT_HEREDOC);
 	}
-	if (last == TT_RE_OUT || last == TT_RE_OUT_APPEND)
-		return (TT_OUTFILE);
-	if (last == TT_RE_IN)
-		return (TT_INFILE);
-	if (last == TT_HEREDOC)
-		return (TT_HEREDOC_DELIM);
-	if (!*cmdfound)
-		return (*cmdfound = true, TT_COMMAND);
-	if (last == TT_ARGUMENT || last == TT_COMMAND || last == TT_INFILE
-		|| last == TT_OUTFILE || last == TT_HEREDOC_DELIM)
-		return (TT_ARGUMENT);
-	return (TT_COMMAND);
+	return (get_token_type2(raw_token, last, cmdfound));
 }
 
 /**

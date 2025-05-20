@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:38:09 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ t_command	*create_command(t_token *token)
 	if (!res->argv)
 		return (free_single_cmd(res), NULL);
 	res->argv[res->argc] = NULL;
-	res->argv[0] = ft_strdup(""); // TODO: Must become path
-	//somewhere, no NULL default because that could break array free func
+	res->argv[0] = ft_strdup("");
 	if (!res->argv[0])
 		return (free_single_cmd(res), NULL);
 	res->redirects = NULL;
