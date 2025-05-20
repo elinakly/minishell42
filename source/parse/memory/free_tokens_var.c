@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_tokens_var.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/20 15:52:39 by eklymova          #+#    #+#             */
+/*   Updated: 2025/05/20 15:52:43 by eklymova         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "../../include/tokenize.h"
 #include "../../include/structbuild.h"
 #include "../../include/path.h"
-
 
 void	free_venv(t_venv *base)
 {
