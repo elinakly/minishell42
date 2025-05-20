@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_info.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:48 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:03:56 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:15:57 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/structbuild.h"
-#include "../../include/variable.h"
-#include "../../include/tokenize.h"
-#include "../../include/memory.h"
-#include "../../include/validate.h"
-#include "../../include/venv.h"
-#include "../../include/minishell.h"
-#include "../../lib/libft/libft.h"
+#include "minishell.h"
 
 /**
  * Extracts all environment variables from a command string
@@ -90,7 +83,7 @@ t_token	*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount)
  * @param token The token whose type to convert
  * @returns A redirect type
  */
-e_redir_type	get_redir_type(t_token *token)
+t_redir_type	get_redir_type(t_token *token)
 {
 	if (!token)
 		return (RE_UNKNOWN);

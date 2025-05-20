@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   insert.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:52 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:04:06 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/structbuild.h"
-#include "../../include/variable.h"
-#include "../../include/tokenize.h"
-#include "../../include/memory.h"
-#include "../../include/validate.h"
-#include "../../include/venv.h"
-#include "../../include/minishell.h"
-#include "../../lib/libft/libft.h"
+#include "minishell.h"
 
 /**
  * Takes a command struct and inserts a redirect struct into it

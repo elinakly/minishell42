@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   open_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:56:59 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:30:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
-#include "../../../include/structbuild.h"
-#include "../../../include/memory.h"
-#include "../../../include/builtins.h"
+#include "minishell.h"
 
 int	open_in_files(t_redirect	*redirects)
 {

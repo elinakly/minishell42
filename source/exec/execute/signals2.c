@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   signals2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:11:05 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:14:38 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:03:24 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/execute.h"
 #include "minishell.h"
 
 void	set_ignore_signal(void)

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 17:54:18 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:02:42 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/libft/libft.h"
-#include "../../../include/builtins.h"
-#include "../../../include/structbuild.h"
+#include "minishell.h"
 
 bool	strequals(char *one, char *two)
 {

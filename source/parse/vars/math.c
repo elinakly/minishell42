@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:53:01 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:07:39 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "../../../include/variable.h"
-#include "../../../include/tokenize.h"
-#include "../../../include/memory.h"
-#include "../../../include/venv.h"
-#include "../../../lib/libft/libft.h"
-
-bool	is_meta(char *str, size_t index, e_metachar *meta);
+#include "minishell.h"
 
 /**
  * Returns the size of an environment variable inside a string
@@ -31,8 +24,8 @@ bool	is_meta(char *str, size_t index, e_metachar *meta);
 size_t	var_len(char *cmd, size_t i, bool track_quotes)
 {
 	size_t		quotfind;
-	e_metachar	type;
-	e_metachar	quottype;
+	t_metachar	type;
+	t_metachar	quottype;
 
 	type = MC_NONE;
 	quottype = MC_NONE;
@@ -98,7 +91,7 @@ size_t	calc_expanded_len(char *cmd, t_env_var **vars)
 size_t	get_var_count(char *cmd, bool track_quotes)
 {
 	size_t		index;
-	e_metachar	in_quot;
+	t_metachar	in_quot;
 	size_t		temp_skip;
 	size_t		res;
 

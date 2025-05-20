@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vars_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:53:10 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:05:35 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "../../../include/variable.h"
-#include "../../../include/tokenize.h"
-#include "../../../include/memory.h"
-#include "../../../include/venv.h"
-#include "../../../lib/libft/libft.h"
-
-bool	is_meta(char *str, size_t index, e_metachar *meta);
+#include "minishell.h"
 
 /**
  * Returns whether a character is a valid character for an
@@ -65,8 +58,8 @@ size_t	skip_var_chars(char *cmd, size_t index)
 	return (use_index - index);
 }
 
-bool	is_meta_var(char *cmd, t_triple_index i, e_metachar *meta,
-	e_metachar *quot)
+bool	is_meta_var(char *cmd, t_triple_index i, t_metachar *meta,
+	t_metachar *quot)
 {
 	return (is_meta(cmd, i.cmd, meta) && *meta == MC_VARIABLE
 		&& *quot != MC_SQUOTE && is_var_char(cmd, i.cmd + 1));
@@ -103,9 +96,9 @@ bool	insert_var(char *res, t_env_var *var, size_t *index)
  * @param index The index of the character to check
  * @param current Pointer to current quote state to be updated
  */
-bool	set_quote_state(char *cmd, size_t index, e_metachar *current)
+bool	set_quote_state(char *cmd, size_t index, t_metachar *current)
 {
-	e_metachar	meta;
+	t_metachar	meta;
 
 	if (!cmd)
 		return (false);

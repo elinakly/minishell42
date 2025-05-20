@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:02:04 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:03:12 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "../../include/variable.h"
-#include "../../include/memory.h"
-#include "../../include/tokenize.h"
-#include "../../lib/libft/libft.h"
-
-int		skip_spaces(char *str);
-int		skip_quoted(char *str);
-bool	is_quote_char(char c, e_quote_type *type);
-size_t	skip_meta(char *str);
-bool	is_meta(char *str, size_t index, e_metachar *meta);
-bool	disrupts_token(e_metachar meta);
-bool	set_quote_state(char *cmd, size_t index, e_metachar *current);
-bool	is_escaped_char(char *str, int index);
+#include "minishell.h"
 
 /**
  * Counts how big a single token at a given position in a string is
@@ -39,7 +24,7 @@ size_t	token_size(char *str, bool include_spaces)
 {
 	size_t		index;
 	size_t		skip_count;
-	e_metachar	meta;
+	t_metachar	meta;
 
 	skip_count = skip_spaces(str);
 	index = skip_count;
@@ -96,7 +81,7 @@ size_t	count_tokens(char *entry)
  * 		which the character is a part
  * @returns `true` if character is escapable, `false` if not
  */
-bool	can_escape(char c, e_metachar quot)
+bool	can_escape(char c, t_metachar quot)
 {
 	if (quot == MC_NONE)
 		return (c == MC_DQUOTE
@@ -124,7 +109,7 @@ size_t	calc_decrease(char *token)
 {
 	size_t		decrease;
 	size_t		index;
-	e_metachar	quot;
+	t_metachar	quot;
 
 	decrease = 0;
 	index = 0;

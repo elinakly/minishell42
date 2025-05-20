@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 22:39:00 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/09 17:39:50 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:04:14 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
-#include "../../../include/path.h"
-#include "../../../include/venv.h"
-#include "../../../include/memory.h"
-#include "../../../lib/libft/libft.h"
+#include "minishell.h"
 
 /**
  * Gets the home directory from environment

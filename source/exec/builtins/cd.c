@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:03:31 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/13 16:29:25 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:01:43 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
-#include "../../../include/path.h"
-#include "../../../include/venv.h"
-#include "../../../include/builtins.h"
+#include "minishell.h"
 
 int	print_cd_err(char *homedir, char *cwd)
 {

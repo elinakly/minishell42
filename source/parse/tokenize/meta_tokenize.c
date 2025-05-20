@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   meta_tokenize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 16:03:41 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "../include/variable.h"
-#include "../include/tokenize.h"
-#include "../lib/libft/libft.h"
-
-bool	is_escaped_char(char *str, size_t index);
-bool	can_escape(char c, e_metachar quot);
+#include "minishell.h"
 
 /**
  * Checks whether the character at a given index in a string is
@@ -29,7 +21,7 @@ bool	can_escape(char c, e_metachar quot);
  * @param index The index at which the char is positioned
  * @returns `true` if the character is meta, `false` if not
  */
-bool	is_meta(char *str, size_t index, e_metachar *meta)
+bool	is_meta(char *str, size_t index, t_metachar *meta)
 {
 	char	c;
 	bool	result;
@@ -52,7 +44,7 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
 			|| c == MC_SEPAR_TAB)
 		&& !is_escaped_char(str, index);
 	if (meta && result)
-		*meta = (e_metachar)c;
+		*meta = (t_metachar)c;
 	else if (meta)
 		*meta = MC_NONE;
 	return (result);
@@ -63,7 +55,7 @@ bool	is_meta(char *str, size_t index, e_metachar *meta)
  * @param meta The metacharacter to check
  * @returns `true` if new token should be started, `false` if not
  */
-bool	disrupts_token(e_metachar meta)
+bool	disrupts_token(t_metachar meta)
 {
 	return (meta == MC_PIPE || meta == MC_REDIR_IN || meta == MC_REDIR_OUT);
 }
@@ -81,7 +73,7 @@ bool	is_env_var_char(char c)
 bool	heredoc_should_expand(char *rawdelim)
 {
 	size_t		index;
-	e_metachar	quot;
+	t_metachar	quot;
 
 	index = 0;
 	quot = MC_NONE;

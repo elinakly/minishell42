@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:17:27 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:03:36 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <linux/limits.h>
-#include "../../../lib/libft/libft.h"
-#include "../../../include/builtins.h"
+#include "minishell.h"
 
 void	errors(char *msg);
 

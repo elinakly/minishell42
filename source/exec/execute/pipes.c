@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 17:52:02 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/pipex_bonus.h"
-#include "../../../include/structbuild.h"
-#include "../../../include/memory.h"
-#include "../../../include/builtins.h"
-#include "../../../include/execute.h"
-#include "../../../include/signals.h"
+#include "minishell.h"
 
 //TODO rederection for singl our own cmd malloc_pipes(malloc) leaking)
 void	create_pipes(t_shell *shell, int **pipes)

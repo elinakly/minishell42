@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/20 16:31:13 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
-#include "../../../include/builtins.h"
-#include "../../../include/variable.h"
-#include "../../../include/structbuild.h"
-#include "../../../include/memory.h"
-#include "../../../include/signals.h"
-#include "heredoc.h"
+#include "minishell.h"
 
 int	g_recv_sig;
 

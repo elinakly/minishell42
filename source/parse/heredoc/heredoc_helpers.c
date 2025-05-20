@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:24:51 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:28:59 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:03:51 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
-#include "../../../include/builtins.h"
-#include "../../../include/variable.h"
-#include "../../../include/structbuild.h"
-#include "../../../include/memory.h"
-#include "../../../include/signals.h"
+#include "minishell.h"
 
 char	*ft_strjoin_nl(const char *s1, const char *s2)
 {

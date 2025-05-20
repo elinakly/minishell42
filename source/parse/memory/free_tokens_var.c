@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free_tokens_var.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:39 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:04:37 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:23:28 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "../../include/tokenize.h"
-#include "../../include/structbuild.h"
-#include "../../include/path.h"
+#include "minishell.h"
 
 void	free_venv(t_venv *base)
 {

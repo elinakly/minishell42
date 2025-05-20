@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:46:59 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/13 16:32:34 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:01:34 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "../include/builtins.h"
+#include "minishell.h"
 
 int	env(char **envp)
 {

@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 17:53:53 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:11:16 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
-#include "builtins.h"
-#include "../../../include/execute.h"
-#include "../../../include/minishell.h"
-#include "../../../include/path.h"
+#include "minishell.h"
 
 void	close_fd(t_shell *shell, t_command *commands, int **pipes)
 {
@@ -31,16 +27,6 @@ void	close_fd(t_shell *shell, t_command *commands, int **pipes)
 
 int	error(t_shell *shell, int status)
 {
-	if (status == 1)
-		perror("Dup2 failed");
-	else if (status == 2)
-		perror("Path failed");
-	else if (status == 3)
-		perror("Execve failed");
-	else if (status == 126)
-		ft_putstr_fd("Error: command not found\n", 2);
-	else if (status == 127)
-		ft_putstr_fd("Execve failed\n", 2);
 	total_cleanup(shell);
 	exit(status);
 }

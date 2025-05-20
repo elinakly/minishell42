@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   structbuild.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 16:21:23 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/structbuild.h"
-#include "../../include/variable.h"
-#include "../../include/tokenize.h"
-#include "../../include/memory.h"
-#include "../../include/validate.h"
-#include "../../include/venv.h"
-#include "../../include/minishell.h"
-#include "../../lib/libft/libft.h"
+#include "minishell.h"
 
 /**
  * Allocates memory for and creates a single token
@@ -27,7 +20,7 @@
  * @param type The corresponding token type
  * @returns A single new token structure
  */
-t_token	*make_token(char *raw_token, e_token_type type)
+t_token	*make_token(char *raw_token, t_token_type type)
 {
 	t_token	*token;
 
@@ -161,10 +154,10 @@ t_command	*make_cmd_list(t_token *token)
  * @param cmd A pointer to where the linked list should be stored
  * @returns A parsing result that describes what happened in parsing
  */
-e_parse_result	parse_commands(t_shell *shell, t_command **cmd)
+t_parse_result	parse_commands(t_shell *shell, t_command **cmd)
 {
 	size_t			tokencount;
-	e_parse_result	res;
+	t_parse_result	res;
 	t_env_var		**variables;
 	t_token			*tokens;
 

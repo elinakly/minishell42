@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:02:42 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/13 17:11:33 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:02:39 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-#include "venv.h"
 #include "minishell.h"
 
 void	sort_env(char **envp)

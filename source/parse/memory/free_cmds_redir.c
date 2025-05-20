@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free_cmds_redir.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:35 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:07:18 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:30:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "../../include/tokenize.h"
-#include "../../include/structbuild.h"
-#include "../../include/path.h"
+#include "minishell.h"
 
 /**
  * Frees every element in an array that ends with a NULL pointer and then

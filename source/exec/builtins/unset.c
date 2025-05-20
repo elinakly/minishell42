@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:33:11 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/13 17:12:14 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:02:53 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-#include "venv.h"
 #include "minishell.h"
 
 int	unset(t_shell *shell, t_command *cmds, char **envp)

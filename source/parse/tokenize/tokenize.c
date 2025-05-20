@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
-/*   Updated: 2025/05/20 16:06:45 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:16:36 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/**
- * This is all still experimental stage but gotta start somewhere!
- */
-
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "../../include/variable.h"
-#include "../../include/memory.h"
-#include "../../include/tokenize.h"
-#include "../../lib/libft/libft.h"
-
-int		skip_spaces(char *str);
-int		skip_quoted(char *str);
-bool	is_quote_char(char c, e_quote_type *type);
-size_t	skip_meta(char *str);
-bool	is_meta(char *str, size_t index, e_metachar *meta);
-bool	disrupts_token(e_metachar meta);
-bool	set_quote_state(char *cmd, size_t index, e_metachar *current);
-bool	is_escaped_char(char *str, int index);
+#include "minishell.h"
 
 /**
  * Creates a string for a single token at a given position in a string
@@ -60,8 +41,8 @@ char	*get_raw_token(char *str)
  * @param cmdfound Whether a command token was found in the string already
  * @returns A token type enum
  */
-e_token_type	get_token_type(char *raw_token,
-		e_token_type last, bool *cmdfound)
+t_token_type	get_token_type(char *raw_token,
+		t_token_type last, bool *cmdfound)
 {
 	size_t	len;
 
@@ -146,7 +127,7 @@ char	**tokenize(char *entry, t_env_var **vars, size_t *amount)
  * 	whether we are currently inside quotes
  * @returns `false` if character should be sanitized, `true` if not
  */
-bool	incl_in_token(char *token, size_t index, e_metachar *quot)
+bool	incl_in_token(char *token, size_t index, t_metachar *quot)
 {
 	bool	quote_changed;
 	bool	char_is_escaped;
@@ -177,8 +158,8 @@ char	*sanitize_token(char *token)
 {
 	size_t		index;
 	size_t		resindex;
-	e_metachar	quot;
-	e_metachar	meta;
+	t_metachar	quot;
+	t_metachar	meta;
 	char		*res;
 
 	index = 0;

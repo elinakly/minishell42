@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   skipIT.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:06:55 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:06:59 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "../include/variable.h"
-#include "../include/tokenize.h"
-#include "../lib/libft/libft.h"
-
-int		skip_quoted(char *str);
-bool	is_escaped_char(char *str, size_t index);
+#include "minishell.h"
 
 /**
  * Calculates the length of an environment variable token
@@ -39,7 +31,7 @@ size_t	skip_env_var(char *str)
 
 size_t	skip_heredoc(char *str)
 {
-	e_metachar	quot;
+	t_metachar	quot;
 	size_t		count;
 
 	quot = MC_NONE;

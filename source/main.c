@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:55:56 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:06:16 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/tokenize.h"
-#include "../include/variable.h"
-#include "../include/path.h"
-#include "../include/memory.h"
-#include "../include/builtins.h"
-#include "../include/execute.h"
-#include "../include/structbuild.h"
-#include "../include/validate.h"
-#include "../include/minishell.h"
-#include "../include/venv.h"
-#include "../include/heredoc.h"
-#include "../include/signals.h"
-
-char	*ft_readline(t_shell *shell, char **envp);
+#include "minishell.h"
 
 t_shell	make_shell(char **envp)
 {

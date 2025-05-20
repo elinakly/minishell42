@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmds_count.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 16:05:11 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:03:59 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "../../include/tokenize.h"
-#include "../../include/structbuild.h"
-#include "../../include/path.h"
+#include "minishell.h"
 
 /**
  * TODO: Rename the folder since this probably won't be exclusively memory stuff

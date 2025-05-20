@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:51:58 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:14:48 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:03:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/execute.h"
 #include "minishell.h"
 
 void	signal_handler(int sig)

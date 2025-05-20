@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:54:40 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/19 20:58:22 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 18:02:36 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/builtins.h"
-#include "../../../lib/libft/libft.h"
+#include "minishell.h"
 
 int	ms_atoi(const char *nptr)
 {

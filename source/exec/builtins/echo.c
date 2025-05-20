@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   echo.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mschippe <mschippe@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/07 17:03:23 by eklymova      #+#    #+#                 */
-/*   Updated: 2025/04/03 01:02:19 by Mika Schipp   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/07 17:03:23 by eklymova          #+#    #+#             */
+/*   Updated: 2025/05/20 18:01:37 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/builtins.h"
+#include "minishell.h"
 
 int	ft_putchar_fd_echo(char c, int fd)
 {

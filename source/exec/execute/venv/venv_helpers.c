@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   venv_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:37:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:43:11 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:23:12 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "venv.h"
-#include "memory.h"
-#include "libft.h"
-#include "builtins.h"
+#include "minishell.h"
 
 bool	set_env_kv(t_venv *var, char *strvar)
 {

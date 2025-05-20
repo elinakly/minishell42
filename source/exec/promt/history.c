@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:10:39 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/13 17:08:43 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:03:40 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/libft/libft.h"
-#include "../../../include/builtins.h"
+#include "minishell.h"
 
 /**
  * TODO: Get this thing into home dir instead of current

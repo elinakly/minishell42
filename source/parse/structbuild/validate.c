@@ -3,24 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/13 16:57:09 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:30:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/structbuild.h"
-#include "../../include/tokenize.h"
-#include "../../include/variable.h"
-#include "../../lib/libft/libft.h"
+#include "minishell.h"
 
 /**
  * Decides whether the command syntax is correct based on the last token type
  * @param last The last token type in a parsed command string
  * @returns A parsing result
  */
-e_parse_result	get_parse_res_from_last(e_token_type last)
+t_parse_result	get_parse_res_from_last(t_token_type last)
 {
 	if (last == TT_RE_IN || last == TT_RE_OUT || last == TT_RE_OUT_APPEND
 		|| last == TT_HEREDOC)
@@ -37,11 +34,11 @@ e_parse_result	get_parse_res_from_last(e_token_type last)
  * @param prev The previous token type
  * @returns A parsing result
  */
-e_parse_result	comp_curr_last_types(e_token_type curr, e_token_type prev)
+t_parse_result	comp_curr_last_types(t_token_type curr, t_token_type prev)
 {
 	bool	both_pipes;
 	bool	subsequent_redirects;
-	bool	either_is_redirect;
+	bool	either_it_redirect;
 	bool	either_is_pipe;
 
 	both_pipes = prev == TT_PIPE && curr == TT_PIPE;
@@ -50,12 +47,12 @@ e_parse_result	comp_curr_last_types(e_token_type curr, e_token_type prev)
 				|| prev == TT_RE_OUT_APPEND || prev == TT_HEREDOC)
 			&& (curr == TT_RE_IN || curr == TT_RE_OUT
 				|| curr == TT_RE_OUT_APPEND || curr == TT_HEREDOC));
-	either_is_redirect = ((prev == TT_RE_IN || prev == TT_RE_OUT
+	either_it_redirect = ((prev == TT_RE_IN || prev == TT_RE_OUT
 				|| prev == TT_RE_OUT_APPEND || prev == TT_HEREDOC)
 			|| (curr == TT_RE_IN || curr == TT_RE_OUT
 				|| curr == TT_RE_OUT_APPEND || curr == TT_HEREDOC));
 	if (both_pipes || subsequent_redirects
-		|| (either_is_pipe && either_is_redirect))
+		|| (either_is_pipe && either_it_redirect))
 		return (SYNTAX_ERROR);
 	return (PARSEOK);
 }
@@ -65,9 +62,9 @@ e_parse_result	comp_curr_last_types(e_token_type curr, e_token_type prev)
  * @param tokens The list of all parsed tokens
  * @returns A parsing result
  */
-e_parse_result	validate_tokens(t_token *token)
+t_parse_result	validate_tokens(t_token *token)
 {
-	e_token_type	last;
+	t_token_type	last;
 
 	if (!token)
 		return (EMPTY);
@@ -94,10 +91,10 @@ e_parse_result	validate_tokens(t_token *token)
  * @param cmd The command string to validate
  * @returns A parsing result
  */
-e_parse_result	validate_cmd_str(char *cmd)
+t_parse_result	validate_cmd_str(char *cmd)
 {
 	size_t			index;
-	e_metachar		quotstate;
+	t_metachar		quotstate;
 
 	index = 0;
 	quotstate = MC_NONE;

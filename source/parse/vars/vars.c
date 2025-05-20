@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/20 16:23:31 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "../../../include/variable.h"
-#include "../../../include/tokenize.h"
-#include "../../../include/memory.h"
-#include "../../../include/venv.h"
-#include "../../../lib/libft/libft.h"
-
-bool	is_meta(char *str, size_t index, e_metachar *meta);
-bool	can_escape(char c, e_metachar quot);
+#include "minishell.h"
 
 /**
  * Gets all the environment variable names and quote types in a command
@@ -34,7 +26,7 @@ t_part_var	**get_var_names(char *cmd, size_t varcount,
 {
 	size_t		i;
 	size_t		si;
-	e_metachar	quot;
+	t_metachar	quot;
 
 	i = 0;
 	si = 0;
@@ -166,8 +158,8 @@ char	*get_expanded_cmd(char *cmd, t_env_var **vars, bool track_quotes)
 {
 	char			*res;
 	t_triple_index	i;
-	e_metachar		quot;
-	e_metachar		meta;
+	t_metachar		quot;
+	t_metachar		meta;
 
 	quot = MC_NONE;
 	i = (t_triple_index){0, 0, 0};

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:55:07 by mika              #+#    #+#             */
-/*   Updated: 2025/05/20 16:01:56 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:15:50 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdbool.h>
-#include "tokenize.h"
+#include "minishell.h"
 
 /**
  * Checks whether a character is being escaped based on
@@ -79,7 +77,7 @@ size_t	skip_quoted(char *str)
  * @param type A pointer to a quote type enum which will be set (can be NULL)
  * @returns `true` if any type of quote is unclosed, `false` if not
  */
-bool	has_unclosed_quote(char *str, e_quote_type *type)
+bool	has_unclosed_quote(char *str, t_quote_type *type)
 {
 	bool	in_dquotes;
 	bool	in_squotes;
@@ -112,7 +110,7 @@ bool	has_unclosed_quote(char *str, e_quote_type *type)
  * @param type A pointer to a quote type enum which will be set (can be NULL)
  * @returns `true` if the character is a quote, `false` if not
  */
-bool	is_quote_char(char c, e_quote_type *type)
+bool	is_quote_char(char c, t_quote_type *type)
 {
 	if (type)
 	{
