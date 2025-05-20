@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:50:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/19 20:36:19 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 15:55:32 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void		close_fd(t_shell *shell, t_command *commands, int **pipes);
 int			open_in_files(t_redirect	*redirects);
 int			open_out_files(t_redirect	*redirects);
 int			open_files(t_shell *shell, t_command *commands);
-void		redirects_files(t_shell *shell, t_command *commands, bool *has_in, bool *has_out);
+void		redirects_files(t_shell *shell, t_command *commands,
+				bool *has_in, bool *has_out);
 void		redirection(t_shell *shell, int i,
 				int **pipes, t_command *commands);
 int			execute_cmds(t_shell *shell, t_command *cmds, char *envp[]);

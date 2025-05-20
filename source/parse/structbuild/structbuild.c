@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/13 16:55:46 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:21:23 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "../../include/venv.h"
 #include "../../include/minishell.h"
 #include "../../lib/libft/libft.h"
-
 
 /**
  * Allocates memory for and creates a single token
@@ -48,11 +47,12 @@ t_token	*make_token(char *raw_token, e_token_type type)
 	return (token);
 }
 
-
 /**
  * Allocates for and creates a single redirect struct
  * Fills in relevant details about the redirect based on tokens that are ahead
- * TODO: Bit dodgy, strdup will happen and we assume it'll be inserted SOMEWHERE always, and thus freed somewhere always, it SHOULD be true but gotta triple check
+ * TODO: Bit dodgy, strdup will happen and we assume it'll be inserted SOMEWHERE
+ * always, and thus freed somewhere always,
+ * it SHOULD be true but gotta triple check
  * @param token A token that is of some redirect type.
  * Can not be the last token in the list as it requires a file or delimiter.
  * @returns a single redirect struct
@@ -108,7 +108,8 @@ t_command	*create_command(t_token *token)
 	if (!res->argv)
 		return (free_single_cmd(res), NULL);
 	res->argv[res->argc] = NULL;
-	res->argv[0] = ft_strdup(""); // TODO: Must become path somewhere, no NULL default because that could break array free func
+	res->argv[0] = ft_strdup(""); // TODO: Must become path
+	//somewhere, no NULL default because that could break array free func
 	if (!res->argv[0])
 		return (free_single_cmd(res), NULL);
 	res->redirects = NULL;

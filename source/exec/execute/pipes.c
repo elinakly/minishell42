@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/19 20:06:11 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 16:09:53 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../../include/pipex_bonus.h"
 #include "../../../include/structbuild.h"
@@ -19,7 +18,6 @@
 #include "../../../include/signals.h"
 
 //TODO rederection for singl our own cmd malloc_pipes(malloc) leaking)
-
 void	create_pipes(t_shell *shell, int **pipes)
 {
 	int	i;
@@ -36,6 +34,7 @@ void	create_pipes(t_shell *shell, int **pipes)
 		i++;
 	}
 }
+
 int	child_process(t_shell *shell, int i, int **pipes, t_command *cmds)
 {
 	int	status;
@@ -58,7 +57,7 @@ int	**malloc_pipes(t_shell *shell, t_command *commands)
 	int	**pipes;
 
 	pipes = malloc(sizeof(int *) * (shell->cmds_count));
-	pipes[shell->cmds_count - 1] = NULL; // NOTE: I added this so the array can be NULL terminated :)
+	pipes[shell->cmds_count - 1] = NULL;
 	if (!pipes)
 		return (NULL);
 	i = 0;
@@ -77,7 +76,7 @@ int	**malloc_pipes(t_shell *shell, t_command *commands)
 	return (pipes);
 }
 
-bool fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
+bool	fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 {
 	int		i;
 	int		last_pid;

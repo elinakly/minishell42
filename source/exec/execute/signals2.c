@@ -1,46 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 16:51:58 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:14:48 by eklymova         ###   ########.fr       */
+/*   Created: 2025/05/20 16:11:05 by eklymova          #+#    #+#             */
+/*   Updated: 2025/05/20 16:14:38 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/execute.h"
 #include "minishell.h"
 
-void	signal_handler(int sig)
-{
-	g_recv_sig = sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	signal_handler_child(int sig)
-{
-	g_recv_sig = sig;
-	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
-
-void	set_main_signal(void)
+void	set_ignore_signal(void)
 {
 	g_recv_sig = 0;
-	signal(SIGINT, signal_handler);
+	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	set_child_signal(void)
+void	set_child_default_signal(void)
 {
 	g_recv_sig = 0;
-	signal(SIGINT, signal_handler_child);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	signal_handler_heredoc(int sig)
+{
+	char	newline;
+
+	newline = '.';
+	printf("\n");
+	g_recv_sig = sig;
+	rl_done = 1;
+	ioctl(STDIN_FILENO, TIOCSTI, &newline);
+}
+
+void	set_heredoc_signal(void)
+{
+	signal(SIGINT, signal_handler_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }

@@ -6,10 +6,9 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:35 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:52:36 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:07:18 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <stdlib.h>
 #include <stdio.h>

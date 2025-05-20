@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/13 17:07:42 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:03:41 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ bool	is_env_var_char(char c)
 	return (c == '_' || ft_isalpha(c) || ft_isdigit(c));
 }
 
-
 bool	heredoc_should_expand(char *rawdelim)
 {
 	size_t		index;
@@ -90,7 +89,6 @@ bool	heredoc_should_expand(char *rawdelim)
 		index++;
 	return (!rawdelim[index]);
 }
-
 
 /**
  * Counts the amount of escapable meta characters in a string

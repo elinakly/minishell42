@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:06:11 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/19 22:12:01 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 16:23:31 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_env_var	*make_var(t_part_var *part, t_shell *shell)
 		return (NULL);
 	var->name = ft_strdup(part->name);
 	var->quote_type = part->in_quote_type;
-	value = get_env_val(shell, part->name); // TODO: If strdup is used to copy this below, maybe we need to free this here
+	value = get_env_val(shell, part->name); //TODO: If strdup is used to copy this below, maybe we need to free this here
 	if (!value)
 		var->value = ft_strdup("");
 	else

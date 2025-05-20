@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/19 20:35:38 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 15:56:59 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,12 @@ int	open_files(t_shell *shell, t_command *commands)
 	return (status);
 }
 
-void	redirects_files(t_shell *shell, t_command *commands, bool *has_in, bool *has_out)
+void	redirects_files(t_shell *shell, t_command *commands,
+			bool *has_in, bool *has_out)
 {
 	t_redirect	*redirects;
 
 	redirects = commands->redirects;
-
 	while (redirects)
 	{
 		if (redirects->type == RE_INPUT || redirects->type == RE_HEREDOC)

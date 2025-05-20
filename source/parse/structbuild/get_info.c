@@ -6,10 +6,9 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:48 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:52:49 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:03:56 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../include/structbuild.h"
 #include "../../include/variable.h"

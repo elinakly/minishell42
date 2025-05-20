@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
-/*   Updated: 2025/05/13 16:56:29 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:06:45 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ bool	is_meta(char *str, size_t index, e_metachar *meta);
 bool	disrupts_token(e_metachar meta);
 bool	set_quote_state(char *cmd, size_t index, e_metachar *current);
 bool	is_escaped_char(char *str, int index);
-
 
 /**
  * Creates a string for a single token at a given position in a string
@@ -99,7 +98,8 @@ e_token_type	get_token_type(char *raw_token,
 
 /**
  * Takes a full minishell command and tokenizes it (splitting it up)
- * TODO: Not sure if it is here, but a single space appears to be a valid command when it should not be
+ * TODO: Not sure if it is here, but a single space appears
+ * 	to be a valid command when it should not be
  * @param entry The string to tokenize
  * @returns An array of tokens (strings) or NULL if fail
  */
@@ -132,16 +132,18 @@ char	**tokenize(char *entry, t_env_var **vars, size_t *amount)
 	return (free(entry), result);
 }
 
-
 /**
  * Decides whether a character should sanitized or not based on 
  * quote states and various escape checks
- * TODO: Currently leaves in the extra escapes that we add into environment variables, fix by just not inserting those escapes maybe?
- * TODO: The above todo may actually be a HUGE problem with how I'm expanding vars, may need to rewrite that somehow
+ * TODO: Currently leaves in the extra escapes that we add into environment
+ * 	variables, fix by just not inserting those escapes maybe?
+ * TODO: The above todo may actually be a HUGE problem
+ * 	with how I'm expanding vars, may need to rewrite that somehow
  * TODO: Just research the above todo's to get a clear answer on how to proceed
  * @param token The string of which the character is a part
  * @param index The index at which the character is inside `token`
- * @param quot The quote state metachar, used to track whether we are currently inside quotes
+ * @param quot The quote state metachar, used to track
+ * 	whether we are currently inside quotes
  * @returns `false` if character should be sanitized, `true` if not
  */
 bool	incl_in_token(char *token, size_t index, e_metachar *quot)

@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:53:01 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:53:02 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:07:39 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,15 @@ size_t	calc_expanded_len(char *cmd, t_env_var **vars)
 	return (orig - names_len + values_len);
 }
 
-
 /**
  * Calculates how many environment variables are in a command string
  * Considers quotes, escapes, etc. in its calculation
  * TODO: `<<$` seemingly creates no tokens at all right now, investigate why
- * TODO: The above also happens with stuff like `echo hey | $` (ending empty dollarsign)
+ * TODO: The above also happens with stuff like
+ * 	`echo hey | $` (ending empty dollarsign)
  * 
- * TODO: Diff from above TODOs: try skipping expansion for vars coming after heredoc MAYBE?
+ * TODO: Diff from above TODOs: try skipping expansion
+ * 	for vars coming after heredoc MAYBE?
  * @param cmd The command string to count variables in
  * @returns The amount of environment variables in the string
  */

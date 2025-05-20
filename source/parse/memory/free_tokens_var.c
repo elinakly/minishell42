@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:39 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:52:43 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:04:37 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,3 @@ void	clear_env_var(void *var)
 		free(realvar->value);
 	}
 }
-

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/20 16:02:04 by eklymova          #+#    #+#             */
+/*   Updated: 2025/05/20 16:03:12 by eklymova         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -18,7 +29,8 @@ bool	is_escaped_char(char *str, int index);
 
 /**
  * Counts how big a single token at a given position in a string is
- * TODO: Calling skip_spaces 3 times to prevent trailing empty token is not efficient, look into improving
+ * TODO: Calling skip_spaces 3 times to prevent trailing
+ * 		empty token is not efficient, look into improving
  * @param str The string in which the token must be found (can be offset)
  * @param include_spaces Whether to include skipped spaces in the size
  * @returns The size of the found token
@@ -76,12 +88,12 @@ size_t	count_tokens(char *entry)
 	return (token_count);
 }
 
-
 /**
  * Checks whether a character is escapable in its current context
  * It differs between double quotes / single quotes / no quotes
  * @param c The character to check
- * @param quot The current quote state of the string of which the character is a part
+ * @param quot The current quote state of the string of
+ * 		which the character is a part
  * @returns `true` if character is escapable, `false` if not
  */
 bool	can_escape(char c, e_metachar quot)

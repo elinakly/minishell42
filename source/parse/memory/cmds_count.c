@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.c                                           :+:      :+:    :+:   */
+/*   cmds_count.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:19:37 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/13 16:50:42 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:05:11 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
  * TODO: Rename the folder since this probably won't be exclusively memory stuff
  * TODO: Rename this file because this is DEFINITELY not only array stuff
  */
-
 
 /**
  * Counts the amount of elements in an array

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/19 21:37:44 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 15:55:56 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	main(int argc, char **argv, char **envp)
 			shell.main_rl_str = ft_readline(&shell, shell.venv_arr);
 		else
 		{
-			char *prompt = get_next_line(fileno(stdin));
+			char	*prompt = get_next_line(fileno(stdin));
 			if (!prompt)
 				break ;
 			shell.main_rl_str = ft_strtrim(prompt, "\n");

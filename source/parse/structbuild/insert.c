@@ -6,10 +6,9 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:52 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:52:53 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:04:06 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../include/structbuild.h"
 #include "../../include/variable.h"
@@ -19,7 +18,6 @@
 #include "../../include/venv.h"
 #include "../../include/minishell.h"
 #include "../../lib/libft/libft.h"
-
 
 /**
  * Takes a command struct and inserts a redirect struct into it

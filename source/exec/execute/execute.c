@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/19 20:42:05 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 16:09:26 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,10 @@ int	execute_single_cmd(t_shell *shell, t_command *cmds,
 		if (WTERMSIG(*status) == SIGQUIT)
 			ft_putstr_fd("Quit (core dumped)\n", 2);
 		else if (WTERMSIG(*status) == SIGINT)
-			ft_putchar_fd('\n', 2); // Print newline after ^C
+			ft_putchar_fd('\n', 2);
 	}
 	return (0);
 }
-
 
 int	execute_one_builtin(t_shell *shell, t_command *cmds,
 	char **envp, int *status)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/19 21:20:25 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 16:16:54 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
+//TODO: resolve_exec_path == SHOULD be freed by execute already but make sure
 char	*find_valid_path(t_shell *shell, const char *com, char **envp)
 {
 	int		i;
@@ -66,7 +67,7 @@ char	*find_valid_path(t_shell *shell, const char *com, char **envp)
 
 	i = 0;
 	if (ft_strchr(com, '/'))
-		return resolve_exec_path(shell, (char *)com); //TODO: SHOULD be freed by execute already but make sure
+		return (resolve_exec_path(shell, (char *)com));
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
