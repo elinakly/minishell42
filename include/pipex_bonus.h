@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:50:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 15:55:32 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:52:32 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ int			execute_single_cmd(t_shell *shell, t_command *cmds,
 				char *envp[], int *status);
 char		*find_valid_path(t_shell *shell, const char *com, char **envp);
 bool		pipes(t_shell *shell, t_command *cmds, char *envp[], int *status);
+void		wait_pid(t_command *cmds, int *status);
 
 #endif

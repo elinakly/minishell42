@@ -6,13 +6,23 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/07 17:19:02 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:54:18 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../lib/libft/libft.h"
 #include "../../../include/builtins.h"
 #include "../../../include/structbuild.h"
+
+bool	strequals(char *one, char *two)
+{
+	size_t	index;
+
+	index = 0;
+	while (one[index] && two[index] && one[index] == two[index])
+		index++;
+	return (!one[index] && !two[index]);
+}
 
 /**
  * @brief Check if the command is a built-in command

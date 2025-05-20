@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   venv.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:00:32 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/07 10:49:13 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/20 16:42:23 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,9 @@ char	**venv_to_arr(t_venv *base);
 bool	add_env_var(t_venv *base, char *strvar);
 void	remove_env_var(t_venv **base, char *name);
 bool	simple_add_var(t_venv *base, char *name, char *value);
+bool	set_name_value(t_venv *var, char *name, char *value);
+bool	set_env_kv(t_venv *var, char *strvar);
+t_venv	*make_t_venv(bool is_base);
+char	*env_var_str(t_venv *var);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:09:26 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:48:36 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,22 @@ int	execute(t_shell *shell, t_command *cmd, char **envp)
 	return (0);
 }
 
+int	child_handler(t_shell *shell, t_command *cmds, char *envp[], int *status)
+{
+	set_child_default_signal();
+	if (cmds->has_redirects)
+	{
+		*status = open_files(shell, cmds);
+		if (*status != 1)
+			return (1);
+	}
+	redirection(shell, 0, 0, cmds);
+	close_fd(shell, cmds, 0);
+	if (cmds->has_command)
+		execute(shell, cmds, envp);
+	return (not_so_fake_exit(shell, 0));
+}
+
 int	execute_single_cmd(t_shell *shell, t_command *cmds,
 		char *envp[], int *status)
 {
@@ -55,20 +71,7 @@ int	execute_single_cmd(t_shell *shell, t_command *cmds,
 	if (pid == -1)
 		return (perror("fork failed"), 1);
 	if (pid == 0)
-	{
-		set_child_default_signal();
-		if (cmds->has_redirects)
-		{
-			*status = open_files(shell, cmds);
-			if (*status != 1)
-				return (1);
-		}
-		redirection(shell, 0, 0, cmds);
-		close_fd(shell, cmds, 0);
-		if (cmds->has_command)
-			execute(shell, cmds, envp);
-		return (not_so_fake_exit(shell, 0));
-	}
+		return (child_handler(shell, cmds, envp, status));
 	waitpid(pid, status, 0);
 	if (WIFSIGNALED(*status))
 	{

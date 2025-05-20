@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:09:53 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:52:02 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,6 @@ bool	fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 bool	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 {
 	int			**pipes;
-	int			i;
-	t_command	*commands;
-	int			temp_status;
 
 	set_child_signal();
 	pipes = malloc_pipes(shell, cmds);
@@ -117,17 +114,12 @@ bool	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 		return (false);
 	create_pipes(shell, pipes);
 	if (cmds->has_command && !fork_plz(shell, cmds, pipes, envp))
-		return (false);
-	close_fd(shell, cmds, pipes);
-	commands = cmds;
-	temp_status = 0;
-	while (commands)
 	{
-		waitpid(commands->pid, &temp_status, 0);
-		if (commands->next == NULL)
-			*status = temp_status;
-		commands = commands->next;
+		free_array((void **)pipes, NULL);
+		return (false);
 	}
+	close_fd(shell, cmds, pipes);
+	wait_pid(cmds, status);
 	if (WIFSIGNALED(*status))
 	{
 		if (WTERMSIG(*status) == SIGQUIT)

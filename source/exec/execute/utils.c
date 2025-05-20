@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 16:16:54 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:53:53 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,18 @@ char	*find_valid_path(t_shell *shell, const char *com, char **envp)
 	return (free_arr(paths), NULL);
 }
 
-bool	strequals(char *one, char *two)
+void	wait_pid(t_command *cmds, int *status)
 {
-	size_t	index;
+	t_command	*commands;
+	int			temp_status;
 
-	index = 0;
-	while (one[index] && two[index] && one[index] == two[index])
-		index++;
-	return (!one[index] && !two[index]);
+	commands = cmds;
+	temp_status = 0;
+	while (commands)
+	{
+		waitpid(commands->pid, &temp_status, 0);
+		if (commands->next == NULL)
+			*status = temp_status;
+		commands = commands->next;
+	}
 }
