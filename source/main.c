@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:56:47 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 02:32:25 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	get_prompt(t_shell *shell)
 		if (!prompt)
 		{
 			total_cleanup(shell);
-			exit(1);
+			exit(shell->status);
 		}
 		shell->main_rl_str = ft_strtrim(prompt, "\n");
 		free(prompt);
