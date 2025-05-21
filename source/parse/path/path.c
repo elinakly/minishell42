@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 22:39:00 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:04:14 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:44:30 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,7 @@ char	*resolve_exec_path(t_shell *shell, char *path)
 	if (!res)
 		return (free(exp), free(cwd), NULL);
 	join_with_slash(cwd, exp, res);
+	free(cwd);
+	free(exp);
 	return (res);
 }
