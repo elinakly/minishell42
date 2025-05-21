@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 03:43:18 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ char	*get_heredoc(t_shell *shell, char *delim, bool expand)
 		if (check_heredoc_cancel(shell, prompt))
 			return (free(prompt), free(total), NULL);
 		line = expand_heredoc_line(shell, prompt, expand);
-		if (!line)
+		if (!line || strequals(delim, line))
 			break ;
-		else if (!strequals(delim, line))
+		else
 		{
 			tmp = total;
 			total = ft_strjoin_nl(total, line);

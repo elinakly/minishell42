@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:30:21 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 03:31:37 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,17 @@ int	open_in_files(t_redirect	*redirects)
 int	open_out_files(t_redirect	*redirects)
 {
 	if (redirects->type == RE_OUTPUT_TRUNC)
+	{
 		redirects->out_fd = open(redirects->file,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (redirects->out_fd == -1)
+		{
+			if (errno == ENOENT)
+				return (ft_putstr_fd(" No such file or directory\n", 2), 127);
+			else if (errno == EACCES)
+				return (ft_putstr_fd(" Permission denied\n", 2), 126);
+		}
+	}
 	else if (redirects->type == RE_OUTPUT_APPEND)
 	{
 		redirects->out_fd = open(redirects->file,

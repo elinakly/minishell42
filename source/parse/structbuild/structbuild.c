@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structbuild.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:10:14 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:38:09 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 04:16:06 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,17 @@ t_command	*create_command(t_token *token)
  * @param token The first token in the list of tokens to use
  * @returns a linked list of command structs
  */
-t_command	*make_cmd_list(t_token *token)
+t_command	*make_cmd_list(t_token *token, size_t argv_i)
 {
 	t_command	*cmd;
 	t_command	*cmd_head;
-	size_t		argv_i;
 
 	argv_i = 1;
 	cmd = create_command(token);
 	cmd_head = cmd;
 	if (!cmd)
 		return (NULL);
+	token = token->next;
 	while (token)
 	{
 		if (token->type != TT_PIPE && !insert_into_command(cmd, token, &argv_i))
@@ -174,7 +174,7 @@ t_parse_result	parse_commands(t_shell *shell, t_command **cmd)
 	res = validate_tokens(tokens);
 	if (res != PARSEOK)
 		return (res);
-	*cmd = make_cmd_list(tokens);
+	*cmd = make_cmd_list(tokens, 1);
 	if (!*cmd)
 		return (MALLOC_FAIL);
 	free_tokens(tokens);
