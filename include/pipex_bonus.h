@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:50:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:30:21 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:47:04 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <errno.h>
 # include <linux/limits.h>
 # include "structbuild.h"
+# include "minishell.h"
 
 int			execute(t_shell *shell, t_command *cmd, char **envp);
 int			error(t_shell *shell, int status);
@@ -40,7 +41,6 @@ int			execute_one_builtin(t_shell *shell, t_command *cmds,
 				char **envp, int *status);
 int			execute_single_cmd(t_shell *shell, t_command *cmds,
 				char *envp[], int *status);
-char		*find_valid_path(t_shell *shell, const char *com, char **envp);
 bool		pipes(t_shell *shell, t_command *cmds, char *envp[], int *status);
 void		wait_pid(t_command *cmds, int *status);
 
