@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:58:28 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 04:36:56 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,25 +103,16 @@ bool	fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 
 bool	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 {
-	int			**pipes;
-
 	set_child_signal();
-	pipes = malloc_pipes(shell, cmds);
-	if (!pipes)
+	shell->pipes = malloc_pipes(shell, cmds);
+	if (!shell->pipes)
 		return (false);
-	create_pipes(shell, pipes);
-	if (cmds->has_command && !fork_plz(shell, cmds, pipes, envp))
-	{
-		free_array((void **)pipes, NULL);
+	create_pipes(shell, shell->pipes);
+	if (cmds->has_command && !fork_plz(shell, cmds, shell->pipes, envp))
 		return (false);
-	}
-	close_fd(shell, cmds, pipes);
+	close_fd(shell, cmds, shell->pipes);
 	wait_pid(cmds, status);
-	if (WIFSIGNALED(*status))
-	{
-		if (WTERMSIG(*status) == SIGQUIT)
+	if (WIFSIGNALED(*status) && WTERMSIG(*status) == SIGQUIT)
 			ft_putstr_fd("Quit (core dumped)\n", 2);
-	}
-	free_array((void **)pipes, NULL);
 	return (true);
 }

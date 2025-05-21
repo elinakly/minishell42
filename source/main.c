@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 02:32:25 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/21 04:38:50 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_shell	make_shell(char **envp)
 	shell.last_parse_res = NONE;
 	shell.status = 0;
 	shell.main_rl_str = NULL;
+	shell.pipes = NULL;
 	shell.cmd = NULL;
 	shell.loop_active = false;
 	shell.venv = make_venv(envp);

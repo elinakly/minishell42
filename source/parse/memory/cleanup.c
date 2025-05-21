@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:48:58 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/20 18:49:13 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 04:39:23 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	loop_cleanup(t_shell *shell)
 		free_commands(shell->cmd);
 	free(shell->main_rl_str);
 	free_array((void **)shell->venv_arr, NULL);
+	free_array((void **)shell->pipes, NULL);
+	shell->pipes = NULL;
 	shell->venv_arr = NULL;
 	shell->main_rl_str = NULL;
 	shell->cmd = NULL;

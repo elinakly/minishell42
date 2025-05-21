@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:57:55 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 04:47:22 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,26 @@
 int	execute(t_shell *shell, t_command *cmd, char **envp)
 {
 	char	*find_path;
+	int		status;
 
 	if (is_builtins(cmd))
-		exit(execve_builtin(shell, cmd, envp));
+	{
+		status = execve_builtin(shell, cmd, envp);
+		total_cleanup(shell);
+		exit(status);
+	}
 	find_path = find_valid_path(shell, cmd->name, envp);
 	if (cmd->name == NULL)
 		return (not_so_fake_exit(shell, error(shell, 3)));
 	if (find_path == NULL)
 	{
-		ft_putstr_fd(cmd->name, 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd(" Command not found\n", 2);
 		return (not_so_fake_exit(shell, error(shell, 127)));
 	}
 	if (execve(find_path, cmd->argv, envp) == -1)
 	{
-		free(find_path);
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->name, 2);
-		ft_putstr_fd(" 1cannot execute binary file\n", 2);
-		return (not_so_fake_exit(shell, error(shell, 127)));
+		ft_putstr_fd(" Cannot execute binary file\n", 2);
+		return (free(find_path), not_so_fake_exit(shell, error(shell, 127)));
 	}
 	return (0);
 }

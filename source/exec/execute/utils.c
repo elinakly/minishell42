@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 03:32:19 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/21 04:45:51 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,6 @@ void	close_fd(t_shell *shell, t_command *commands, int **pipes)
 
 int	error(t_shell *shell, int status)
 {
-	if (status == 1)
-		ft_putstr_fd("minishell: error: dup2 failure\n", 2);
-	else if (status == 2)
-		ft_putstr_fd("minishell: error: path failure\n", 2);
-	else if (status == 3)
-		ft_putstr_fd("minishell: error: execve failure\n", 2);
-	else if (status == 126)
-		ft_putstr_fd(" Permission denied\n", 2);
-	else if (status == 127)
-		ft_putstr_fd(" No such file or directory\n", 2);
 	total_cleanup(shell);
 	exit(status);
 }

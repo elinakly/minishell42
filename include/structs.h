@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:14:49 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/20 18:57:14 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 04:35:53 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ typedef struct s_shell
 	bool			loop_active;
 	int				heredoc_counter;
 	int				cmds_count;
+	int				**pipes;
 }	t_shell;
 #endif
