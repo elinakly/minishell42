@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:30:21 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:41:02 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ t_parse_result	validate_cmd_str(char *cmd)
 	index = 0;
 	quotstate = MC_NONE;
 	if (!cmd || !*cmd)
+		return (EMPTY);
+	index = skip_spaces(cmd);
+	if (!cmd[index])
 		return (EMPTY);
 	while (cmd[index])
 		set_quote_state(cmd, index++, &quotstate);
