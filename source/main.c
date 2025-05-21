@@ -6,11 +6,13 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 04:38:50 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/21 06:17:51 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_recv_sig = 0;
 
 t_shell	make_shell(char **envp)
 {

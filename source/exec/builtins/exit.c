@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:54:40 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 04:20:43 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/21 06:09:09 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	ft_exit(t_shell *shell, char **argv)
 {
 	unsigned long long	status;
 
-	// if (shell->cmds_count == 1)
-	// 	ft_putstr_fd("exit\n", 2);
+	if (shell->cmds_count == 1)
+		ft_putstr_fd("exit\n", 2);
 	if (!argv[1])
 		return (not_so_fake_exit(shell, 0));
 	if (argv[2])

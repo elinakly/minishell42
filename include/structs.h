@@ -6,16 +6,19 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:14:49 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/21 04:35:53 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/21 06:11:11 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-typedef struct t_venv	t_venv;
+typedef struct s_venv		t_venv;
+typedef struct s_token		t_token;
+typedef struct s_redirect	t_redirect;
+typedef struct s_command	t_command;
 
-struct t_venv
+struct s_venv
 {
 	bool	base;
 	char	*name;
@@ -50,9 +53,7 @@ typedef struct t_tokeninfo
 	size_t			index;
 }					t_tokeninfo;
 
-typedef struct t_token	t_token;
-
-struct t_token
+struct s_token
 {
 	t_token_type	type;
 	char			*raw_value;
@@ -60,9 +61,7 @@ struct t_token
 	t_token			*next;
 };
 
-typedef struct t_redirect	t_redirect;
-
-struct t_redirect
+struct s_redirect
 {
 	t_redir_type	type;
 	char			*file;
@@ -73,8 +72,6 @@ struct t_redirect
 	t_redirect		*next;
 };
 
-
-typedef struct t_command	t_command;
 /**
  * Contains all information about a command
  * name: The command name
@@ -85,7 +82,7 @@ typedef struct t_command	t_command;
  * redirects: a linkedlist with redirect type and file path
  * next: the next command in this linkedlist of commands
  */
-struct t_command
+struct s_command
 {
 	bool			has_command;
 	bool			has_redirects;

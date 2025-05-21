@@ -6,7 +6,7 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 04:36:56 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/21 06:09:27 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,6 @@ bool	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
 	close_fd(shell, cmds, shell->pipes);
 	wait_pid(cmds, status);
 	if (WIFSIGNALED(*status) && WTERMSIG(*status) == SIGQUIT)
-			ft_putstr_fd("Quit (core dumped)\n", 2);
+		ft_putstr_fd("Quit (core dumped)\n", 2);
 	return (true);
 }

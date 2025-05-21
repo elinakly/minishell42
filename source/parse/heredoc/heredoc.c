@@ -6,13 +6,11 @@
 /*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/21 03:43:18 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/21 06:17:30 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_recv_sig;
 
 char	*expand_heredoc_line(t_shell *shell, char *line, bool expand)
 {
