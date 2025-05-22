@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:11:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 18:14:39 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:10:39 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_value(char **envp, char *key)
 	return (NULL);
 }
 
-bool strcontainsstr(char *str, char *sub)
+bool	strcontainsstr(char *str, char *sub)
 {
 	int	i;
 	int	j;
