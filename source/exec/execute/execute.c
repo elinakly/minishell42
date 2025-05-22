@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 04:47:22 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/22 17:09:09 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int	execute(t_shell *shell, t_command *cmd, char **envp)
 		return (not_so_fake_exit(shell, error(shell, 3)));
 	if (find_path == NULL)
 	{
-		ft_putstr_fd(" Command not found\n", 2);
+		ft_putstr_fd("Command not found\n", 2);
 		return (not_so_fake_exit(shell, error(shell, 127)));
 	}
 	if (execve(find_path, cmd->argv, envp) == -1)
 	{
-		ft_putstr_fd(" Cannot execute binary file\n", 2);
+		ft_putstr_fd("Cannot execute binary file\n", 2);
 		return (free(find_path), not_so_fake_exit(shell, error(shell, 127)));
 	}
 	return (0);

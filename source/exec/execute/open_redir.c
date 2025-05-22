@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 03:31:37 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/22 17:09:28 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	open_in_files(t_redirect	*redirects)
 		if (redirects->in_fd == -1)
 		{
 			if (errno == ENOENT)
-				return (ft_putstr_fd(" No such file or directory\n", 2), 127);
+				return (ft_putstr_fd("No such file or directory\n", 2), 127);
 			else if (errno == EACCES)
-				return (ft_putstr_fd(" Permission denied\n", 2), 126);
+				return (ft_putstr_fd("Permission denied\n", 2), 126);
 		}
 	}
 	return (1);
@@ -37,9 +37,9 @@ int	open_out_files(t_redirect	*redirects)
 		if (redirects->out_fd == -1)
 		{
 			if (errno == ENOENT)
-				return (ft_putstr_fd(" No such file or directory\n", 2), 127);
+				return (ft_putstr_fd("No such file or directory\n", 2), 127);
 			else if (errno == EACCES)
-				return (ft_putstr_fd(" Permission denied\n", 2), 126);
+				return (ft_putstr_fd("Permission denied\n", 2), 126);
 		}
 	}
 	else if (redirects->type == RE_OUTPUT_APPEND)
@@ -49,9 +49,9 @@ int	open_out_files(t_redirect	*redirects)
 		if (redirects->out_fd == -1)
 		{
 			if (errno == ENOENT)
-				return (ft_putstr_fd(" No such file or directory\n", 2), 127);
+				return (ft_putstr_fd("No such file or directory\n", 2), 127);
 			else if (errno == EACCES)
-				return (ft_putstr_fd(" Permission denied\n", 2), 126);
+				return (ft_putstr_fd("Permission denied\n", 2), 126);
 		}
 	}
 	return (1);
