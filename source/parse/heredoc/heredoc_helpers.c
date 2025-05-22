@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:24:51 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:03:51 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:17:21 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,14 @@ char	*heredoc_prompt(void)
 	char	*res;
 
 	if (isatty(fileno(stdin)))
+	{
 		res = readline("> ");
+		if (!res)
+		{
+			printf("minishell: warning: here-document delimited by EOF\n");
+			return (NULL);
+		}
+	}
 	else
 	{
 		line = get_next_line(fileno(stdin));

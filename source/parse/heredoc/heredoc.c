@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/21 06:17:30 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/22 18:46:31 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,19 @@ char	*expand_heredoc_line(t_shell *shell, char *line, bool expand)
 	return (exp);
 }
 
-char	*get_heredoc(t_shell *shell, char *delim, bool expand)
+char	*get_heredoc(t_shell *shell, char *delim, bool expand, char *line)
 {
 	char	*total;
-	char	*line;
 	char	*tmp;
 	char	*prompt;
 
 	total = ft_strdup("");
-	line = NULL;
 	while ((!line || !strequals(delim, line)) && total)
 	{
 		free(line);
 		prompt = heredoc_prompt();
+		if (!prompt)
+			return (total);
 		if (check_heredoc_cancel(shell, prompt))
 			return (free(prompt), free(total), NULL);
 		line = expand_heredoc_line(shell, prompt, expand);
@@ -55,8 +55,7 @@ char	*get_heredoc(t_shell *shell, char *delim, bool expand)
 			free(tmp);
 		}
 	}
-	free(line);
-	return (total);
+	return (free(line), total);
 }
 
 char	*make_heredoc_file(t_shell *shell, char *delim, char *value)
@@ -85,7 +84,7 @@ char	*heredoc(t_shell *shell, char *delim, bool expand)
 	t_env_var	**vars;
 
 	set_heredoc_signal();
-	res = get_heredoc(shell, delim, expand);
+	res = get_heredoc(shell, delim, expand, NULL);
 	if (g_recv_sig == SIGINT)
 	{
 		shell->status = 130;
