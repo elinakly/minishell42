@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   venv.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:00:10 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:47:36 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:39:01 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	remove_env_var(t_venv **base, char *name)
 char	*get_env_val(t_shell *shell, char *name)
 {
 	t_venv	*envp;
-	char	res;
 	size_t	namelen;
 	size_t	varnamelen;
 

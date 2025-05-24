@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:58:46 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/22 17:09:28 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:57:04 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	redirection(t_shell *shell, int i, int **pipes, t_command *commands)
 	{
 		if (dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
 		{
-			fprintf(stderr, "dup2 failed1\n");
+			write(2, "dup2 failed1\n", 14);
 			error(shell, 1);
 		}
 		close(pipes[i - 1][0]);
@@ -125,7 +125,7 @@ void	redirection(t_shell *shell, int i, int **pipes, t_command *commands)
 	{
 		if (dup2(pipes[i][1], STDOUT_FILENO) == -1)
 		{
-			fprintf(stderr, "dup2 failed2\n");
+			write(2, "dup2 failed2\n", 14);
 			error(shell, 1);
 		}
 		close(pipes[i][1]);

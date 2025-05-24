@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:38 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/22 17:09:39 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:48:08 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int	child_process(t_shell *shell, int i, int **pipes, t_command *cmds)
 			return (status);
 	}
 	redirection(shell, i, pipes, cmds);
-	close_fd(shell, cmds, pipes);
+	close_fd(shell, pipes);
 	execute(shell, cmds, shell->venv_arr);
 	return (true);
 }
 
-int	**malloc_pipes(t_shell *shell, t_command *commands)
+int	**malloc_pipes(t_shell *shell)
 {
 	int	i;
 	int	**pipes;
@@ -70,10 +70,9 @@ int	**malloc_pipes(t_shell *shell, t_command *commands)
 	return (pipes);
 }
 
-bool	fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
+bool	fork_plz(t_shell *shell, t_command *commands, int **pipes)
 {
 	int		i;
-	int		last_pid;
 
 	i = 0;
 	while (i < shell->cmds_count)
@@ -98,16 +97,16 @@ bool	fork_plz(t_shell *shell, t_command *commands, int **pipes, char **envp)
 	return (true);
 }
 
-bool	pipes(t_shell *shell, t_command *cmds, char *envp[], int *status)
+bool	pipes(t_shell *shell, t_command *cmds, int *status)
 {
 	set_child_signal();
-	shell->pipes = malloc_pipes(shell, cmds);
+	shell->pipes = malloc_pipes(shell);
 	if (!shell->pipes)
 		return (false);
 	create_pipes(shell, shell->pipes);
-	if (cmds->has_command && !fork_plz(shell, cmds, shell->pipes, envp))
+	if (cmds->has_command && !fork_plz(shell, cmds, shell->pipes))
 		return (false);
-	close_fd(shell, cmds, shell->pipes);
+	close_fd(shell, shell->pipes);
 	wait_pid(cmds, status);
 	if (WIFSIGNALED(*status) && WTERMSIG(*status) == SIGQUIT)
 		ft_putstr_fd("Quit (core dumped)\n", 2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 06:17:51 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:56:17 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	finish_loop(t_shell *shell)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_command	*cmds;
 	t_shell		shell;
 
 	if (get_history())
@@ -79,7 +78,7 @@ int	main(int argc, char **argv, char **envp)
 			shell.status = execute_cmds(&shell, shell.cmd, shell.venv_arr);
 		else if (shell.last_parse_res == SYNTAX_ERROR)
 		{
-			shell.status = 2;
+			shell.status = 2 + argv + argc - argc - argv;
 			write(2, "minishell: syntax error\n", 24);
 		}
 		finish_loop(&shell);

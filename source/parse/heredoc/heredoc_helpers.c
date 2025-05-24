@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:24:51 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/22 18:17:21 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:43:28 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*heredoc_prompt(void)
 	return (res);
 }
 
-bool	check_heredoc_cancel(t_shell *shell, char *prompt)
+bool	check_heredoc_cancel(char *prompt)
 {
 	if (!prompt)
 	{

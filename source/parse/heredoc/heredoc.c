@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:08:06 by mschippe          #+#    #+#             */
-/*   Updated: 2025/05/22 18:46:31 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:43:59 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_heredoc(t_shell *shell, char *delim, bool expand, char *line)
 		prompt = heredoc_prompt();
 		if (!prompt)
 			return (total);
-		if (check_heredoc_cancel(shell, prompt))
+		if (check_heredoc_cancel(prompt))
 			return (free(prompt), free(total), NULL);
 		line = expand_heredoc_line(shell, prompt, expand);
 		if (!line || strequals(delim, line))
@@ -81,7 +81,6 @@ char	*heredoc(t_shell *shell, char *delim, bool expand)
 {
 	char		*res;
 	char		*path;
-	t_env_var	**vars;
 
 	set_heredoc_signal();
 	res = get_heredoc(shell, delim, expand, NULL);

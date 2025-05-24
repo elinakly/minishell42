@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:02:42 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:02:39 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:37:53 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	real_export(char *argv, t_shell *shell)
 int	export(t_shell *shell, t_command *cmds, char **envp)
 {
 	int		status;
-	int		i;
+	size_t	i;
 
 	i = 0;
 	status = 0;

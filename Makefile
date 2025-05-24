@@ -6,7 +6,7 @@ LIB_DIR = lib
 LIBFT_REPO = https://github.com/put/libft
 LIBFT_COMMIT = d20ca5b
 HEADERS	:= -I ./include -I $(LIB_DIR)/libft
-CFLAGS = -g
+CFLAGS = -Wall -Wextra -Werror -g 
 LDFLAGS = -lreadline
 
 SRCS =	$(SRC_DIR)/main.c \

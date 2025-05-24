@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:33:11 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:02:53 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:38:22 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	unset(t_shell *shell, t_command *cmds, char **envp)
+int	unset(t_shell *shell, t_command *cmds)
 {
-	int	i;
+	size_t	i;
 
 	i = 1;
 	if (cmds->argc == 1)

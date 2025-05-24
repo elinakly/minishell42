@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:03:06 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/22 17:09:09 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:47:32 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	child_handler(t_shell *shell, t_command *cmds, char *envp[], int *status)
 			return (1);
 	}
 	redirection(shell, 0, 0, cmds);
-	close_fd(shell, cmds, 0);
+	close_fd(shell, 0);
 	if (cmds->has_command)
 		execute(shell, cmds, envp);
 	return (not_so_fake_exit(shell, 0));
@@ -92,7 +92,7 @@ int	execute_one_builtin(t_shell *shell, t_command *cmds,
 			return (*status);
 	}
 	redirection(shell, 0, 0, cmds);
-	close_fd(shell, cmds, 0);
+	close_fd(shell, 0);
 	*status = execve_builtin(shell, cmds, envp);
 	if (dup2(oldstout, STDOUT_FILENO) == -1)
 		return (not_so_fake_exit(shell, 1));
@@ -115,7 +115,7 @@ int	execute_cmds(t_shell *shell, t_command *cmds, char *envp[])
 	}
 	else
 	{
-		if (!pipes(shell, cmds, envp, &status))
+		if (!pipes(shell, cmds, &status))
 			return (1);
 	}
 	if (WIFEXITED(status))

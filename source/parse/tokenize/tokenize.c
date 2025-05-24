@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:21 by mika              #+#    #+#             */
-/*   Updated: 2025/05/20 18:36:14 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:45:18 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_token_type	get_token_type(char *raw_token,
 		else if (len > 1 && raw_token[1] == '<')
 			return (TT_HEREDOC);
 	}
-	return (get_token_type2(raw_token, last, cmdfound));
+	return (get_token_type2(last, cmdfound));
 }
 
 /**

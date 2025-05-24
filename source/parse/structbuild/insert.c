@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:52 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:31:24 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:44:22 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ bool	insert_redir_in_cmd(t_command *cmd, t_token *token)
  */
 bool	insert_into_command(t_command *cmd, t_token *token, size_t *argv_i)
 {
-	t_redirect	*tempre;
-
 	if (token->type == TT_COMMAND && !cmd->has_command)
 	{
 		cmd->name = ft_strdup(token->value);

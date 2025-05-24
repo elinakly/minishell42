@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:02:04 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:37:08 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:44:45 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,7 @@ size_t	calc_decrease(char *token)
 	return (decrease);
 }
 
-t_token_type	get_token_type2(char *raw_token,
-	t_token_type last, bool *cmdfound)
+t_token_type	get_token_type2(t_token_type last, bool *cmdfound)
 {
 	if (last == TT_RE_OUT || last == TT_RE_OUT_APPEND)
 		return (TT_OUTFILE);

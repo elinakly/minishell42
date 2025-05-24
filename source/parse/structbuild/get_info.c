@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_info.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:52:48 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:15:57 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:44:10 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ t_token	*get_tokens_from_cmd(char *cmd, t_env_var **vars, size_t *tokencount)
 	t_tokeninfo		info;
 	char			**tokens;
 	t_token			*top;
-	t_token			*next;
 	t_token			**change;
 
 	if (!tokencount)

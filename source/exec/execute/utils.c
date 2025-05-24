@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:34:41 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/21 04:45:51 by mika             ###   ########.fr       */
+/*   Updated: 2025/05/24 16:42:33 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_fd(t_shell *shell, t_command *commands, int **pipes)
+void	close_fd(t_shell *shell, int **pipes)
 {
 	int	i;
 

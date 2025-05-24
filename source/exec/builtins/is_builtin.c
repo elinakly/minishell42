@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:35:57 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:02:42 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:45:54 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	execve_builtin(t_shell *shell, t_command *cmds,
 		if (strequals(cmds->name, "export"))
 			return (export(shell, cmds, envp));
 		if (strequals(cmds->name, "unset"))
-			return (unset(shell, cmds, envp));
+			return (unset(shell, cmds));
 		if (strequals(cmds->name, "clear"))
 			return (ft_clear());
 		cmds = cmds->next;
