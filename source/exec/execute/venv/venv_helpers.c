@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:37:36 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/20 18:23:12 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:14:09 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ bool	set_name_value(t_venv *var, char *name, char *value)
 	tmpvalue = var->value;
 	if (!value)
 	{
-		value = ft_strdup("");
+		value = "";
 		if (!value)
 			return (false);
 	}
