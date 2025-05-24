@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 16:17:48 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/21 17:41:02 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:54:37 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_parse_result	get_parse_res_from_last(t_token_type last)
 		|| last == TT_HEREDOC)
 		return (SYNTAX_ERROR);
 	if (last == TT_PIPE)
-		return (UNFINISHED_PIPE);
+		return (SYNTAX_ERROR);
 	return (PARSEOK);
 }
 
@@ -106,10 +106,10 @@ t_parse_result	validate_cmd_str(char *cmd)
 	while (cmd[index])
 		set_quote_state(cmd, index++, &quotstate);
 	if (cmd[index - 1] == '\\')
-		return (ESCAPED_NEWLINE);
+		return (SYNTAX_ERROR);
 	if (quotstate == MC_SQUOTE)
-		return (UNCLOSED_SQUOTE);
+		return (SYNTAX_ERROR);
 	if (quotstate == MC_DQUOTE)
-		return (UNCLOSED_DQUOTE);
+		return (SYNTAX_ERROR);
 	return (PARSEOK);
 }
