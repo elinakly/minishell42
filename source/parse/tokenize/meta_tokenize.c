@@ -6,7 +6,7 @@
 /*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:41:33 by Mika Schipp       #+#    #+#             */
-/*   Updated: 2025/05/20 18:16:21 by mschippe         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:30:48 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	is_meta(char *str, size_t index, t_metachar *meta)
 			|| c == MC_REDIR_IN
 			|| c == MC_REDIR_OUT
 			|| c == MC_SQUOTE
-			|| c == MC_VARIABLE
+			|| (c == MC_VARIABLE && str[index + 1] != MC_VARIABLE)
 			|| c == MC_SEPAR_SPACE
 			|| c == MC_SEPAR_TAB)
 		&& !is_escaped_char(str, index);
