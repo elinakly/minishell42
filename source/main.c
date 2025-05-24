@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: mschippe <mschippe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 15:24:30 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/24 16:56:17 by eklymova         ###   ########.fr       */
+/*   Created: 2025/05/24 17:03:53 by mschippe          #+#    #+#             */
+/*   Updated: 2025/05/24 17:04:33 by mschippe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	get_prompt(t_shell *shell)
 void	finish_loop(t_shell *shell)
 {
 	add_history(shell->main_rl_str);
-	history(shell->main_rl_str);
+	history(shell, shell->main_rl_str);
 	loop_cleanup(shell);
 }
 
@@ -66,9 +66,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell		shell;
 
-	if (get_history())
-		return (1);
 	shell = make_shell(envp);
+	if (get_history(&shell))
+		return (1);
 	while (shell.loop_active)
 	{
 		set_main_signal();
