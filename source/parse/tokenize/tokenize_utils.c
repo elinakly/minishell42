@@ -6,7 +6,7 @@
 /*   By: eklymova <eklymova@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:02:04 by eklymova          #+#    #+#             */
-/*   Updated: 2025/05/24 16:44:45 by eklymova         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:16:22 by eklymova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ size_t	count_tokens(char *entry)
 		return (0);
 	while (entry[index])
 	{
+		token_count += token_size(&entry[index], false) > 0;
 		index += token_size(&entry[index], true);
-		token_count++;
 	}
 	return (token_count);
 }
