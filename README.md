@@ -7,11 +7,17 @@ This project is part of the 42 School curriculum. **Minishell** is a simple Unix
 ## 🛠️ Features
 
 ✅ Command parsing (with quotes, special characters)
+
 ✅ Built-in commands (`cd`, `echo`, `pwd`, `export`, `unset`, `env`, `exit`)
+
 ✅ Execution of external programs using PATH
+
 ✅ Pipes (`|`) and redirections (`>`, `<`, `>>`, `<<`)
+
 ✅ Environment variable handling
+
 ✅ Custom prompt display
+
 ✅ Command history (without using `read_history()`)
 
 ---
@@ -19,7 +25,7 @@ This project is part of the 42 School curriculum. **Minishell** is a simple Unix
 ## ⚙️ How to Build
 
 ```bash
-git clone https://github.com/elinakly/minishell42.git
+git clone git@github.com:elinakly/minishell42.git
 cd minishell42
 make
 ```
