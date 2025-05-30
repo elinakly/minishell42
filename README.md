@@ -19,7 +19,7 @@ This project is part of the 42 School curriculum. **Minishell** is a simple Unix
 ## ⚙️ How to Build
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/minishell42.git
+git clone https://github.com/elinakly/minishell42.git
 cd minishell42
 make
 ```
