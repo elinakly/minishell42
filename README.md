@@ -73,4 +73,4 @@ minishell/
 
 ## 💊 Author
 
-Made by (https://github.com/elinakly) and (https://github.com/put) at 42 School.
+Made by [Me](https://github.com/elinakly) and [Mika](https://github.com/put) at 42 School.
